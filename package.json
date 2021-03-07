@@ -1,0 +1,9 @@
+{
+  "name": "tgif-voting-portal",
+  "version": "1.0.0",
+  "description": "Mentored TGIF project sp21",
+  "main": "index.js",
+  "repository": "https://github.com/codebase-berkeley/tgif-voting-portal.git",
+  "author": "Warren <warrenwwang@berkeley.edu>",
+  "license": "MIT"
+}
