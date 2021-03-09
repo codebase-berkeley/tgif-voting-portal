@@ -1,23 +1,12 @@
-import logo from './logo.svg';
 import './App.css';
+import * as FeatherIcon from 'react-feather';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      HELLO WORLD
+      <FeatherIcon.X color="#dd515f" size={40}/>
+      <FeatherIcon.Check color="#c9e5cb" size={40}/>
     </div>
   );
 }

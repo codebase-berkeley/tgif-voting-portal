@@ -5,5 +5,8 @@
   "main": "index.js",
   "repository": "https://github.com/codebase-berkeley/tgif-voting-portal.git",
   "author": "Warren <warrenwwang@berkeley.edu>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "yarn": "^1.22.10"
+  }
 }

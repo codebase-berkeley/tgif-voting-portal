@@ -1,0 +1,21 @@
+.proposal-box {
+    border-radius: 10px;
+    background-color: #CECECE;
+    border-color: black;
+    display: flex;
+    align-items: center;
+}
+
+.proposal-title {
+    font-family: 'Lexend Deca', sans-serif;
+    color: black;
+    justify-content: flex-start
+}
+
+.vote-status {
+    width: 42px;
+    height: 40px;
+    right: 0;
+    background-color: aqua;
+    justify-content: flex-end;
+}

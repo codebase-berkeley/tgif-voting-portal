@@ -1,0 +1,24 @@
+ .navBar {
+    background-color: grey;
+    width: 100%;
+    height: 12%;
+}
+
+.dashboard-screen {
+    width: 100%;
+    height: 88%;
+    display: flex;
+    background-color: cornflowerblue;
+}
+
+.proposal-list {
+    width: 50%;
+    height: 100%;
+    background-color: red;
+}
+
+.proposal-description {
+    width: 50%;
+    height: 100%;
+    background-color: green;
+}
