@@ -3,45 +3,59 @@ import Row from '../../components/row/Row';
 import * as FeatherIcon from 'react-feather';
 import './Dashboard.css';
 
-const proposals = {
-    proposal1: {
+const iconSize = 40;
+
+const proposals = [
+  {
       title: "some title",
-      voted: <FeatherIcon.Check color="#c9e5cb" size={40}/>
+      voted: <FeatherIcon.Check color="green" size={iconSize}/>
   },
 
-  proposal2: {
-      title: "some title",
-      voted: <FeatherIcon.X color="#dd515f" size={40}/>
+  {
+      title: "Please give us money. Thanks",
+      voted: <FeatherIcon.X color="red" size={iconSize}/>
   },
 
-  proposal3: {
-    title: "some title"
+  {
+    title: "aljewnoinxansxlwnlndwondwdn"
+  },
+  
+  {
+    title: "We need help building XYZ",
+    voted: <FeatherIcon.Check color="green" size={iconSize}/>
+  },
+
+  {
+    title: "some title",
+    voted: <FeatherIcon.X color="red" size={iconSize}/>
+  },
+
+  {
+  title: "some title"
   }
-}
+]
+
+let proposal_titles = ["Proposal #1", "Proposal #2", "Proposal #3", "Proposal #4", "Proposal #1"]
+
+// const updateInput = async (input) => {
+  //Get list of components and filter, returning the HTML
+  // of the rows that pass
+  // (Maybe if it contains the words typed)
+// }
 
 function Dashboard() {
-
-  const [proposals, setProposals] = useState();
-
-  function fetchData() {
-    setProposals();
-  }
-
-  useEffect(() => {}
-  );
+  // const [input, setInput] = useState("");
   
   return (
     <div className="dashboard">
-      <div className="navbar"></div>
+      <div className="navBar">this is the delicious navbar</div>
       <div className="dashboard-screen">
         <div className="proposal-list">
-          <div className="searchBar">
-            
-          </div>
+          {/* <SearchBar input={input} onChange={updateInput}/> */}
           {proposals.map((proposal) => (
             <Row
-              proposal-title={proposals[proposal].title}
-              vote-status={proposals[proposal].voted ? proposals[proposal].voted    : null}
+              title = {proposal.title}
+              vote = {proposal.voted ? proposal.voted : null}
             >
             </Row>
           ))}
