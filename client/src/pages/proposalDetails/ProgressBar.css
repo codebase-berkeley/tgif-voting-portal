@@ -1,0 +1,15 @@
+:root {
+    --green: #96AD00;
+    --mutedGreen: #D9DEBC;
+    --lightGrey: #F3F3F3;
+    --black: black;
+    --headingFont: 'IBM Plex Sans', sans-serif;
+    --bodyFont: 'Lexend Deca';
+}
+
+.ProgressBar {
+    background: var(--green);
+    width: 100%;
+    margin: 5px;
+}
+

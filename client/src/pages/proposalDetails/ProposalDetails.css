@@ -2,7 +2,7 @@
     --green: #96AD00;
     --mutedGreen: #D9DEBC;
     --lightGrey: #F3F3F3;
-    --black: black;
+    --black: #353739;
     --headingFont: 'IBM Plex Sans', sans-serif;
     --bodyFont: 'Lexend Deca';
 }
@@ -11,61 +11,114 @@
     background: var(--lightGrey);
     width: 100vw;
     height: 100vh;
-    position: relative;
+    /*position: relative;*/
+    display: flex;
+    flex-direction:row;
+    justify-content:center;
+    align-items:center;
 }
 
 .proposalSummary{
     background:white;
-    height: 70%;
+    height: 80%;
+    width:100%;
     display: flex;
     flex-direction: column;
-    align-items: center; 
+    align-items: center;
     justify-content: flex-start;
+
 }
 
 .proposalLeft{
-    background:lightcoral;
-    /* background-color: white; */
+    /*background: lightcoral;*/
+     background-color: white; 
     width: 35%;
     height: 90%;
-    position: absolute;
     bottom: 10px;
     margin-left: 50px;
-    
+    margin-right:50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
 }
 
 .proposalSponsor{
-    background-color: chartreuse;
+    /*background-color: chartreuse;*/
+    font-family: 'Lexend Deca', sans-serif;
+    color: var(--black);
+    font-size: 1.5em;
 }
 
 .proposalAmount {
-    background-color: cornflowerblue;
+    /*background-color: cornflowerblue;*/
+    font-family: 'Lexend Deca', sans-serif;
+    color: var(--black);
+    margin: 0px 0px 5px 0px;
+    font-size: 1.1em;
 }
 
 .proposalDeadline {
-    background-color: darkviolet;
+    /*background-color: darkviolet;*/
+    font-family: 'Lexend Deca', sans-serif;
+    color: var(--black);
+    margin: 5px;
+    font-size: 1.1em;
 }
     
 .proposalTitle{
-    background-color: red;
+    /*background-color: red;*/
     width: 100%;
-    font: 2.5em 'IBM Plex Sans', sans-serif;
+    font: 2em 'IBM Plex Sans', sans-serif;
+    /* font-weight: 500px; */
     color: var(--black);
-    top: 10px;
     margin: 20px 0px 20px 0px;
 }
 
-.proposalParagraph{
+.underline {
+    border: 1px solid var(--black);
+    width: 90%;
+}
+
+.proposalConditional {
+    width: 80%;
+    height: 20%;
+    display: flex;
+    /*flex-direction: column;*/
+    align-items: center;
+    justify-content: center;
+
+}
+
+.proposalDescription {
+    color: var(--lightGrey);
     height: 100%;
-    width:80%;
+    width: 87%;
     background: var(--mutedGreen);
+    font-family: 'Lexend Deca', sans-serif;
+    padding: 10px;
+    margin: 20px 0px 20px 0px;
 }
 
 .discussion{
     background-color: aqua;
     width: 60%;
     height: 90%;
-    position: absolute;
     bottom: 10px;
     right: 10px;
+    margin-right: 50px;
+    color: var(--black);
+}
+
+.progressBar {
+    width: 100%;
+    /* background: red; */
+}
+
+.progressBarVoted {
+    margin-bottom: 30px;
+}
+
+.progressBarYes {
+
 }
