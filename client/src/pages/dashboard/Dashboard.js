@@ -1,19 +1,21 @@
-import {useState, useEffect} from 'react';
+import React from 'react';
+import {useEffect, useState} from 'react';
 import Row from '../../components/row/Row';
-import * as FeatherIcon from 'react-feather';
 import './Dashboard.css';
+import noIcon from '../../assets/Delete.svg';
+import yesIcon from '../../assets/Checked.svg';
+import SearchBar from '../../components/searchbar/SearchBar'
 
-const iconSize = 40;
 
 const proposals = [
   {
       title: "some title",
-      voted: <FeatherIcon.Check color="green" size={iconSize}/>
+      voted: yesIcon
   },
 
   {
       title: "Please give us money. Thanks",
-      voted: <FeatherIcon.X color="red" size={iconSize}/>
+      voted: noIcon
   },
 
   {
@@ -22,12 +24,25 @@ const proposals = [
   
   {
     title: "We need help building XYZ",
-    voted: <FeatherIcon.Check color="green" size={iconSize}/>
+    voted: yesIcon
   },
 
   {
     title: "some title",
-    voted: <FeatherIcon.X color="red" size={iconSize}/>
+    voted: noIcon
+  },
+
+  {
+  title: "some title"
+  },
+  {
+    title: "We need help building XYZ",
+    voted: yesIcon
+  },
+
+  {
+    title: "some title",
+    voted: noIcon
   },
 
   {
@@ -35,27 +50,33 @@ const proposals = [
   }
 ]
 
-let proposal_titles = ["Proposal #1", "Proposal #2", "Proposal #3", "Proposal #4", "Proposal #1"]
 
-// const updateInput = async (input) => {
-  //Get list of components and filter, returning the HTML
-  // of the rows that pass
-  // (Maybe if it contains the words typed)
-// }
 
 function Dashboard() {
-  // const [input, setInput] = useState("");
-  
+  // const [input, setInput] = React.useState("");
+  // const [proposalListDefault, setProposalListDefault] = React.useState("");
+  // const [proposalList, setProposalList] = React.useState("");
+
+  // const updateInput = async (input) => {
+  //   let filteredList = [];
+  //   for (let i = 0; i < proposals.length; i++) {
+  //     if (proposalListDefault[i].title.includes(input)) {
+  //       filteredList.push(<Row title={proposals[i].title} vote={proposals[i].vote} />)
+  //     }
+  //     setInput(input);
+  //     setProposalList(filteredList)
+  //   }
+  // }
   return (
     <div className="dashboard">
       <div className="navBar">this is the delicious navbar</div>
       <div className="dashboard-screen">
         <div className="proposal-list">
-          {/* <SearchBar input={input} onChange={updateInput}/> */}
+          {/* { <SearchBar input={input} onChange={updateInput}/> } */}
           {proposals.map((proposal) => (
             <Row
               title = {proposal.title}
-              vote = {proposal.voted ? proposal.voted : null}
+              vote = {proposal.voted ? proposal.voted : ""}
             >
             </Row>
           ))}

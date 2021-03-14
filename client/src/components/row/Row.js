@@ -4,7 +4,7 @@ function Row(props) {
     return (
         <div className="proposal-box" id={props.title}>
             <div className="proposal-title">{props.title}</div>
-            <div className="vote-status">{props.vote}</div>
+            <img src={props.vote} className="vote-status"></img>
         </div>
     );
 }

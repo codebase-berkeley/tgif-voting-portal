@@ -5,7 +5,7 @@ function SearchBar(props) {
     return (
         <div className="SearchBar">
             <input>
-                value={prop.keyword}
+                value={props.keyword}
                 placeholder= {"Proposal Name"}
                 onChange= {(e) => props.setKeyWord(e.target.value)}
             </input>
