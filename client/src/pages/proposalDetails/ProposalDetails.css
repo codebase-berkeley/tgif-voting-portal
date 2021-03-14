@@ -5,6 +5,7 @@
     --black: #353739;
     --headingFont: 'IBM Plex Sans', sans-serif;
     --bodyFont: 'Lexend Deca';
+    --descriptionAndProgressBarsWidth: 87%;
 }
 
 .proposalDetailsPage {
@@ -18,29 +19,29 @@
     align-items:center;
 }
 
-.proposalSummary{
-    background:white;
-    height: 80%;
-    width:100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-
-}
-
 .proposalLeft{
-    /*background: lightcoral;*/
-     background-color: white; 
+    /* background: lightcoral; */
+    background-color: white; 
     width: 35%;
     height: 90%;
     bottom: 10px;
     margin-left: 50px;
-    margin-right:50px;
+    margin-right: 50px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
+}
+
+.proposalSummary{
+    /* background-color: red; */
+    height: 80%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+
 }
 
 .proposalSponsor{
@@ -76,8 +77,8 @@
 }
 
 .underline {
-    border: 1px solid var(--black);
-    width: 90%;
+    border: 2px solid var(--black);
+    width: 75%;
 }
 
 .proposalConditional {
@@ -93,11 +94,31 @@
 .proposalDescription {
     color: var(--lightGrey);
     height: 100%;
-    width: 87%;
+    width: var(--descriptionAndProgressBarsWidth);
     background: var(--mutedGreen);
     font-family: 'Lexend Deca', sans-serif;
     padding: 10px;
     margin: 20px 0px 20px 0px;
+    word-wrap: break-word;
+}
+
+.proposalConditional {
+    /* border-style: solid;
+    border-width: 1px;
+    border-color: var(--black); */
+    width: 100%;
+    /* background-color: blueviolet; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.progressBarsFrame {
+    width: var(--descriptionAndProgressBarsWidth);
+    /* background-color: chartreuse; */
+}
+
+.progressBarPercentVoted {
+    margin-bottom: 6%;
 }
 
 .discussion{
@@ -108,17 +129,4 @@
     right: 10px;
     margin-right: 50px;
     color: var(--black);
-}
-
-.progressBar {
-    width: 100%;
-    /* background: red; */
-}
-
-.progressBarVoted {
-    margin-bottom: 30px;
-}
-
-.progressBarYes {
-
 }
