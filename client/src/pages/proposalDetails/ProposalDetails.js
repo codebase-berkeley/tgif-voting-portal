@@ -1,5 +1,4 @@
 import './ProposalDetails.css';
-import ProgressBarDummy from './ProgressBar.js';
 import ProgressBar from 'react-bootstrap/ProgressBar'
 
 var IS_ADMIN = true;
@@ -8,10 +7,13 @@ var AMOUNT = 14360;
 var PERCENT_VOTED = 60;
 var PERCENT_YES = 20;
 var DUMMY_DESCRIPTION = `The Earth Action Initiative will organize a variety of
-                        events and actions that build community, leverage existing
-                        efforts, inspire new plans, and find innovative ways to
-                        execute these actions through effective communication.`
+events and actions that build community, leverage existing
+efforts, inspire new plans, and find innovative ways to
+execute these actions through effective communication.`
 
+/* Takes in a number and converts it to a dollar amount string w/ commas
+placed appropriately (every 3 spaces); does not include dollar sign
+*/
 function amountToDollarString(amount) {
   return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }

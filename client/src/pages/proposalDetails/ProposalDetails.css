@@ -12,7 +12,6 @@
     background: var(--lightGrey);
     width: 100vw;
     height: 100vh;
-    /*position: relative;*/
     display: flex;
     flex-direction:row;
     justify-content:center;
@@ -20,7 +19,6 @@
 }
 
 .proposalLeft{
-    /* background: lightcoral; */
     background-color: white; 
     width: 35%;
     height: 90%;
@@ -34,25 +32,21 @@
 }
 
 .proposalSummary{
-    /* background-color: red; */
     height: 80%;
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-
 }
 
 .proposalSponsor{
-    /*background-color: chartreuse;*/
     font-family: 'Lexend Deca', sans-serif;
     color: var(--black);
     font-size: 1.5em;
 }
 
 .proposalAmount {
-    /*background-color: cornflowerblue;*/
     font-family: 'Lexend Deca', sans-serif;
     color: var(--black);
     margin: 0px 0px 5px 0px;
@@ -60,7 +54,6 @@
 }
 
 .proposalDeadline {
-    /*background-color: darkviolet;*/
     font-family: 'Lexend Deca', sans-serif;
     color: var(--black);
     margin: 5px;
@@ -68,10 +61,8 @@
 }
     
 .proposalTitle{
-    /*background-color: red;*/
     width: 100%;
     font: 2em 'IBM Plex Sans', sans-serif;
-    /* font-weight: 500px; */
     color: var(--black);
     margin: 20px 0px 20px 0px;
 }
@@ -85,14 +76,12 @@
     width: 80%;
     height: 20%;
     display: flex;
-    /*flex-direction: column;*/
     align-items: center;
     justify-content: center;
-
 }
 
 .proposalDescription {
-    color: var(--lightGrey);
+    color: var(--black);
     height: 100%;
     width: var(--descriptionAndProgressBarsWidth);
     background: var(--mutedGreen);
@@ -103,18 +92,14 @@
 }
 
 .proposalConditional {
-    /* border-style: solid;
-    border-width: 1px;
-    border-color: var(--black); */
     width: 100%;
-    /* background-color: blueviolet; */
     display: flex;
     flex-direction: column;
     align-items: center;
 }
+
 .progressBarsFrame {
     width: var(--descriptionAndProgressBarsWidth);
-    /* background-color: chartreuse; */
 }
 
 .progressBarPercentVoted {
