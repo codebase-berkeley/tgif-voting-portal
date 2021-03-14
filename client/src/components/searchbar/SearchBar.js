@@ -1,14 +1,15 @@
 import './SearchBar.css';
-import {useState, useEffect} from 'react';
+import * as FeatherIcon from 'react-feather'
 
 function SearchBar(props) {
     return (
         <div className="SearchBar">
-            <input>
+            <FeatherIcon.Search color="#757575" size={20}/>
+            <input 
+                size="10"
                 value={props.keyword}
-                placeholder= {"Proposal Name"}
-                onChange= {(e) => props.setKeyWord(e.target.value)}
-            </input>
+                placeholder= "Proposal Name"
+                onChange= {(e) => props.setKeyword(e.target.value)} />
         </div>
     );
 }

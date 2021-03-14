@@ -1,7 +1,7 @@
 .proposal-box {
     border-radius: 10px;
     border-width: 1.75px;
-    margin: 1em;
+    margin: 0.5em;
     padding: 1em;
     background-color: #F3F3F3;
     border-color: #CECECE;
@@ -10,6 +10,7 @@
     align-items: center;
     flex-direction: row;
     justify-content: space-between;
+    min-height: 2.5em;
 }
 
 .proposal-title {

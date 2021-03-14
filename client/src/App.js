@@ -2,6 +2,17 @@ import './App.css';
 //import * as FeatherIcon from 'react-feather';
 import Dashboard from './pages/dashboard/Dashboard';
 
+let docWidth = document.documentElement.offsetWidth;
+
+[].forEach.call(
+  document.querySelectorAll('*'),
+  function(el) {
+    if (el.offsetWidth > docWidth) {
+      console.log(el);
+    }
+  }
+);
+
 function App() {
   return (
     <div className="App">
