@@ -6,8 +6,5 @@
   "repository": "https://github.com/codebase-berkeley/tgif-voting-portal.git",
   "author": "Warren <warrenwwang@berkeley.edu>",
   "license": "MIT",
-  "dependencies": {
-    "bootstrap": "^4.6.0",
-    "react-bootstrap": "^1.5.1"
-  }
+  "dependencies": {}
 }

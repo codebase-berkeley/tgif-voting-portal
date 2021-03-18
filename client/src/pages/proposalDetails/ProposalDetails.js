@@ -1,5 +1,5 @@
 import './ProposalDetails.css';
-import ProgressBar from 'react-bootstrap/ProgressBar'
+import ProgressBar from 'react-bootstrap/ProgressBar';
 
 var IS_ADMIN = true;
 var DEADLINE = '3/5/21';
@@ -11,7 +11,7 @@ events and actions that build community, leverage existing
 efforts, inspire new plans, and find innovative ways to
 execute these actions through effective communication.`
 
-/* Takes in a number and converts it to a dollar amount string w/ commas
+/** Takes in a number and converts it to a dollar amount string w/ commas
 placed appropriately (every 3 spaces); does not include dollar sign
 */
 function amountToDollarString(amount) {

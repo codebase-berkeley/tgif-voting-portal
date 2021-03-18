@@ -1,14 +1,5 @@
-:root {
-    --green: #96AD00;
-    --mutedGreen: #D9DEBC;
-    --lightGrey: #F3F3F3;
-    --black: #353739;
-    --headingFont: 'IBM Plex Sans', sans-serif;
-    --bodyFont: 'Lexend Deca';
-    --descriptionAndProgressBarsWidth: 87%;
-}
-
 .proposalDetailsPage {
+    --descriptionAndProgressBarsWidth: 87%;
     background: var(--lightGrey);
     width: 100vw;
     height: 100vh;
@@ -20,6 +11,7 @@
 
 .proposalLeft{
     background-color: white; 
+    /* background-color: blueviolet; */
     width: 35%;
     height: 90%;
     bottom: 10px;
@@ -29,10 +21,12 @@
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
+    padding: 0px 40px 0px 40px;
 }
 
 .proposalSummary{
-    height: 80%;
+    /* background-color: brown; */
+    height: 100%;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -61,14 +55,31 @@
 }
     
 .proposalTitle{
+    background: red;
     width: 100%;
     font: 2em 'IBM Plex Sans', sans-serif;
     color: var(--black);
     margin: 20px 0px 20px 0px;
+    /* text-decoration-line: underline; */
+
 }
 
+/* 
+.proposalTitle:after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 0;
+    width: 100%;
+    border-bottom: 2px solid var(--black);
+    transition: width 0.3s ease;
+} */
+
 .underline {
-    border: 2px solid var(--black);
+    border-top: 2px solid var(--black);
+    height: 4px;
+    color: black;
     width: 75%;
 }
 
@@ -83,7 +94,7 @@
 .proposalDescription {
     color: var(--black);
     height: 100%;
-    width: var(--descriptionAndProgressBarsWidth);
+    width: 100%;
     background: var(--mutedGreen);
     font-family: 'Lexend Deca', sans-serif;
     padding: 10px;
@@ -92,6 +103,7 @@
 }
 
 .proposalConditional {
+    /* background-color: cadetblue; */
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -99,7 +111,9 @@
 }
 
 .progressBarsFrame {
-    width: var(--descriptionAndProgressBarsWidth);
+    /* background-color: burlywood; */
+    color: black;
+    width: 100%;
 }
 
 .progressBarPercentVoted {
