@@ -1,11 +1,11 @@
-.SearchBar {
+.searchbar {
     display: flex;
     margin-left: 1rem;
     margin-right: 1rem;
     align-items: center;
     justify-content: start;
     height: 5%;
-    width: 97.5%;
+    width: 95%;
     color: #757575;
     font-family: 'Lexend Deca', sans-serif;
     background-color: white;
@@ -16,14 +16,14 @@
     margin: 0.5rem;
 }
 
-input.searchBar {
+.searchbar-input {
     width: 80%;
     height: 90%;
-    margin-left: 2.5%;
+    margin-left: 2%;
     border: none;
 }
 
-input.searchBar:active {
+.searchbar-input:active {
     outline: none; 
     border: none; 
 }
@@ -32,6 +32,6 @@ input:focus {
     outline: none; 
 }
 
-.searchImg {
+.search-img {
     margin-left: 2.5%;
 }

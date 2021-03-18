@@ -77,10 +77,10 @@ function Dashboard() {
 
   return (
     <div className="dashboard">
-      <div className="navBar">this is the delicious navbar</div>
+      <div className="navbar">this is the delicious navbar</div>
       <div className="dashboard-screen">
         <div className="proposal-list">
-          {<SearchBar keyword={input} setKeyword={updateInput}/>}
+          <SearchBar keyword={input} setKeyword={updateInput}/>
           {proposalList}
         </div>
         <div className="proposal-description"></div>
