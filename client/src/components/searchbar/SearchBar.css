@@ -28,7 +28,7 @@
     border: none; 
 }
 
-input:focus {
+.searchbar-input:focus {
     outline: none; 
 }
 
