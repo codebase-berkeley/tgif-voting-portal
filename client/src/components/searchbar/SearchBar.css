@@ -3,9 +3,9 @@
     margin-left: 1rem;
     margin-right: 1rem;
     align-items: center;
-    justify-content: center;
-    height: 100%;
-    width: 80%;
+    justify-content: start;
+    height: 5%;
+    width: 97.5%;
     color: #757575;
     font-family: 'Lexend Deca', sans-serif;
     background-color: white;
@@ -13,25 +13,25 @@
     border-color:#CECECE;
     border-style: solid;
     border-radius: 10px;
-    padding: 0.5em;
     margin: 0.5rem;
 }
 
-input {
-    resize: horizontal;
+input.searchBar {
     width: 80%;
-    height: 100%;
-    margin-left: 1em;
-    border: none;  
+    height: 90%;
+    margin-left: 2.5%;
+    border: none;
 }
 
-input:active {
-    width: auto;  
-    height: auto; 
+input.searchBar:active {
+    outline: none; 
     border: none; 
 }
 
 input:focus {
-    min-width: 200px;
-    border: none; 
+    outline: none; 
+}
+
+.searchImg {
+    margin-left: 2.5%;
 }

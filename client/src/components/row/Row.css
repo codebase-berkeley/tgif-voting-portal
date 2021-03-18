@@ -17,7 +17,7 @@
     flex-direction: row;
     font-family: 'Lexend Deca', sans-serif;
     color: black;
-    font-size: max(2vw, 1.5vw);
+    font-size: max(2em, 1.5em);
 }
 
 .vote-status {

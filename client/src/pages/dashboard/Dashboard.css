@@ -22,12 +22,12 @@
 .proposal-list {
     width: 50%;
     height: 100%;
+    margin: 1em;
     display: flex;
     flex-flow: column;
     overflow-y: scroll;
     -ms-overflow-style: none;
     scrollbar-width: none;
-    padding: 0.75rem;
 }
 
 .proposal-list::-webkit-scrollbar {

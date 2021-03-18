@@ -4,9 +4,9 @@ import * as FeatherIcon from 'react-feather'
 function SearchBar(props) {
     return (
         <div className="SearchBar">
-            <FeatherIcon.Search color="#757575" size={20}/>
+            <FeatherIcon.Search className="searchImg" color="#757575" size={20}/>
             <input 
-                size="10"
+                className = "searchBar"
                 value={props.keyword}
                 placeholder= "Proposal Name"
                 onChange= {(e) => props.setKeyword(e.target.value)} />

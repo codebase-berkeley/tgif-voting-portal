@@ -52,17 +52,19 @@ const proposals = [
 
 
 function Dashboard() {
+  /* Contains all proposals. */
   const proposalHTML = []
   for (let i = 0; i < proposals.length; i++) {
     proposalHTML.push(<Row title={proposals[i].title} vote={proposals[i].voted ? proposals[i].voted : ""} />);
   }
 
+  /* Create states for SearchBar. */
   const [input, setInput] = React.useState("");
   const [proposalListDefault, setProposalListDefault] = React.useState(proposals);
   const [proposalList, setProposalList] = React.useState(proposalHTML);
 
+  /* Updates proposalList state based on SearchBar input. */
   const updateInput = (input) => {
-    console.log("updated " + input)
     let filteredList = [];
     for (let i = 0; i < proposals.length; i++) {
       if (proposalListDefault[i].title.toLowerCase().includes(input.toLowerCase())) {
@@ -72,6 +74,7 @@ function Dashboard() {
       setProposalList(filteredList);
     } 
   }
+
   return (
     <div className="dashboard">
       <div className="navBar">this is the delicious navbar</div>
