@@ -1,4 +1,15 @@
+:root {
+  --green: #96AD00;
+  --mutedGreen: #D9DEBC;
+  --lightGrey: #F3F3F3;
+  --black: #353739;
+  --headingFont: 'IBM Plex Sans', sans-serif;
+  --bodyFont: 'Lexend Deca';
+}
+
 .App {
+  text-align: center;
   width: 100vw;
   height: 100vh;
+  position: relative;
 }
