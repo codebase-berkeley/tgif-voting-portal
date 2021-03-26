@@ -1,5 +1,6 @@
 import './ProposalDetails.css';
 import ProgressBar from 'react-bootstrap/ProgressBar';
+import ProposalButton from './ProposalButton.js';
 
 var IS_ADMIN = true;
 var DEADLINE = '3/5/21';
@@ -50,6 +51,7 @@ function ProposalDetails() {
         </div>
         <div className="discussion">
           discussion
+          <ProposalButton />
         </div>
       </div>
     );
