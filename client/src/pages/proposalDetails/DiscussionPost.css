@@ -1,0 +1,36 @@
+.post {
+    /* background: purple; */
+    width: 90%;
+    /* display: flex; */
+    border: 1px;
+    
+    text-align: left;
+    margin: 10px;
+}
+
+.user {
+    /* background: red; */
+    font: 0.4em 'Lexend Deca', sans-serif;
+    margin: 5px;
+    color: var(--black);
+}
+
+.text {
+    background: var(--lightGrey);
+    /* flex-direction: column; */
+    border: 1px solid var(--grey);
+    border-radius: 4px;
+    padding: 0px;
+    font: 0.5em 'Lexend Deca', sans-serif;
+    color: var(--black);
+}
+
+.content {
+    padding: 15px;
+}
+.timestamp {
+    font: 0.3em 'Lexend Deca', sans-serif;
+    text-align: right;
+    padding: 3px;
+    color: var(--darkGrey);
+}

@@ -11,7 +11,7 @@
 
 .proposalLeft{
     background-color: white; 
-    /* background-color: blueviolet; */
+    background-color: blueviolet;
     width: 35%;
     height: 90%;
     bottom: 10px;
@@ -25,7 +25,7 @@
 }
 
 .proposalSummary{
-    /* background-color: brown; */
+    background-color: brown;
     height: 100%;
     width: 100%;
     display: flex;
@@ -61,7 +61,6 @@
     color: var(--black);
     margin: 20px 0px 20px 0px;
     /* text-decoration-line: underline; */
-
 }
 
 /* 
@@ -103,7 +102,7 @@
 }
 
 .proposalConditional {
-    /* background-color: cadetblue; */
+    background-color: cadetblue;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -111,13 +110,28 @@
 }
 
 .progressBarsFrame {
-    /* background-color: burlywood; */
+    background-color: burlywood;
     color: black;
     width: 100%;
+    font-family: 'Lexend Deca', sans-serif;
+    position: relative;
 }
 
-.progressBarPercentVoted {
-    margin-bottom: 6%;
+.progressBarYesNoUnvoted {
+    /* position: relative; */
+}
+
+.amountVotedLabel {
+    background-color: indianred;
+    text-align: right;
+    font-size: 0.85em;
+    /* position: relative;
+    right: 0px;
+    bottom: 0px; */
+}
+
+.bg-customProgressBarUnvoted {
+    background-color: gray!important;
 }
 
 .discussion{
@@ -129,3 +143,100 @@
     margin-right: 50px;
     color: var(--black);
 }
+
+.discussionTitle{
+    background: red;
+    width: 100%;
+    font: 2em 'IBM Plex Sans', sans-serif;
+    color: var(--black);
+    margin: 20px 0px 20px 0px;
+}
+
+/* .switchContainer {
+    background: purple;
+    width: 500px;
+    height: 100px;
+} */
+.labels {
+    display: flex;
+    position: relative;
+    width: 150px;
+    /* height: 30px; */
+    right: 100px;
+    bottom: 3000px;
+    background: red;
+    /* font: 10px; */
+    color: white;
+    top: 40px;
+}
+.toggleLeft {
+    text-align: left;
+    /* flex-direction: row; */
+    font-size: 0.1em;
+}
+
+.toggleRight {
+    /* background: blue; */
+    text-align: right;
+    /* flex-direction: row; */
+    font-size: 0.1em;
+}
+
+.switch {
+    background: blue;
+    position: relative;
+    right: 100px;
+    top: 30px;
+    /* background-color: indigo; */
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 25px;
+    transform: translate(-50%, -50%);
+  }
+  
+  input { 
+    position: absolute;
+    /* background: red; */
+    width: 100%;
+    cursor: pointer;
+    outline: none;
+    -webkit-appearance: none;
+  }
+  
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--mutedGreen);
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 25px;
+  }
+  
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 22px;
+    width: 22px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 25px;
+  }
+  
+  input:checked + .slider {
+    background-color: var(--mutedGreen);
+  }
+  
+  input:checked + .slider:before {
+    -webkit-transform: translateX(100%);
+    -ms-transform: translateX(100%);
+    transform: translateX(100%);
+  }
+
