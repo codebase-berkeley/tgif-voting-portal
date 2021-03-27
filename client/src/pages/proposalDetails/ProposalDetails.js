@@ -1,6 +1,7 @@
 import './ProposalDetails.css';
 import ProgressBar from 'react-bootstrap/ProgressBar';
 import DiscussionPost from './DiscussionPost.js';
+import ProposalButton from './ProposalButton.js';
 
 var IS_ADMIN = true;
 var DEADLINE = '3/5/21';
@@ -14,8 +15,6 @@ var PERCENT_UNVOTED = 30;
 
 var DUMMY_USER1 = 'kalea';
 var DUMMY_USER2 = 'jorge';
-
-
 
 var DUMMY_TEXT1 = 'i like this';
 var DUMMY_TEXT2 = 'i dont like this';
@@ -109,6 +108,9 @@ function ProposalDetails() {
               <DiscussionPost isAdmin={IS_ADMIN} userName={DUMMY_USER1} text={DUMMY_TEXT1} time={DUMMY_TIME1}/>
               <DiscussionPost isAdmin={IS_ADMIN} userName={DUMMY_USER2} text={DUMMY_TEXT2} time={DUMMY_TIME2}/>
             </div>
+
+          discussion
+          <ProposalButton />
         </div>
       </div>
     );
