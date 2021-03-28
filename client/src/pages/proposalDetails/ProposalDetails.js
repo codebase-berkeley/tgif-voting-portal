@@ -205,7 +205,7 @@ function ProposalDetails() {
       var commentDate = `${currentDate.getMonth()}/${currentDate.getDate()}/${currentDate.getFullYear().toString().substr(-2)} ${twelveHrTime(currentHour)}:${twoDigitMins(currentDate.getMinutes())}${amOrPm(currentHour)}`;
       var newComment = <DiscussionPost isAdmin={IS_ADMIN} userName={DUMMY_USERNAME}
         text={commentText} time={commentDate}/>;
-      comments.unshift(newComment);
+      addComment([newComment].concat(comments));
     }
   }
 
