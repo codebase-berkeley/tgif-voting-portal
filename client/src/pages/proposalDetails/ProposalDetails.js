@@ -17,6 +17,7 @@ var PERCENT_YES = AMOUNT_YES / TOTAL_MEMBERS * 100;
 var PERCENT_NO = AMOUNT_NO / TOTAL_MEMBERS * 100;
 var PERCENT_UNVOTED = (TOTAL_MEMBERS - AMOUNT_VOTED) / TOTAL_MEMBERS * 100;
 
+var DUMMY_USERNAME = 'Beyonce';
 var DUMMY_DEADLINE = '3/5/21';
 var DUMMY_AMOUNT = 14360;
 var DUMMY_COMMENT1 = {
@@ -121,14 +122,14 @@ function ProposalConditionalRender(isAdmin) {
         <div className='proposalConditional '>
           <div className='nonAdminConditionalContainer'>
             <div className='leftButtonContainer buttonContainer'>
-              <ProposalButton buttonText='Vote Yes' isVotingButton={true} buttonClassName={nonAdminYesButtonClassName}
+              <ProposalButton buttonText='Vote Yes' buttonClassName={nonAdminYesButtonClassName}
                 onClickFunc={() => {setNonAdminYesButtonClassName(nonAdminPressedYesButtonClassName);
                                     setNonAdminNoButtonClassName(nonAdminUnpressedNoButtonClassName);;
                                     changeNonAdminVote(YES_VOTE);}}
               />
             </div>
             <div className='rightButtonContainer buttonContainer'>
-              <ProposalButton buttonText='Vote No' isVotingButton={true} buttonClassName={nonAdminNoButtonClassName}
+              <ProposalButton buttonText='Vote No' buttonClassName={nonAdminNoButtonClassName}
                 onClickFunc={() => {setNonAdminYesButtonClassName(nonAdminUnpressedYesButtonClassName);
                                     setNonAdminNoButtonClassName(nonAdminPressedNoButtonClassName);
                                     changeNonAdminVote(NO_VOTE);}}
@@ -169,12 +170,48 @@ function ProposalConditionalRender(isAdmin) {
   }
 }
 
-function postComment(){
-  TEMP_TEXT_INPUT = document.getElementById("userInputDiscussion").value;
-  console.log(TEMP_TEXT_INPUT);
-}
-
 function ProposalDetails() {
+  const [comments, addComment] = useState(
+    [
+      <DiscussionPost isAdmin={IS_ADMIN} userName={DUMMY_COMMENT1.userName} text={DUMMY_COMMENT1.text} time={DUMMY_COMMENT1.time}/>,
+      <DiscussionPost isAdmin={IS_ADMIN} userName={DUMMY_COMMENT2.userName} text={DUMMY_COMMENT2.text} time={DUMMY_COMMENT2.time}/>,
+      <DiscussionPost isAdmin={IS_ADMIN} userName={DUMMY_COMMENT1.userName} text={DUMMY_COMMENT1.text} time={DUMMY_COMMENT1.time}/>,
+      <DiscussionPost isAdmin={IS_ADMIN} userName={DUMMY_COMMENT2.userName} text={DUMMY_COMMENT2.text} time={DUMMY_COMMENT2.time}/>,
+      <DiscussionPost isAdmin={IS_ADMIN} userName={DUMMY_COMMENT1.userName} text={DUMMY_COMMENT1.text} time={DUMMY_COMMENT1.time}/>,
+      <DiscussionPost isAdmin={IS_ADMIN} userName={DUMMY_COMMENT2.userName} text={DUMMY_COMMENT2.text} time={DUMMY_COMMENT2.time}/>,
+      <DiscussionPost isAdmin={IS_ADMIN} userName={DUMMY_COMMENT1.userName} text={DUMMY_COMMENT1.text} time={DUMMY_COMMENT1.time}/>,
+      <DiscussionPost isAdmin={IS_ADMIN} userName={DUMMY_COMMENT2.userName} text={DUMMY_COMMENT2.text} time={DUMMY_COMMENT2.time}/>,
+      <DiscussionPost isAdmin={IS_ADMIN} userName={DUMMY_COMMENT1.userName} text={DUMMY_COMMENT1.text} time={DUMMY_COMMENT1.time}/>,
+      <DiscussionPost isAdmin={IS_ADMIN} userName={DUMMY_COMMENT2.userName} text={DUMMY_COMMENT2.text} time={DUMMY_COMMENT2.time}/>,
+      <DiscussionPost isAdmin={IS_ADMIN} userName={DUMMY_COMMENT1.userName} text={DUMMY_COMMENT1.text} time={DUMMY_COMMENT1.time}/>,
+      <DiscussionPost isAdmin={IS_ADMIN} userName={DUMMY_COMMENT2.userName} text={DUMMY_COMMENT2.text} time={DUMMY_COMMENT2.time}/>
+    ]
+  )
+
+  function postComment() {
+    var textBox = document.getElementById("userInputDiscussion");
+    var commentText = textBox.value;
+    textBox.value = '';
+    var currentDate = new Date();
+    var twelveHrTime = (hour) => {
+      if (hour == 0) {
+        return 12;
+      } else if (hour <= 12) {
+        return hour;
+      } else {
+        return hour - 12;
+      }
+    }
+    
+    var twoDigitMins = (mins) => mins < 10 ? `0${mins}` : `${mins}`;
+    var currentHour = currentDate.getHours();
+    var amOrPm = (hour) => hour <= 12 ? 'am' : 'pm';
+    var commentDate = `${currentDate.getMonth()}/${currentDate.getDate()}/${currentDate.getFullYear().toString().substr(-2)} ${twelveHrTime(currentHour)}:${twoDigitMins(currentDate.getMinutes())}${amOrPm(currentHour)}`;
+    var newComment = <DiscussionPost isAdmin={IS_ADMIN} userName={DUMMY_USERNAME}
+      text={commentText} time={commentDate}/>;
+    comments.unshift(newComment);
+  }
+
   return (
     <div className="proposalDetailsPage">
       <div className="proposalLeft">
@@ -197,18 +234,7 @@ function ProposalDetails() {
           <hr className="underline"></hr>
         </div>
         <div className='discussionCommentsView'>
-          <DiscussionPost isAdmin={IS_ADMIN} userName={DUMMY_COMMENT1.userName} text={DUMMY_COMMENT1.text} time={DUMMY_COMMENT1.time}/>
-          <DiscussionPost isAdmin={IS_ADMIN} userName={DUMMY_COMMENT2.userName} text={DUMMY_COMMENT2.text} time={DUMMY_COMMENT2.time}/>
-          <DiscussionPost isAdmin={IS_ADMIN} userName={DUMMY_COMMENT1.userName} text={DUMMY_COMMENT1.text} time={DUMMY_COMMENT1.time}/>
-          <DiscussionPost isAdmin={IS_ADMIN} userName={DUMMY_COMMENT2.userName} text={DUMMY_COMMENT2.text} time={DUMMY_COMMENT2.time}/>
-          <DiscussionPost isAdmin={IS_ADMIN} userName={DUMMY_COMMENT1.userName} text={DUMMY_COMMENT1.text} time={DUMMY_COMMENT1.time}/>
-          <DiscussionPost isAdmin={IS_ADMIN} userName={DUMMY_COMMENT2.userName} text={DUMMY_COMMENT2.text} time={DUMMY_COMMENT2.time}/>
-          <DiscussionPost isAdmin={IS_ADMIN} userName={DUMMY_COMMENT1.userName} text={DUMMY_COMMENT1.text} time={DUMMY_COMMENT1.time}/>
-          <DiscussionPost isAdmin={IS_ADMIN} userName={DUMMY_COMMENT2.userName} text={DUMMY_COMMENT2.text} time={DUMMY_COMMENT2.time}/>
-          <DiscussionPost isAdmin={IS_ADMIN} userName={DUMMY_COMMENT1.userName} text={DUMMY_COMMENT1.text} time={DUMMY_COMMENT1.time}/>
-          <DiscussionPost isAdmin={IS_ADMIN} userName={DUMMY_COMMENT2.userName} text={DUMMY_COMMENT2.text} time={DUMMY_COMMENT2.time}/>
-          <DiscussionPost isAdmin={IS_ADMIN} userName={DUMMY_COMMENT1.userName} text={DUMMY_COMMENT1.text} time={DUMMY_COMMENT1.time}/>
-          <DiscussionPost isAdmin={IS_ADMIN} userName={DUMMY_COMMENT2.userName} text={DUMMY_COMMENT2.text} time={DUMMY_COMMENT2.time}/>
+          {comments}
         </div>
         <div className='discussionPostCommentFrame'>
           <div className='postCommentTopContainer postCommentContainer'>
@@ -221,7 +247,7 @@ function ProposalDetails() {
           </div>
           <div className='postCommentBottomContainer postCommentContainer'>
             <div className='postCommentButtonContainer'> 
-              <ProposalButton buttonText='Post' onClickFunc={postComment}/>
+              <ProposalButton buttonClassName='genericProposalButton' buttonText='Post' onClickFunc={postComment}/>
             </div>
           </div>
         </div>

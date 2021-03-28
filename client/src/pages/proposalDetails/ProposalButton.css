@@ -3,6 +3,11 @@
     border-radius: 5px;
     color: white;
     font-family: 'Lexend Deca', sans-serif;
+    border-width: 0px;
+}
+
+.genericProposalButton:active {
+    background-color: var(--buttonGreenOpaque);
 }
 
 .adminButton {

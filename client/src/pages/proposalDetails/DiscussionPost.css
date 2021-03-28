@@ -1,5 +1,4 @@
 .post {
-     /*background-color: lightseagreen; */
     width: 100%;
     border: 1px;
     text-align: left;
@@ -7,7 +6,6 @@
 }
 
 .user {
-    /* background-color: red; */
     font: 0.8em 'Lexend Deca', sans-serif;
     margin: 5px;
     color: var(--black);
@@ -24,19 +22,16 @@
 }
 
 .content {
-    /* background-color: royalblue; */
     padding: 15px;
     height: 70%;
 }
 
 .timestampContainer {
     height: 30%;
-    /* background-color: saddlebrown; */
     position: relative;
 }
 
 .timestamp {
-    /* background-color: salmon; */
     font: 0.9em 'Lexend Deca', sans-serif;
     padding: 3px;
     color: var(--darkGrey);
