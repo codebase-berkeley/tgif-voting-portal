@@ -1,11 +1,21 @@
 import './ProposalButton.css';
 
-function ProposalButton(props) {
+function ProposalButton({buttonText, isVotingButton, buttonClassName, onClickFunc}) {
+  if (isVotingButton) {
     return (
-      <button className="proposalButton">
-          {props.buttonText}
+      <div>
+        <button className={buttonClassName} onClick={onClickFunc}>
+          {buttonText}
+        </button>
+      </div>
+    );
+  } else {
+    return (
+      <button className="genericProposalButton">
+          {buttonText}
       </button>
     );
   }
+}
 
 export default ProposalButton;
