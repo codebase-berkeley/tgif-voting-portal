@@ -35,10 +35,6 @@ events and actions that build community, leverage existing
 efforts, inspire new plans, and find innovative ways to
 execute these actions through effective communication.`;
 
-var TEMP_TEXT_INPUT;
-var TEMP_TIME_INPUT;
-var TEMP_USER_INPUT;
-
 /** Takes in a number and converts it to a dollar amount string w/ commas
  * placed appropriately (every 3 spaces); does not include dollar sign */
 function amountToDollarString(amount) {
@@ -191,25 +187,26 @@ function ProposalDetails() {
   function postComment() {
     var textBox = document.getElementById("userInputDiscussion");
     var commentText = textBox.value;
-    textBox.value = '';
-    var currentDate = new Date();
-    var twelveHrTime = (hour) => {
-      if (hour == 0) {
-        return 12;
-      } else if (hour <= 12) {
-        return hour;
-      } else {
-        return hour - 12;
+    if (commentText != '') {
+      textBox.value = '';
+      var currentDate = new Date();
+      var twelveHrTime = (hour) => {
+        if (hour == 0) {
+          return 12;
+        } else if (hour <= 12) {
+          return hour;
+        } else {
+          return hour - 12;
+        }
       }
+      var twoDigitMins = (mins) => mins < 10 ? `0${mins}` : `${mins}`;
+      var currentHour = currentDate.getHours();
+      var amOrPm = (hour) => hour <= 12 ? 'am' : 'pm';
+      var commentDate = `${currentDate.getMonth()}/${currentDate.getDate()}/${currentDate.getFullYear().toString().substr(-2)} ${twelveHrTime(currentHour)}:${twoDigitMins(currentDate.getMinutes())}${amOrPm(currentHour)}`;
+      var newComment = <DiscussionPost isAdmin={IS_ADMIN} userName={DUMMY_USERNAME}
+        text={commentText} time={commentDate}/>;
+      comments.unshift(newComment);
     }
-    
-    var twoDigitMins = (mins) => mins < 10 ? `0${mins}` : `${mins}`;
-    var currentHour = currentDate.getHours();
-    var amOrPm = (hour) => hour <= 12 ? 'am' : 'pm';
-    var commentDate = `${currentDate.getMonth()}/${currentDate.getDate()}/${currentDate.getFullYear().toString().substr(-2)} ${twelveHrTime(currentHour)}:${twoDigitMins(currentDate.getMinutes())}${amOrPm(currentHour)}`;
-    var newComment = <DiscussionPost isAdmin={IS_ADMIN} userName={DUMMY_USERNAME}
-      text={commentText} time={commentDate}/>;
-    comments.unshift(newComment);
   }
 
   return (

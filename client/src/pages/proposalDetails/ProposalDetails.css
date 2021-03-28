@@ -65,6 +65,7 @@
     height: 4px;
     color: black;
     width: 75%;
+    margin: 0px;
 }
 
 .nonAdminConditionalContainer {
