@@ -2,10 +2,10 @@ import './ProposalButton.css';
 
 function ProposalButton(props) {
     return (
-      <div className="proposalButton">
-          props.buttonText
-      </div>
+      <button className="proposalButton">
+          {props.buttonText}
+      </button>
     );
   }
 
-  export default ProposalButton;
+export default ProposalButton;

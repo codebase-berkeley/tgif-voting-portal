@@ -43,20 +43,11 @@ function ConditionalProposalRender(isAdmin) {
   var VOTE_VALUE = false;
   var PROGRESS_VALUE = !VOTE_VALUE;
 
-  function checkboxTest() {
-    // var toggle = document.getElementById("propDetailsToggle");
-    // if (toggle.checked) {
-    //   console.log("show me progress bars");
-    // } else {
-    //   console.log("show me voting buttons");
-    // }
-  }
-
-  const [showProgress, setToggleView] = useState(VOTE_VALUE);
+  const [showProgressBars, setToggleView] = useState(VOTE_VALUE);
   const toggle = 
                 <div className="switchFrame">
                           <label class="toggleContainer">
-                            <input type="checkbox" name="adminView" id="propDetailsToggle" value="true" onClick={() => setToggleView(!showProgress)}/>
+                            <input type="checkbox" name="adminView" id="propDetailsToggle" value="true" onClick={() => setToggleView(!showProgressBars)}/>
                             <span class="slider round"></span>
                           </label>
                           <div className="toggleLabels">
@@ -68,7 +59,7 @@ function ConditionalProposalRender(isAdmin) {
     /* Returns progress bars if admin toggle is set to "progress" and
     admin voting buttons if set to "vote" */
     function ToggleComponents(showProgress) {
-      if (showProgress == VOTE_VALUE) {
+      if (showProgress == PROGRESS_VALUE) {
         return (
           <div className='progressFrame adminToggleView'>
             <ProgressBar className='progressBarYesNoUnvoted'>
@@ -88,7 +79,12 @@ function ConditionalProposalRender(isAdmin) {
       } else {
         return (
           <div className='adminVotingButtonsFrame adminToggleView'>
-            admin voting buttons
+            <div className='leftButtonContainer buttonContainer'>
+              <ProposalButton className='votingButton' buttonText='Vote Yes'/>
+            </div>
+            <div className='rightButtonContainer buttonContainer'>
+              <ProposalButton className='votingButton' buttonText='Vote No' />
+            </div>
           </div>
         );
       }
@@ -98,7 +94,7 @@ function ConditionalProposalRender(isAdmin) {
   if (isAdmin) {
     return (
       <div className='proposalConditional'>
-        {ToggleComponents(showProgress)}
+        {ToggleComponents(showProgressBars)}
         {toggle}
       </div>
     );
@@ -136,7 +132,7 @@ function ProposalDetails() {
           </div>
 
         discussion
-        <ProposalButton />
+        <ProposalButton buttonText='Post'/>
       </div>
     </div>
   );

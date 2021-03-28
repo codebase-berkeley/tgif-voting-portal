@@ -1,3 +1,6 @@
 .proposalButton {
-    /* background: green; */
+    background-color: var(--buttonGreen);
+    border-radius: 5px;
+    color: white;
+    font-family: 'Lexend Deca', sans-serif;
 }
