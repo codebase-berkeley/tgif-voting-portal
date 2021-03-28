@@ -11,7 +11,6 @@
 
 .proposalLeft{
     background-color: white; 
-    /* background-color: blueviolet; */
     width: 35%;
     height: 90%;
     bottom: 10px;
@@ -25,8 +24,7 @@
 }
 
 .proposalSummary{
-    background-color: brown;
-    height: 100%;
+    height: 80%;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -56,7 +54,6 @@
 }
     
 .proposalTitle{
-    background-color: red;
     width: 100%;
     font: 2em 'IBM Plex Sans', sans-serif;
     color: var(--black);
@@ -70,14 +67,11 @@
     width: 75%;
 }
 
-.proposalConditional {
-    background-color: cadetblue;
+.nonAdminConditionalContainer {
+    height: 100%;
     width: 100%;
-    height: 20%;
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    flex-direction: row;
 }
 
 .proposalDescription {
@@ -96,9 +90,9 @@
 }
 
 .amountVotedLabel {
-    background-color: indianred;
     text-align: right;
     font-size: 0.85em;
+    width: 100%;
 }
 
 .bg-customProgressBarUnvoted {
@@ -106,7 +100,7 @@
 }
 
 .discussion{
-    background-color: aqua;
+    background-color: white;
     width: 60%;
     height: 90%;
     bottom: 10px;
@@ -118,7 +112,6 @@
 }
 
 .discussionTitle {
-    background-color: red;
     width: 100%;
     font: 2em 'IBM Plex Sans', sans-serif;
     color: var(--black);
@@ -126,15 +119,22 @@
 }
 
 .discussionCommentsView {
-    background-color: magenta;
-    height: 80%;
+    background-color: rgb(247, 247, 247); 
+    height: 75%;
+    overflow: scroll;
+    display: flex;
+    flex-direction: column;
+    padding-top: 0px;
+    padding-left: 15px;
+    padding-right: 15px;
 }
 
 .discussionPostCommentFrame {
-    background-color: lightsalmon;
     display: flex;
     flex-direction: column;
     height: 25%;
+    padding-left: 15px;
+    padding-right: 15px;
 }
 
 .postCommentContainer {
@@ -142,16 +142,22 @@
 }
 
 .postCommentTopContainer {
-    background-color: lightseagreen;
-    height: 60%;
+    height: 65%;
 }
 
 .postCommentBottomContainer { 
-    background-color: lime;
     position: relative;
-    height: 40%;
+    height: 35%;
+    margin-top: 5px;
+}
+
+.proposalConditional {
+    width: 100%;
+    height: 20%;
     display: flex;
+    flex-direction: column;
     align-items: center;
+    justify-content: center;
 }
 
 .adminToggleView {
@@ -160,22 +166,30 @@
 }
 
 .progressFrame {
-    background-color: burlywood;
     color: black;
     font-family: 'Lexend Deca', sans-serif;
     position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.adminVotingButtonsFrame {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .switchFrame {
-    background-color: darkorange;
     display: flex;
     flex-direction: column;
-    width: 100%;
-    height: 100%;
+    width: 116%;
+    height: 50%;
 }
 
 .toggleLabels {
-    background-color: red;
     display: flex;
     width: 150px;
     right: 100px;
@@ -195,7 +209,6 @@
 }
 
 .toggleContainer {
-    background-color: blue;
     position: relative;
     top: 0px;
     left: 10px;
@@ -227,13 +240,13 @@
 }
   
 .slider:before {
+    background-color: white;
     position: absolute;
     content: "";
     height: 22px;
     width: 22px;
     left: 2px;
     bottom: 2px;
-    background-color: white;
     -webkit-transition: .4s;
     transition: .4s;
     border-radius: 25px;
@@ -249,13 +262,6 @@ input:checked + .slider:before {
     transform: translateX(100%);
 }
 
-.adminVotingButtonsFrame {
-    /* background-color: chartreuse; */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
 .buttonContainer {
     display: flex;
     align-items: center;
@@ -265,50 +271,61 @@ input:checked + .slider:before {
 }
 
 .leftButtonContainer {
-    background-color: forestgreen;
     padding-left: 50px;
 }
 
 .rightButtonContainer {
-    background-color: lightsalmon;
     padding-right: 50px;
 }
 
+.progressBarYesNoUnvoted {
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+.progressBarPercentVotedUnvoted {
+    width: 100%;
+    margin-bottom: 5px;
+}
+
 .UserInput {
-    background: #1829;
+    width: 100%;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-left: 15px;
-    margin-right: 15px;
-    
+}
+
+.commentBoxHeader {
+    margin-top:15px;
+    padding-left: 4px;
+    width: 100%;
+    font-size: 0.8em;
+    text-align: left;
+    color: var(--black);
+    font-family: 'Lexend Deca', sans-serif;
 }
 
 .userInputDiscussion{
     background: var(--lightGrey);
     border: 1px solid var(--grey);
     border-radius: 4px;
-    padding: 0px;
     color: var(--black);
-    
-    margin-top:15px;
     font: 0.5em 'Lexend Deca', sans-serif;
-    width: 85%;
-    height: 20px;
+    width: 100%;
+    height: 50px;
     resize: none;
 }
 
-.buttonInputDiscussion{
-    background: var(--lightGrey);
-    border: 1px solid var(--grey);
-    border-radius: 4px;
-    padding: 0px;
-    color: var(--black);
-    
-    margin-top:15px;
-    font: 0.5em 'Lexend Deca', sans-serif;
-    width: 15%;
-    height: 20px;
-    resize: none;
+.adminToggleButton {
+    position: absolute;
+    top: 0px;
+    left: 100px;
+    font-size: 10px;
 }
 
+.postCommentButtonContainer {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+}

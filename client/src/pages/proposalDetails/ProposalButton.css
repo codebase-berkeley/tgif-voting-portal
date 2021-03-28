@@ -5,20 +5,22 @@
     font-family: 'Lexend Deca', sans-serif;
 }
 
-.nonAdminButton {
-    border-radius: 5px;
-    color: white;
-    font-family: 'Lexend Deca', sans-serif;
-    width: 100px;
-    height: 40px;
-}
-
 .adminButton {
     border-radius: 5px;
     color: white;
     font-family: 'Lexend Deca', sans-serif;
     width: 100px;
     height: 40px;
+    border-width: 0px;
+}
+
+.nonAdminButton {
+    border-radius: 5px;
+    color: white;
+    font-family: 'Lexend Deca', sans-serif;
+    width: 110px;
+    height: 50px;
+    border-width: 0px;
 }
 
 .pressedYesButton {

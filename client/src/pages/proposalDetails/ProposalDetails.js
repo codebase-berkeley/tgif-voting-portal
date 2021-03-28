@@ -119,37 +119,39 @@ function ProposalConditionalRender(isAdmin) {
       
       return (
         <div className='proposalConditional '>
-          <div className='leftButtonContainer buttonContainer'>
-            <ProposalButton buttonText='Vote Yes' isVotingButton={true} buttonClassName={nonAdminYesButtonClassName}
-              onClickFunc={() => {setNonAdminYesButtonClassName(nonAdminPressedYesButtonClassName);
-                                  setNonAdminNoButtonClassName(nonAdminUnpressedNoButtonClassName);;
-                                  changeNonAdminVote(YES_VOTE);}}
-            />
-          </div>
-          <div className='rightButtonContainer buttonContainer'>
-            <ProposalButton buttonText='Vote No' isVotingButton={true} buttonClassName={nonAdminNoButtonClassName}
-              onClickFunc={() => {setNonAdminYesButtonClassName(nonAdminUnpressedYesButtonClassName);
-                                  setNonAdminNoButtonClassName(nonAdminPressedNoButtonClassName);
-                                  changeNonAdminVote(NO_VOTE);}}
-            />
+          <div className='nonAdminConditionalContainer'>
+            <div className='leftButtonContainer buttonContainer'>
+              <ProposalButton buttonText='Vote Yes' isVotingButton={true} buttonClassName={nonAdminYesButtonClassName}
+                onClickFunc={() => {setNonAdminYesButtonClassName(nonAdminPressedYesButtonClassName);
+                                    setNonAdminNoButtonClassName(nonAdminUnpressedNoButtonClassName);;
+                                    changeNonAdminVote(YES_VOTE);}}
+              />
+            </div>
+            <div className='rightButtonContainer buttonContainer'>
+              <ProposalButton buttonText='Vote No' isVotingButton={true} buttonClassName={nonAdminNoButtonClassName}
+                onClickFunc={() => {setNonAdminYesButtonClassName(nonAdminUnpressedYesButtonClassName);
+                                    setNonAdminNoButtonClassName(nonAdminPressedNoButtonClassName);
+                                    changeNonAdminVote(NO_VOTE);}}
+              />
+            </div>
           </div>
         </div>);
     }
 
   const toggle = 
-  <div className="switchFrame">
-            <label className="toggleContainer">
-              <input type="checkbox" name="adminView" id="propDetailsToggle"
-                value="true" onClick={() => setToggleView(!showProgressBars)}
-              />
-              <span className="slider round"></span>
-            </label>
-            <div className="toggleLabels">
-              <div className="toggleLeft">
-                vote&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              </div> 
-              <div className="toggleRight">progress</div>
-            </div>
+    <div className="switchFrame">
+              <label className="toggleContainer">
+                <input type="checkbox" name="adminView" id="propDetailsToggle"
+                  value="true" onClick={() => setToggleView(!showProgressBars)}
+                />
+                <span className="slider round"></span>
+              </label>
+              <div className="toggleLabels">
+                <div className="toggleLeft">
+                  vote&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </div> 
+                <div className="toggleRight">progress</div>
+              </div>
   </div>;
 
   /* Actual returned html for the conditional render part of
@@ -167,8 +169,8 @@ function ProposalConditionalRender(isAdmin) {
   }
 }
 
-function inputFunc(){
-  TEMP_TEXT_INPUT = document.getElementById("userInputDiscussion");
+function postComment(){
+  TEMP_TEXT_INPUT = document.getElementById("userInputDiscussion").value;
   console.log(TEMP_TEXT_INPUT);
 }
 
@@ -197,18 +199,30 @@ function ProposalDetails() {
         <div className='discussionCommentsView'>
           <DiscussionPost isAdmin={IS_ADMIN} userName={DUMMY_COMMENT1.userName} text={DUMMY_COMMENT1.text} time={DUMMY_COMMENT1.time}/>
           <DiscussionPost isAdmin={IS_ADMIN} userName={DUMMY_COMMENT2.userName} text={DUMMY_COMMENT2.text} time={DUMMY_COMMENT2.time}/>
+          <DiscussionPost isAdmin={IS_ADMIN} userName={DUMMY_COMMENT1.userName} text={DUMMY_COMMENT1.text} time={DUMMY_COMMENT1.time}/>
+          <DiscussionPost isAdmin={IS_ADMIN} userName={DUMMY_COMMENT2.userName} text={DUMMY_COMMENT2.text} time={DUMMY_COMMENT2.time}/>
+          <DiscussionPost isAdmin={IS_ADMIN} userName={DUMMY_COMMENT1.userName} text={DUMMY_COMMENT1.text} time={DUMMY_COMMENT1.time}/>
+          <DiscussionPost isAdmin={IS_ADMIN} userName={DUMMY_COMMENT2.userName} text={DUMMY_COMMENT2.text} time={DUMMY_COMMENT2.time}/>
+          <DiscussionPost isAdmin={IS_ADMIN} userName={DUMMY_COMMENT1.userName} text={DUMMY_COMMENT1.text} time={DUMMY_COMMENT1.time}/>
+          <DiscussionPost isAdmin={IS_ADMIN} userName={DUMMY_COMMENT2.userName} text={DUMMY_COMMENT2.text} time={DUMMY_COMMENT2.time}/>
+          <DiscussionPost isAdmin={IS_ADMIN} userName={DUMMY_COMMENT1.userName} text={DUMMY_COMMENT1.text} time={DUMMY_COMMENT1.time}/>
+          <DiscussionPost isAdmin={IS_ADMIN} userName={DUMMY_COMMENT2.userName} text={DUMMY_COMMENT2.text} time={DUMMY_COMMENT2.time}/>
+          <DiscussionPost isAdmin={IS_ADMIN} userName={DUMMY_COMMENT1.userName} text={DUMMY_COMMENT1.text} time={DUMMY_COMMENT1.time}/>
+          <DiscussionPost isAdmin={IS_ADMIN} userName={DUMMY_COMMENT2.userName} text={DUMMY_COMMENT2.text} time={DUMMY_COMMENT2.time}/>
         </div>
         <div className='discussionPostCommentFrame'>
           <div className='postCommentTopContainer postCommentContainer'>
             <div className='UserInput'>
+              <div className='commentBoxHeader'>
+                Leave a comment!
+              </div>
               <input className= 'userInputDiscussion' id='userInputDiscussion' type='text' placeholder='your comment'/>
-              <button className= 'buttonInputDiscussion' type="button" onClick={inputFunc()}>
-                Submit
-              </button>
             </div>
           </div>
           <div className='postCommentBottomContainer postCommentContainer'>
-            <ProposalButton buttonText='Post'/>
+            <div className='postCommentButtonContainer'> 
+              <ProposalButton buttonText='Post' onClickFunc={postComment}/>
+            </div>
           </div>
         </div>
       </div>
@@ -216,4 +230,4 @@ function ProposalDetails() {
   );
 }
 
-  export default ProposalDetails;
+export default ProposalDetails;

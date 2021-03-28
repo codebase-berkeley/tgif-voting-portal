@@ -1,37 +1,46 @@
 .post {
-    /* background: purple; */
-    width: 90%;
-    /* display: flex; */
+     /*background-color: lightseagreen; */
+    width: 100%;
     border: 1px;
-    
     text-align: left;
-    margin: 10px;
+    margin-bottom: 20px;
 }
 
 .user {
-    /* background: red; */
-    font: 0.4em 'Lexend Deca', sans-serif;
+    /* background-color: red; */
+    font: 0.8em 'Lexend Deca', sans-serif;
     margin: 5px;
     color: var(--black);
 }
 
 .text {
     background: var(--lightGrey);
-    /* flex-direction: column; */
     border: 1px solid var(--grey);
     border-radius: 4px;
     padding: 0px;
-    font: 0.5em 'Lexend Deca', sans-serif;
+    font: 0.8em 'Lexend Deca', sans-serif;
     color: var(--black);
+    height: 80px;
 }
 
 .content {
+    /* background-color: royalblue; */
     padding: 15px;
-    
+    height: 70%;
 }
+
+.timestampContainer {
+    height: 30%;
+    /* background-color: saddlebrown; */
+    position: relative;
+}
+
 .timestamp {
-    font: 0.3em 'Lexend Deca', sans-serif;
-    text-align: right;
+    /* background-color: salmon; */
+    font: 0.9em 'Lexend Deca', sans-serif;
     padding: 3px;
     color: var(--darkGrey);
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
 }

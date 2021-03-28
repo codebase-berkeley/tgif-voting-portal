@@ -11,7 +11,7 @@ function ProposalButton({buttonText, isVotingButton, buttonClassName, onClickFun
     );
   } else {
     return (
-      <button className="genericProposalButton">
+      <button className="genericProposalButton" onClick={onClickFunc}>
           {buttonText}
       </button>
     );
