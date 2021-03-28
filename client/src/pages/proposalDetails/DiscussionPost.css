@@ -18,15 +18,22 @@
     padding: 0px;
     font: 0.8em 'Lexend Deca', sans-serif;
     color: var(--black);
-    height: 80px;
+    height: auto;
+    width: 100%;
+    max-width: 100%;
 }
 
 .content {
     padding: 15px;
     height: 70%;
+    overflow-wrap: break-word;
+    text-justify: inter-word;
+    white-space: normal;
+    line-height: 1.5;
 }
 
 .timestampContainer {
+    margin: 10px;
     height: 30%;
     position: relative;
 }

@@ -30,10 +30,20 @@ var DUMMY_COMMENT2 = {
   text: 'i dont like this, their proposal sucks',
   time: '3/27/21 10:09pm'
 };
-var DUMMY_DESCRIPTION = `The Earth Action Initiative will organize a variety of
-events and actions that build community, leverage existing
-efforts, inspire new plans, and find innovative ways to
-execute these actions through effective communication.`;
+
+var DUMMY_LONG_COMMENT = `In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content. Lorem ipsum may be used as a placeholder before final copy is available. um is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content. Lorem ipsum may be used as a
+placeholder before final copy is available. It is a long established fact that a reader will be distracted by the readable content of a 
+page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less
+normal distribution of letters, as opposed to using 'Content here, content here', making it look like
+readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their
+default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy.
+Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour
+and the like).`;
+
+var DUMMY_MEDIUM_COMMENT = `In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content. Lorem ipsum may be used as a placeholder before final copy is available. um is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content. Lorem ipsum may be used as a
+placeholder before final copy is available. It is a long established fact that a reader will be distracted by the readable content of a 
+page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less
+normal distribution of letters.`;
 
 /** Takes in a number and converts it to a dollar amount string w/ commas
  * placed appropriately (every 3 spaces); does not include dollar sign */
@@ -169,9 +179,9 @@ function ProposalConditionalRender(isAdmin) {
 function ProposalDetails() {
   const [comments, addComment] = useState(
     [
-      <DiscussionPost isAdmin={IS_ADMIN} userName={DUMMY_COMMENT1.userName} text={DUMMY_COMMENT1.text} time={DUMMY_COMMENT1.time}/>,
+      <DiscussionPost isAdmin={IS_ADMIN} userName={DUMMY_COMMENT1.userName} text={DUMMY_LONG_COMMENT} time={DUMMY_COMMENT1.time}/>,
       <DiscussionPost isAdmin={IS_ADMIN} userName={DUMMY_COMMENT2.userName} text={DUMMY_COMMENT2.text} time={DUMMY_COMMENT2.time}/>,
-      <DiscussionPost isAdmin={IS_ADMIN} userName={DUMMY_COMMENT1.userName} text={DUMMY_COMMENT1.text} time={DUMMY_COMMENT1.time}/>,
+      <DiscussionPost isAdmin={IS_ADMIN} userName={DUMMY_COMMENT1.userName} text={DUMMY_MEDIUM_COMMENT} time={DUMMY_COMMENT1.time}/>,
       <DiscussionPost isAdmin={IS_ADMIN} userName={DUMMY_COMMENT2.userName} text={DUMMY_COMMENT2.text} time={DUMMY_COMMENT2.time}/>,
       <DiscussionPost isAdmin={IS_ADMIN} userName={DUMMY_COMMENT1.userName} text={DUMMY_COMMENT1.text} time={DUMMY_COMMENT1.time}/>,
       <DiscussionPost isAdmin={IS_ADMIN} userName={DUMMY_COMMENT2.userName} text={DUMMY_COMMENT2.text} time={DUMMY_COMMENT2.time}/>,
@@ -239,7 +249,7 @@ function ProposalDetails() {
               <div className='commentBoxHeader'>
                 Leave a comment!
               </div>
-              <input className= 'userInputDiscussion' id='userInputDiscussion' type='text' placeholder='your comment'/>
+              <input className= 'userInputDiscussion' id='userInputDiscussion' type='textarea' placeholder='your comment'/>
             </div>
           </div>
           <div className='postCommentBottomContainer postCommentContainer'>
