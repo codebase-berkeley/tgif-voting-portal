@@ -1,0 +1,30 @@
+.top-navbar {
+    width: 100%;
+    height: 11%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+    border-bottom: 3px solid #CECECE;
+}
+
+.leftNavbar {
+    display: flex;
+    justify-content: flex-start;
+    margin-left: 1.5%;
+}
+
+.rightNavbar  {
+    display: flex;
+
+}
+
+.rightNavbar a {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: bold;
+    color: black;
+    font-size: 1.5em;
+    text-decoration: none;
+    margin-left: 1.5%;
+}
