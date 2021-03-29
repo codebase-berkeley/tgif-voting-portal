@@ -6,5 +6,14 @@
   "repository": "https://github.com/codebase-berkeley/tgif-voting-portal.git",
   "author": "Warren <warrenwwang@berkeley.edu>",
   "license": "MIT",
-  "dependencies": {}
+  "scripts": {
+    "dev": "concurrently \"yarn client\" \"yarn server\" \"yarn db\"",
+    "client": "cd client && yarn start",
+    "server": "cd server && yarn server",
+    "predb": "psql -f db/tgif.sql -U postgres",
+    "db": "psql tgif"
+  },
+  "dependencies": {
+    "concurrently": "^6.0.0"
+  }
 }
