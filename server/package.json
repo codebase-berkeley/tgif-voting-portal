@@ -7,6 +7,9 @@
   "dependencies": {
     "express": "^4.17.1"
   },
+  "scripts": {
+    "server": "nodemon app.js"
+  },
   "devDependencies": {
     "eslint": "^7.23.0",
     "eslint-config-airbnb-base": "^14.2.1",
