@@ -1,0 +1,45 @@
+.genericProposalButton {
+    background-color: var(--buttonGreen);
+    border-radius: 5px;
+    color: white;
+    font-family: 'Lexend Deca', sans-serif;
+    border-width: 0px;
+}
+
+.genericProposalButton:active {
+    background-color: var(--buttonGreenOpaque);
+}
+
+.adminButton {
+    border-radius: 5px;
+    color: white;
+    font-family: 'Lexend Deca', sans-serif;
+    width: 100px;
+    height: 40px;
+    border-width: 0px;
+}
+
+.nonAdminButton {
+    border-radius: 5px;
+    color: white;
+    font-family: 'Lexend Deca', sans-serif;
+    width: 110px;
+    height: 50px;
+    border-width: 0px;
+}
+
+.pressedYesButton {
+    background-color: var(--buttonGreen);
+}
+
+.unpressedYesButton {
+    background-color: var(--buttonGreenOpaque);
+}
+
+.pressedNoButton {
+    background-color: var(--black);
+}
+
+.unpressedNoButton {
+    background-color: var(--buttonBlackOpaque);
+}

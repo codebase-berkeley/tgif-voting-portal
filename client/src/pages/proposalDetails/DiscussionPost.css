@@ -1,0 +1,48 @@
+.post {
+    width: 100%;
+    border: 1px;
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.user {
+    font: 0.8em 'Lexend Deca', sans-serif;
+    margin: 5px;
+    color: var(--black);
+}
+
+.text {
+    background: var(--lightGrey);
+    border: 1px solid var(--grey);
+    border-radius: 4px;
+    padding: 0px;
+    font: 0.8em 'Lexend Deca', sans-serif;
+    color: var(--black);
+    height: auto;
+    width: 100%;
+    max-width: 100%;
+}
+
+.content {
+    padding: 15px;
+    height: 70%;
+    overflow-wrap: break-word;
+    text-justify: inter-word;
+    white-space: normal;
+    line-height: 1.5;
+}
+
+.timestampContainer {
+    margin: 10px;
+    height: 30%;
+    position: relative;
+}
+
+.timestamp {
+    font: 0.9em 'Lexend Deca', sans-serif;
+    padding: 3px;
+    color: var(--darkGrey);
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+}
