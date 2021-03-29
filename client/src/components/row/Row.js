@@ -1,8 +1,6 @@
 import './Row.css';
 
 function Row(props) { 
-    console.log(props.change);
-    console.log(props.title);
     return (
         <div
             className="proposal-box"

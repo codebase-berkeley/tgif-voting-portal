@@ -56,6 +56,43 @@ const proposals = [
   {
     title: "some title5",
     description: "fdsfdsafas"
+  },
+
+  {
+    title: "hiya!",
+    description: "fdsfdsafas"
+  },
+
+  {
+    title: "ebic",
+    description: "fdsfdsafas"
+  },
+
+  {
+    title: "We need help building XYZA",
+    description: "fdsfdsafas",
+    voted: yesIcon
+  },
+
+  {
+    title: "some title4",
+    description: "fdsfdsafas",
+    voted: noIcon
+  },
+
+  {
+    title: "some title5",
+    description: "fdsfdsafas"
+  },
+
+  {
+    title: "hiya!",
+    description: "fdsfdsafas"
+  },
+
+  {
+    title: "ebic",
+    description: "fdsfdsafas"
   }
 ]
 
@@ -65,7 +102,10 @@ function Dashboard() {
   /* Contains all proposals. */
   const proposalHTML = []
   for (let i = 0; i < proposals.length; i++) {
-    proposalHTML.push(<Row title={proposals[i].title} vote={proposals[i].voted ? proposals[i].voted : ""} />);
+    proposalHTML.push(<Row changeTitle={(x) => {setProposalTitle(x)}} 
+                          changeDescription={(x) => {setProposalDescription(x)}}
+                          title={proposals[i].title} 
+                          vote={proposals[i].voted ? proposals[i].voted : ""}/>);
   }
 
   /* Create states for SearchBar. */
@@ -81,7 +121,10 @@ function Dashboard() {
     let filteredList = [];
     for (let i = 0; i < proposals.length; i++) {
       if (proposalListDefault[i].title.toLowerCase().includes(input.toLowerCase())) {
-        filteredList.push(<Row changeTitle={setProposalTitle} changeDescription={setProposalDescription} title={proposalListDefault[i].title} vote={proposalListDefault[i].voted ? proposalListDefault[i].voted : ""} />)
+        filteredList.push(<Row changeTitle={(x) => {setProposalTitle(x)}}
+                                changeDescription={(x) => {setProposalDescription(x)}}
+                                title={proposalListDefault[i].title} 
+                                vote={proposalListDefault[i].voted ? proposalListDefault[i].voted : ""} />)
       }
       setInput(input);
       setProposalList(filteredList);
@@ -91,9 +134,12 @@ function Dashboard() {
   return (
     <div className="dashboard">
       <div className="dashboard-screen">
-        <div className="proposal-list">
+        <div className="left-proposals">
           <SearchBar keyword={input} setKeyword={updateInput}/>
-          {proposalList}
+          <div className="proposal-list">
+            {proposalList}
+          </div>
+          <div class="shadows" aria-hidden="true"></div>
         </div>
         <div className="proposal-description">
           <div className="proposal-background">

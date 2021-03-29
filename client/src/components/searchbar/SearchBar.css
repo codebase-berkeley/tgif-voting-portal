@@ -5,7 +5,7 @@
     align-items: center;
     justify-content: start;
     height: 5%;
-    width: 95%;
+    width: 75%;
     color: #757575;
     font-family: 'Lexend Deca', sans-serif;
     background-color: white;
@@ -34,4 +34,5 @@
 
 .search-img {
     margin-left: 2.5%;
+    height: 45px;
 }

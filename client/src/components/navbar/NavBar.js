@@ -1,16 +1,18 @@
 import './NavBar.css';
-import TGIFIcon from '../../assets/TGIF.svg'
+import {ReactComponent as TGIFIcon} from './../../assets/TGIF.svg'
 
 function Navbar() {
     return (
         <div className="top-navbar" id='nav'>
             <div className="leftNavbar" >
-                <a href='#'>logo</a>
+                <a href='#' id="tgif-logo">
+                    <TGIFIcon className="logo"/>
+                </a>
             </div>
             <div className="rightNavbar">
                 <a href='#'>Admin</a>
                 <a href='#'>Logout</a>
-            </div>   
+            </div>
         </div>
     );
 }

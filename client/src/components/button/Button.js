@@ -3,6 +3,8 @@ import './Button.css';
 
 function Button(props) { 
     
+    //waiting to see if we can use the other team's button class instead!
+
     // let innerColor = "#FFFFFF";
     // let textColor = "#FFFFFF";
     // let borderColor = '#A6B82E';
