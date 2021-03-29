@@ -28,12 +28,11 @@
     height: 70%;
     overflow-wrap: break-word;
     text-justify: inter-word;
-    white-space: normal;
     line-height: 1.5;
 }
 
 .timestampContainer {
-    margin: 10px;
+    margin-top: 10px;
     height: 30%;
     position: relative;
 }
