@@ -2,26 +2,39 @@
     width: 100%;
     height: 11%;
     display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.navbar-content {
+    width: 100%;
+    height: 95%;
+    display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 3px solid #CECECE;
+}
+
+.navbar-outline {
+    width: 90%;
+    height: 3px;
+    background-color: #CECECE;
 }
 
 .leftNavbar {
     display: flex;
     justify-content: flex-start;
-    margin-left: 2.5%;
+    margin-left: 7.5%;
 }
 
 .logo {
+    height: 40px;
     margin-top: 1%;
-    height: 50px;
     margin-bottom: 2%;
 }
 
 .rightNavbar  {
     display: flex;
-    margin-right: 5%;
+    margin-right: 15%;
 }
 
 .rightNavbar a {

@@ -15,7 +15,8 @@
 .left-proposals {
     width: 45%;
     height: 100%;
-    margin: 1em;
+    margin-left: 5%;
+    margin-top: 2%;
     display: flex;
     flex-flow: column;
 }
@@ -26,38 +27,45 @@
 
 .proposal-list {
     margin-top: 2.5%;
-    max-height: 75vh;
+    max-height: 77.5vh;
     overflow-y: scroll;
     position: relative;
 }
 
-.proposal-description {
+.right-proposals {
     width: 50%;
+    height: 85vh;
+    display: flex;
+    margin-right: 2%;
+    margin-top: 2.5%;
+    justify-content: center;
+}
+
+.proposal-description {
+    width: 70%;
     height: 100%;
-    padding: 0.4em;
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 3em 0.5em 2em 2em;
     border: 2.5px solid #CECECE;
     border-radius: 10px;
-    justify-content: space-evenly;
 }
 
 .proposal-head-title{
     width: 80%;
-    margin-left: 2.5%;
     text-align: left;
-    font-size: 3em;
+    margin-top: 5%;
+    font-size: 2rem;
     font-family: 'IBM Plex Sans', sans-serif;
     color: #96AD00;
 }
 
 .proposal-head-description {
     width: 80%;
-    margin-top: 2.5%;
-    margin-left: 2.5%;
+    height: 35%;
     text-align: left;
+    margin-top: 2.5%;
+    font-size: 1.25rem;
     font-family: "Lexend Deca", sans-serif;
     color: black;
 }
@@ -66,7 +74,7 @@
     display: flex;
     align-self: center;
     margin-top: 2.5%;
-    width: 100%;
+    width: 75%;
     height: 2px;
     background-color: #A6B82E;
 }
@@ -74,6 +82,7 @@
 .comment-box {
     margin-top: 5%;
     border-radius: 15px;
+    padding: 10px;
     border: 2.5px solid #CECECE;
     background-color: #F3F3F3;
     font-family: "Lexend Deca", sans-serif;

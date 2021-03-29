@@ -109,12 +109,12 @@ function Dashboard() {
   }
 
   /* Create states for SearchBar. */
-  const [input, setInput] = React.useState("");
-  const [proposalListDefault, setProposalListDefault] = React.useState(proposals);
-  const [proposalList, setProposalList] = React.useState(proposalHTML);
+  const [input, setInput] = useState("");
+  const [proposalListDefault, setProposalListDefault] = useState(proposals);
+  const [proposalList, setProposalList] = useState(proposalHTML);
 
-  const [proposalTitle, setProposalTitle] = React.useState("Project Title");
-  const [proposalDescription, setProposalDescription] = React.useState("Lorem Ipsum fdsafdasfdasfas");
+  const [proposalTitle, setProposalTitle] = useState("Project Title");
+  const [proposalDescription, setProposalDescription] = useState("Lorem Ipsum fdsafdasfdasfas");
 
   /* Updates proposalList state based on SearchBar input. */
   const updateInput = (input) => {
@@ -141,24 +141,25 @@ function Dashboard() {
           </div>
           <div class="shadows" aria-hidden="true"></div>
         </div>
-        <div className="proposal-description">
-          <div className="proposal-background">
-            <div className="proposal-head-title">{proposalTitle}</div>
-            <div className="proposal-head-description">{proposalDescription}</div>
-            <div className="dividing-line"> </div>
-            <div className="comment-area">
-              <textarea id="textbox" className="comment-box" rows="7" cols="55"> Please enter text here... </textarea>
-              <div className="discussion-buttons">
-                <button className="post-comment">Post Comment</button>
-                <button className="view-discussion">View Discussion</button>
+        <div className="right-proposals">
+          <div className="proposal-description">
+              <div className="proposal-head-title">{proposalTitle}</div>
+              <div className="proposal-head-description">{proposalDescription}</div>
+              <div className="dividing-line"> </div>
+              <div className="comment-area">
+                <textarea id="textbox" className="comment-box" placeholder="Please enter text here!" rows="7" cols="53"></textarea>
+                <div className="discussion-buttons">
+                  <button className="post-comment">Post Comment</button>
+                  <button className="view-discussion">View Discussion</button>
+                </div>
               </div>
-            </div>
+            <div className="voting-buttons">
+                <button className="vote-yes">Vote Yes</button>
+                <button className="vote-no">Vote No</button>
+              </div>
           </div>
-          <div className="voting-buttons">
-              <button className="vote-yes">Vote Yes</button>
-              <button className="vote-no">Vote No</button>
-            </div>
         </div>
+        
       </div>
     </div>
   );
