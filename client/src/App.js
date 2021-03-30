@@ -1,12 +1,15 @@
 import ProposalDetails from './pages/proposalDetails/ProposalDetails.js';
+import Dashboard from './pages/dashboard/Dashboard';
+import NavBar from './components/navbar/NavBar';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
-import Dashboard from './pages/dashboard/Dashboard';
+
 
 function App() {
   return (
     <div className="App">
-      <ProposalDetails/>
+      <NavBar/>
+      <Dashboard />
     </div>
   );
 }

@@ -1,16 +1,9 @@
 .dashboard {
     display: flex;
     flex-wrap: wrap;
-    width: 100vw;
-    height: 100vh;
-    background-color: white;
-}
-
-.navbar {
-    background-color: #A6B82E;
     width: 100%;
-    height: 8vh;
-    text-align: center;
+    height: 100%;
+    background-color: white;
 }
 
 .dashboard-screen {
@@ -19,22 +12,138 @@
     display: flex;
 }
 
-.proposal-list {
-    width: 50%;
+.left-proposals {
+    width: 45%;
     height: 100%;
-    margin: 1em;
+    margin-left: 5%;
+    margin-top: 1%;
     display: flex;
     flex-flow: column;
-    overflow-y: scroll;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
 }
 
-.proposal-list::-webkit-scrollbar {
+.left-proposals::-webkit-scrollbar {
     display: none;
   }
 
-.proposal-description {
+.proposal-list {
+    margin-top: 2%;
+    max-height: 77.5vh;
+    overflow-y: scroll;
+    position: relative;
+}
+
+.right-proposals {
     width: 50%;
+    height: 85vh;
+    display: flex;
+    margin-right: 2%;
+    margin-top: 1.5%;
+    justify-content: center;
+}
+
+.proposal-description {
+    width: 70%;
     height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 2.5px solid #CECECE;
+    border-radius: 10px;
+}
+
+.proposal-head-title{
+    width: 80%;
+    text-align: left;
+    margin-top: 5%;
+    font-size: 2rem;
+    font-family: 'IBM Plex Sans', sans-serif;
+    color: #96AD00;
+}
+
+.proposal-head-description {
+    width: 80%;
+    height: 35%;
+    text-align: left;
+    margin-top: 2.5%;
+    font-size: 1.25rem;
+    font-family: "Lexend Deca", sans-serif;
+    color: black;
+}
+
+.dividing-line {
+    display: flex;
+    align-self: center;
+    margin-top: 2.5%;
+    width: 75%;
+    height: 2px;
+    background-color: #A6B82E;
+}
+
+.comment-box {
+    margin-top: 5%;
+    border-radius: 15px;
+    padding: 10px;
+    border: 2.5px solid #CECECE;
+    background-color: #F3F3F3;
+    font-family: "Lexend Deca", sans-serif;
+    overflow: auto;
+    outline: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    width: 100%;
+    height: 55%;
+    resize: none;
+}
+
+.comment-boxus:focus {
+    outline: none;
+}
+
+.vote-yes {
+    background-color: #A6B82E;
+    border-radius: 5px;
+    border: 2.5px solid #A6B82E;
+    color: white;
+    margin: 2em 0.5em 1em 0.5em;
+    padding: 0.5em;
+}
+
+.vote-no {
+    background-color: #353739;
+    border-radius: 5px;
+    border: 2.5px solid #353739;
+    color: white;
+    margin: 2em 0.5em 1em 0.5em;
+    padding: 0.5em;
+}
+
+.post-comment {
+    align-self: flex-end;
+    background-color: #FFFFFF;
+    border: 2.5px solid #A6B82E;
+    color: #A6B82E;
+    border-radius: 5px;
+    margin: 0.5em 0.75em 0.5em 0.5em;
+    padding: 0.5em;
+}
+
+.view-discussion {
+    align-self: flex-end;
+    background-color: #FFFFFF;
+    border: 2.5px solid #A6B82E;
+    color: #A6B82E;
+    border-radius: 5px;
+    margin: 0.5em 0.75em 0.5em 0.5em;
+    padding: 0.5em;
+}
+
+.voting-buttons {
+    display: flex;
+    justify-content: center;
+}
+
+.discussion-buttons {
+    display: flex;
+    justify-content: flex-end;
 }
