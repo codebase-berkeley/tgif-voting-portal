@@ -21,6 +21,35 @@ app.get('/test_db', async (req, res) => {
   }
 });
 
+app.post('/submitVote', async (req, res) => {
+  try {
+    console.log("Submit vote...")
+  } catch (error) {
+    console.log(error.stack);
+  }
+})
+
+app.get('/getAllVotes', async (req, res) => {
+  try {
+    const query = await db.query(
+      "insert query"
+    );
+  } catch (error) {
+    console.log(error.stack);
+  }
+})
+  
+
+app.get('/getProposalDetails', async (req, res) => {
+  try {
+    const query = await db.query(
+      "insert query"
+    );
+  } catch (error) {
+    console.log(error.stack);
+  }
+}) 
+
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });
