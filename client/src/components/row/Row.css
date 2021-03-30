@@ -2,7 +2,7 @@
     border-radius: 10px;
     border-width: 1.75px;
     margin: 0.5em;
-    padding: 1em;
+    padding: 0.5em;
     background-color: #F3F3F3;
     border-color: #CECECE;
     border-style: solid;
@@ -17,7 +17,7 @@
     flex-direction: row;
     font-family: 'Lexend Deca', sans-serif;
     color: black;
-    font-size: max(2em, 1.5em);
+    font-size: max(1.5em, 1em);
 }
 
 .vote-status {
