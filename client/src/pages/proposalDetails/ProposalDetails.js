@@ -72,7 +72,7 @@ function ProposalConditionalRender(isAdmin) {
 
       const [adminVote, changeAdminVote] = useState('Unvoted');
 
-      if (showProgress == PROGRESS_VALUE) {
+      if (showProgress === PROGRESS_VALUE) {
         return (
           <div className='progressFrame adminToggleView'>
             <ProgressBar className='progressBarYesNoUnvoted'>
@@ -197,11 +197,11 @@ function ProposalDetails() {
   function postComment() {
     var textBox = document.getElementById("userInputDiscussion");
     var commentText = textBox.value;
-    if (commentText != '') {
+    if (commentText !== '') {
       textBox.value = '';
       var currentDate = new Date();
       var twelveHrTime = (hour) => {
-        if (hour == 0) {
+        if (hour === 0) {
           return 12;
         } else if (hour <= 12) {
           return hour;
