@@ -5,6 +5,7 @@ import './Dashboard.css';
 import noIcon from '../../assets/Delete.svg';
 import yesIcon from '../../assets/Checked.svg';
 import SearchBar from '../../components/searchbar/SearchBar';
+import { Link } from "react-router-dom";
 
 const proposals = [
   {
@@ -150,7 +151,9 @@ function Dashboard() {
                 <textarea id="textbox" className="comment-box" placeholder="Please enter text here!" rows="7" cols="53"></textarea>
                 <div className="discussion-buttons">
                   <button className="post-comment">Post Comment</button>
-                  <button className="view-discussion">View Discussion</button>
+                  <Link to="/proposal-details">
+                    <button className="view-discussion">View Discussion</button>
+                  </Link>
                 </div>
               </div>
             <div className="voting-buttons">
