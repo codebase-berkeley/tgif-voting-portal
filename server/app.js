@@ -21,9 +21,12 @@ app.get('/test_db', async (req, res) => {
   }
 });
 
-app.post('/submitVote', async (req, res) => {
+app.get('/submitVote', async (req, res) => {
   try {
     console.log("Submit vote...")
+    const query = await db.query(
+      "INSERT INTO votes(vote, has_voted, userid, proposal_id)"
+    );
   } catch (error) {
     console.log(error.stack);
   }
@@ -38,7 +41,6 @@ app.get('/getAllVotes', async (req, res) => {
     console.log(error.stack);
   }
 })
-  
 
 app.get('/getProposalDetails', async (req, res) => {
   try {

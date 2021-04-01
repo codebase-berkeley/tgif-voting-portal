@@ -8,8 +8,9 @@ import './App.css';
 function App() {
   return (
     <div className="App">
-      <NavBar/>
-      <Dashboard />
+      {/* <NavBar/>
+      <Dashboard /> */}
+      <ProposalDetails />
     </div>
   );
 }
