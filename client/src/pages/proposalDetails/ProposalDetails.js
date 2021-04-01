@@ -10,8 +10,8 @@ const YES_VOTE = true;
 const NO_VOTE = !YES_VOTE;
 
 var TOTAL_MEMBERS = 40;
-var AMOUNT_VOTED = 28;
-var AMOUNT_YES = 20;
+var AMOUNT_VOTED = 28; //replace with COUNT() votes from the data set.
+var AMOUNT_YES = 20; //replace with COUNT() of yes votes from the data set.
 var AMOUNT_NO = AMOUNT_VOTED - AMOUNT_YES;
 var PERCENT_YES = AMOUNT_YES / TOTAL_MEMBERS * 100;
 var PERCENT_NO = AMOUNT_NO / TOTAL_MEMBERS * 100;
