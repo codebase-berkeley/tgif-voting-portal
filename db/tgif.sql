@@ -63,9 +63,17 @@ GRANT ALL PRIVILEGES ON DATABASE tgif TO root;
 
 
 -- Example:
+
 INSERT INTO users(is_admin, username)
 VALUES
     (TRUE, 'Teresa'),
     (FALSE, 'Warren'),
     (FALSE, 'Ryan'),
     (FALSE, 'Mentored');
+
+INSERT INTO proposals(id, title, organization, amount_requested, link, description_text)
+VALUES
+    (1, 'Mentored Tree Planting Efforts', 'Codebase Mentored', 120.50,
+        'codebase.berkeley.edu', 'We are planning to plant 1,000,000 trees!'),
+    (2, 'ASUC Garden', 'ASUC', 1050,
+        'rando link', 'ASUC will be planting a garden at sproul!');
