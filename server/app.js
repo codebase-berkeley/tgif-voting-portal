@@ -26,7 +26,6 @@ app.get('/test_db', async (req, res) => {
 
 app.post('/submitVote', async (req, res) => {
   try {
-    console.log(req);
     const deleteEntry = await db.query(
       'DELETE FROM votes WHERE user_id=$1 AND proposal_id=$2',
       [req.body.user_id, req.body.proposal_id],
@@ -47,15 +46,23 @@ app.get('/getAllVotes', async (req, res) => {
       'SELECT COUNT(*) FROM votes WHERE proposal_id=$1 AND vote=TRUE;',
       [req.query.proposal_id],
     );
+
     const totalVotesQuery = await db.query(
       'SELECT COUNT(*) FROM votes WHERE proposal_id=$1',
       [req.query.proposal_id],
     );
+
     const totalUsersQuery = await db.query(
       'SELECT COUNT(*) FROM users',
     );
-    // totalVotesQuery.rows, totalUsersQuery.rows
-    res.send([amountYesQuery.rows, totalVotesQuery.rows, totalUsersQuery.rows]);
+
+    res.send(
+      {
+        amountYes: parseInt(amountYesQuery.rows[0].count),
+        totalVotes: parseInt(totalVotesQuery.rows[0].count),
+        totalUsers: parseInt(totalUsersQuery.rows[0].count),
+      },
+    );
   } catch (error) {
     console.log(error.stack);
   }

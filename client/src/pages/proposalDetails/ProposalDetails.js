@@ -16,24 +16,29 @@ var DUMMY_COMMENT1 = {
   text: 'i like this proposal, i think we should approve it',
   time: '3/26/21 3:12pm'
 };
+
 var DUMMY_COMMENT2 = {
   userName: 'jorge',
   text: 'i dont like this, their proposal sucks',
   time: '3/27/21 10:09pm'
 };
 
-var DUMMY_LONG_COMMENT = `In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content. Lorem ipsum may be used as a placeholder before final copy is available. um is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content. Lorem ipsum may be used as a
-placeholder before final copy is available. It is a long established fact that a reader will be distracted by the readable content of a 
-page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less
+var DUMMY_LONG_COMMENT = `In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual
+form of a document or a typeface without relying on meaningful content. Lorem ipsum may be used as a placeholder before final copy is
+available. um is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful
+content. Lorem ipsum may be used as a placeholder before final copy is available. It is a long established fact that a reader will be
+distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less
 normal distribution of letters, as opposed to using 'Content here, content here', making it look like
 readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their
 default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy.
 Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour
 and the like).`;
 
-var DUMMY_MEDIUM_COMMENT = `In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content. Lorem ipsum may be used as a placeholder before final copy is available. um is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content. Lorem ipsum may be used as a
-placeholder before final copy is available. It is a long established fact that a reader will be distracted by the readable content of a 
-page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less
+var DUMMY_MEDIUM_COMMENT = `In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual
+form of a document or a typeface without relying on meaningful content. Lorem ipsum may be used as a placeholder before final copy is
+available. um is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful
+content. Lorem ipsum may be used as a placeholder before final copy is available. It is a long established fact that a reader will be
+distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less
 normal distribution of letters.`;
 
 /** Takes in a number and converts it to a dollar amount string w/ commas
@@ -50,7 +55,6 @@ function ProposalConditionalRender(isAdmin) {
     /** Toggles view for admin conditional frame; returns progress bars
      * if admin toggle is set to "progress" and admin voting buttons if set to "vote" */
     function ToggleComponents(showProgress) {
-      const [AMOUNT_YES, setYesVotes] = useState(0);
       const [AMOUNT_VOTED, setVotesTotal] = useState(0);
       const [TOTAL_MEMBERS, setTotalMembers] = useState(1);
       const [PERCENT_NO, setPercentNo] = useState(0);
@@ -59,18 +63,13 @@ function ProposalConditionalRender(isAdmin) {
 
       async function fetchVoteInfo() {
         const res = await axios.get('http://localhost:8000/getAllVotes', {params : {proposal_id: 1}});
-        const voteYes = res.data[0][0].count;
-        const votesTotal= res.data[1][0].count;
-        const totalMembers = res.data[2][0].count;
-        console.log(voteYes);
-        console.log(votesTotal);
-        console.log(totalMembers);
-        
-        setYesVotes(voteYes);
+        const voteYes = res.data.amountYes;
+        const votesTotal= res.data.totalVotes;
+        const totalMembers = res.data.totalUsers;
         setVotesTotal(votesTotal);
         setTotalMembers(totalMembers);
-        setPercentYes((voteYes/totalMembers)*100);
-        setPercentNo(((votesTotal - voteYes) / totalMembers)*100);
+        setPercentYes((voteYes / totalMembers) * 100);
+        setPercentNo(((votesTotal - voteYes) / totalMembers) * 100);
         setPercentUnvoted(((totalMembers - votesTotal) / totalMembers) * 100);
       }
       
@@ -86,13 +85,11 @@ function ProposalConditionalRender(isAdmin) {
       const adminUnpressedNoButtonClassName = 'unpressedNoButton adminButton';
       const [adminNoButtonClassName, setAdminNoButtonClassName] = useState(adminUnpressedNoButtonClassName);
 
-      const [adminVote, changeAdminVote] = useState('Unvoted');
-
       async function submitVote(voteDecision) {
         await axios.post('http://localhost:8000/submitVote', { vote: voteDecision, user_id: 4, proposal_id: 1});
       }
 
-      if (showProgress == PROGRESS_VALUE) {
+      if (showProgress === PROGRESS_VALUE) {
         return (
           <div className='progressFrame adminToggleView'>
             <ProgressBar className='progressBarYesNoUnvoted'>
@@ -117,8 +114,7 @@ function ProposalConditionalRender(isAdmin) {
                 onClickFunc={async () => {setAdminYesButtonClassName(adminPressedYesButtonClassName);
                                     setAdminNoButtonClassName(adminUnpressedNoButtonClassName);;
                                     await submitVote(true);
-                                    fetchVoteInfo();
-                                    changeAdminVote(YES_VOTE);}}
+                                    fetchVoteInfo();}}
               />
             </div>
             <div className='rightButtonContainer buttonContainer'>
@@ -126,8 +122,7 @@ function ProposalConditionalRender(isAdmin) {
                 onClickFunc={async () => {setAdminYesButtonClassName(adminUnpressedYesButtonClassName);
                                     setAdminNoButtonClassName(adminPressedNoButtonClassName);
                                     await submitVote(false);
-                                    fetchVoteInfo();
-                                    changeAdminVote(NO_VOTE);}}
+                                    fetchVoteInfo();}}
               />
             </div>
           </div>
@@ -217,7 +212,7 @@ function ProposalConditionalRender(isAdmin) {
 function ProposalDetails() {
   const [proposalTitle, setProposalTitle] = useState('Proposal Title');
   const [proposalDescription, setProposalDescription] = useState('Generic proposal description');
-  const [proposalSponser, setProposalSponser] = useState('Proposal Sponser');
+  const [proposalSponsor, setProposalSponsor] = useState('Proposal Sponsor');
   const [proposalAmount, setProposalAmount] = useState(0);
   const [proposalDeadline, setProposalDeadline] = useState("");
 
@@ -226,8 +221,8 @@ function ProposalDetails() {
     const proposalInfo = response.data;
     setProposalTitle(proposalInfo.title);
     setProposalDescription(proposalInfo.description_text);
-    setProposalSponser(proposalInfo.organization);
-    setProposalAmount(proposalInfo.amount_requested);
+    setProposalSponsor(proposalInfo.organization);
+    setProposalAmount(proposalInfo.amount_requested.toFixed(2));
     setProposalDeadline(proposalInfo.deadline);
   }
 
@@ -255,7 +250,7 @@ function ProposalDetails() {
       textBox.value = '';
       var currentDate = new Date();
       var twelveHrTime = (hour) => {
-        if (hour == 0) {
+        if (hour === 0) {
           return 12;
         } else if (hour <= 12) {
           return hour;
@@ -266,7 +261,7 @@ function ProposalDetails() {
       var twoDigitMins = (mins) => mins < 10 ? `0${mins}` : `${mins}`;
       var currentHour = currentDate.getHours();
       var amOrPm = (hour) => hour <= 12 ? 'am' : 'pm';
-      var commentDate = `${currentDate.getMonth()}/${currentDate.getDate()}/${currentDate.getFullYear().toString().substr(-2)} ${twelveHrTime(currentHour)}:${twoDigitMins(currentDate.getMinutes())}${amOrPm(currentHour)}`;
+      var commentDate = `${currentDate.getMonth() + 1}/${currentDate.getDate()}/${currentDate.getFullYear().toString().substr(-2)} ${twelveHrTime(currentHour)}:${twoDigitMins(currentDate.getMinutes())}${amOrPm(currentHour)}`;
       var newComment = <DiscussionPost isAdmin={IS_ADMIN} userName={DUMMY_USERNAME}
         text={commentText} time={commentDate}/>;
       addComment(comments.concat([newComment]));
@@ -285,7 +280,7 @@ function ProposalDetails() {
             {proposalTitle}
             <hr className="underline"></hr>
           </div>
-          <div className="proposalSponsor">{proposalSponser}</div>
+          <div className="proposalSponsor">{proposalSponsor}</div>
           <div className="proposalDescription">{proposalDescription}</div>
           <div className="proposalAmount"> Proposal Amount: {`$${proposalAmount}`}</div>
           <div className="proposalDeadline"> Proposal Deadline: {proposalDeadline} </div>
@@ -305,7 +300,7 @@ function ProposalDetails() {
           <div className='postCommentTopContainer postCommentContainer'>
             <div className='UserInput'>
               <div className='commentBoxHeader'>
-                Leave a comment!
+                Leave a comment
               </div>
               <input className= 'userInputDiscussion' id='userInputDiscussion' type='textarea' placeholder='your comment'/>
             </div>

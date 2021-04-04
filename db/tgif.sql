@@ -71,7 +71,7 @@ VALUES
 
 INSERT INTO proposals(id, title, organization, amount_requested, link, description_text, deadline)
 VALUES
-    (1, 'Mentored Tree Planting Efforts', 'Codebase Mentored', 120.50,
+    (1, 'Mentored Tree Planting Campaign', 'Codebase Mentored', 120.50,
         'codebase.berkeley.edu', 'We are planning to plant 1,000,000 trees!', '04/20/69'),
     (2, 'ASUC Garden', 'ASUC', 1050,
         'rando link', 'ASUC will be planting a garden at sproul!', '01/23/45');
