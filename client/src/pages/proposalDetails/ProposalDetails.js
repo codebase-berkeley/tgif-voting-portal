@@ -50,16 +50,16 @@ function amountToDollarString(amount) {
 function ProposalConditionalRender(isAdmin) {
 
   var PROGRESS_VALUE = false;
-  const [showProgressBars, setToggleView] = useState(!PROGRESS_VALUE);
+  const [showProgressBars, setShowProgressBars] = useState(!PROGRESS_VALUE);
 
     /** Toggles view for admin conditional frame; returns progress bars
      * if admin toggle is set to "progress" and admin voting buttons if set to "vote" */
     function ToggleComponents(showProgress) {
-      const [AMOUNT_VOTED, setVotesTotal] = useState(0);
-      const [TOTAL_MEMBERS, setTotalMembers] = useState(1);
-      const [PERCENT_NO, setPercentNo] = useState(0);
-      const [PERCENT_YES, setPercentYes] = useState(0);
-      const [PERCENT_UNVOTED, setPercentUnvoted] = useState(0);
+      const [votesTotal, setVotesTotal] = useState(0);
+      const [totalMembers, setTotalMembers] = useState(1);
+      const [percentNo, setPercentNo] = useState(0);
+      const [percentYes, setPercentYes] = useState(0);
+      const [percentUnvoted, setPercentUnvoted] = useState(0);
 
       async function fetchVoteInfo() {
         const res = await axios.get('http://localhost:8000/getAllVotes', {params : {proposal_id: 1}});
@@ -86,24 +86,31 @@ function ProposalConditionalRender(isAdmin) {
       const [adminNoButtonClassName, setAdminNoButtonClassName] = useState(adminUnpressedNoButtonClassName);
 
       async function submitVote(voteDecision) {
-        await axios.post('http://localhost:8000/submitVote', { vote: voteDecision, user_id: 4, proposal_id: 1});
+        const response = await axios.post('http://localhost:8000/submitVote', {
+          vote: voteDecision,
+          user_id: 4,
+          proposal_id: 1
+        });
+        if (response.data === null) {
+          console.log("Error in submitting vote.");
+        }
       }
 
       if (showProgress === PROGRESS_VALUE) {
         return (
           <div className='progressFrame adminToggleView'>
             <ProgressBar className='progressBarYesNoUnvoted'>
-              <ProgressBar className='progressBarPercentYes' variant='success' now={PERCENT_YES} label={`${PERCENT_YES}% YES`} key={1}/>
-              <ProgressBar className='progressBarPercentNo' variant='danger' now={PERCENT_NO} label={`${PERCENT_NO}% NO`} key={2}/>
-              <ProgressBar className='progressBarPercentUnvoted' variant='customProgressBarUnvoted' now={PERCENT_UNVOTED} label={`${PERCENT_UNVOTED}% UNVOTED`} key={3}/>
+              <ProgressBar className='progressBarPercentYes' variant='success' now={percentYes} label={`${percentYes}% YES`} key={1}/>
+              <ProgressBar className='progressBarPercentNo' variant='danger' now={percentNo} label={`${percentNo}% NO`} key={2}/>
+              <ProgressBar className='progressBarPercentUnvoted' variant='customProgressBarUnvoted' now={percentUnvoted} label={`${percentUnvoted}% UNVOTED`} key={3}/>
             </ProgressBar>
   
             <ProgressBar className="progressBarPercentVotedUnvoted">
-              <ProgressBar className='progressBarPercentVoted' variant='info' now={PERCENT_YES + PERCENT_NO} label={`${PERCENT_YES + PERCENT_NO}% VOTED`} key={1}/>
-              <ProgressBar className='progressBarPercentUnvoted2' variant='customProgressBarUnvoted' now={PERCENT_UNVOTED} label={`${PERCENT_UNVOTED}% UNVOTED`} key={2}/>
+              <ProgressBar className='progressBarPercentVoted' variant='info' now={percentYes + percentNo} label={`${percentYes + percentNo}% VOTED`} key={1}/>
+              <ProgressBar className='progressBarPercentUnvoted2' variant='customProgressBarUnvoted' now={percentUnvoted} label={`${percentUnvoted}% UNVOTED`} key={2}/>
             </ProgressBar>
             <div className='amountVotedLabel'>
-              {`${AMOUNT_VOTED}/${TOTAL_MEMBERS} Voted`}
+              {`${votesTotal}/${totalMembers} Voted`}
             </div>
           </div>);
       } else {
@@ -112,7 +119,7 @@ function ProposalConditionalRender(isAdmin) {
             <div className='leftButtonContainer buttonContainer'>
               <ProposalButton buttonText='Vote Yes' isVotingButton={true} buttonClassName={adminYesButtonClassName}
                 onClickFunc={async () => {setAdminYesButtonClassName(adminPressedYesButtonClassName);
-                                    setAdminNoButtonClassName(adminUnpressedNoButtonClassName);;
+                                    setAdminNoButtonClassName(adminUnpressedNoButtonClassName);
                                     await submitVote(true);
                                     fetchVoteInfo();}}
               />
@@ -151,7 +158,9 @@ function ProposalConditionalRender(isAdmin) {
           user_id: 4,
           proposal_id: 1
         });
-        console.log(response);
+        if (response.data === null) {
+          console.log("Error in submitting vote.");
+        }
       }
       
       return (
@@ -160,7 +169,7 @@ function ProposalConditionalRender(isAdmin) {
             <div className='leftButtonContainer buttonContainer'>
               <ProposalButton buttonText='Vote Yes' buttonClassName={nonAdminYesButtonClassName}
                 onClickFunc={() => {setNonAdminYesButtonClassName(nonAdminPressedYesButtonClassName);
-                                    setNonAdminNoButtonClassName(nonAdminUnpressedNoButtonClassName);;
+                                    setNonAdminNoButtonClassName(nonAdminUnpressedNoButtonClassName);
                                     submitVote(true);
                                     changeNonAdminVote(YES_VOTE);}}
               />
@@ -170,7 +179,6 @@ function ProposalConditionalRender(isAdmin) {
                 onClickFunc={() => {setNonAdminYesButtonClassName(nonAdminUnpressedYesButtonClassName);
                                     setNonAdminNoButtonClassName(nonAdminPressedNoButtonClassName);
                                     submitVote(false);
-                                    
                                     changeNonAdminVote(NO_VOTE);}}
               />
             </div>
@@ -182,7 +190,7 @@ function ProposalConditionalRender(isAdmin) {
     <div className="switchFrame">
               <label className="toggleContainer">
                 <input type="checkbox" name="adminView" id="propDetailsToggle"
-                  value="true" onClick={() => setToggleView(!showProgressBars)}
+                  value="true" onClick={() => setShowProgressBars(!showProgressBars)}
                 />
                 <span className="slider round"></span>
               </label>
@@ -219,11 +227,16 @@ function ProposalDetails() {
   async function fetchProposalDetails() { 
     const response = await axios.get('http://localhost:8000/getProposalDetails', { params: { proposal_id: 1 } });
     const proposalInfo = response.data;
-    setProposalTitle(proposalInfo.title);
-    setProposalDescription(proposalInfo.description_text);
-    setProposalSponsor(proposalInfo.organization);
-    setProposalAmount(proposalInfo.amount_requested.toFixed(2));
-    setProposalDeadline(proposalInfo.deadline);
+    if (!(proposalInfo === null)) {
+      setProposalTitle(proposalInfo.title);
+      setProposalDescription(proposalInfo.description_text);
+      setProposalSponsor(proposalInfo.organization);
+      setProposalAmount(proposalInfo.amount_requested.toFixed(2));
+      setProposalDeadline(proposalInfo.deadline);
+    }
+    else{
+      console.log("Error in fetching proposal details.");
+    }
   }
 
   const [comments, addComment] = useState(

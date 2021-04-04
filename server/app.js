@@ -37,6 +37,7 @@ app.post('/submitVote', async (req, res) => {
     res.send('Submitted vote...');
   } catch (error) {
     console.log(error.stack);
+    res.send(null);
   }
 });
 
@@ -77,6 +78,7 @@ app.get('/getProposalDetails', async (req, res) => {
     res.send(query.rows[0]);
   } catch (error) {
     console.log(error.stack);
+    res.send(null);
   }
 });
 

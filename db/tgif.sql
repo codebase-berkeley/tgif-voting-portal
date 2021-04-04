@@ -71,8 +71,13 @@ VALUES
 
 INSERT INTO proposals(id, title, organization, amount_requested, link, description_text, deadline)
 VALUES
-    (1, 'Mentored Tree Planting Campaign', 'Codebase Mentored', 120.50,
-        'codebase.berkeley.edu', 'We are planning to plant 1,000,000 trees!', '04/20/69'),
+    (1, 'Mapping for Environmental Justice', 'MEJ Team', 63000.00,
+        'mappingforej.berkeley.edu', 'Mapping for Environmental Justice (MEJ) is an
+        initiative to create interactive and publicly-accessible maps displaying
+        environmental justice data for individual states. With guidance from the
+        residents of impacted communities, MEJ combines environment, public health,
+        and demographic data into an indicator of vulnerability for communities in
+        every state.', '4/28/21'),
     (2, 'ASUC Garden', 'ASUC', 1050,
         'rando link', 'ASUC will be planting a garden at sproul!', '01/23/45');
 
