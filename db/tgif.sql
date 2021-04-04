@@ -27,7 +27,8 @@ CREATE TABLE proposals
 );
 
 CREATE TABLE comments
-(
+(   
+    -- is_admin BOOLEAN -- we might need this to determine whether we display comments as anon
     id SERIAL PRIMARY KEY,
     time_posted TIMESTAMP,
     comment_text VARCHAR,
@@ -69,3 +70,10 @@ VALUES
     (FALSE, 'Warren'),
     (FALSE, 'Ryan'),
     (FALSE, 'Mentored');
+
+INSERT INTO comments(id, time_posted, comment_text, user_id, proposal_id)
+VALUES
+    (1, 'Mar 31'),
+    (2, 'Apr 1'),
+    (2, 'May 4'),
+    (3, 'Apr 20');

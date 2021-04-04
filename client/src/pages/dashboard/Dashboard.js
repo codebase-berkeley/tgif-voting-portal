@@ -6,6 +6,7 @@ import noIcon from '../../assets/Delete.svg';
 import yesIcon from '../../assets/Checked.svg';
 import SearchBar from '../../components/searchbar/SearchBar';
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const proposals = [
   {
@@ -132,6 +133,17 @@ function Dashboard() {
     } 
   }
 
+  function postComment() {
+    axios({
+      method: 'post',
+      url: '/post_comment',
+      data: {
+        comment_text: textbox.input
+      }
+    });
+  }
+  
+
   return (
     <div className="dashboard">
       <div className="dashboard-screen">
@@ -150,7 +162,7 @@ function Dashboard() {
               <div className="comment-area">
                 <textarea id="textbox" className="comment-box" placeholder="Please enter text here!" rows="7" cols="53"></textarea>
                 <div className="discussion-buttons">
-                  <button className="post-comment">Post Comment</button>
+                  <button className="post-comment" onClick={postComment}>Post Comment</button>
                   <Link to="/proposal-details">
                     <button className="view-discussion">View Discussion</button>
                   </Link>

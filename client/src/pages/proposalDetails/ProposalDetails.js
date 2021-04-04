@@ -3,6 +3,7 @@ import ProgressBar from 'react-bootstrap/ProgressBar';
 import DiscussionPost from './DiscussionPost.js';
 import ProposalButton from './ProposalButton.js';
 import React, { useState } from 'react';
+import axios from 'axios';
 
 var IS_ADMIN = true;
 
@@ -177,22 +178,26 @@ function ProposalConditionalRender(isAdmin) {
 }
 
 function ProposalDetails() {
-  const [comments, addComment] = useState(
-    [
-      <DiscussionPost isAdmin={IS_ADMIN} userName={DUMMY_COMMENT1.userName} text={DUMMY_LONG_COMMENT} time={DUMMY_COMMENT1.time}/>,
-      <DiscussionPost isAdmin={IS_ADMIN} userName={DUMMY_COMMENT2.userName} text={DUMMY_COMMENT2.text} time={DUMMY_COMMENT2.time}/>,
-      <DiscussionPost isAdmin={IS_ADMIN} userName={DUMMY_COMMENT1.userName} text={DUMMY_MEDIUM_COMMENT} time={DUMMY_COMMENT1.time}/>,
-      <DiscussionPost isAdmin={IS_ADMIN} userName={DUMMY_COMMENT2.userName} text={DUMMY_COMMENT2.text} time={DUMMY_COMMENT2.time}/>,
-      <DiscussionPost isAdmin={IS_ADMIN} userName={DUMMY_COMMENT1.userName} text={DUMMY_COMMENT1.text} time={DUMMY_COMMENT1.time}/>,
-      <DiscussionPost isAdmin={IS_ADMIN} userName={DUMMY_COMMENT2.userName} text={DUMMY_COMMENT2.text} time={DUMMY_COMMENT2.time}/>,
-      <DiscussionPost isAdmin={IS_ADMIN} userName={DUMMY_COMMENT1.userName} text={DUMMY_COMMENT1.text} time={DUMMY_COMMENT1.time}/>,
-      <DiscussionPost isAdmin={IS_ADMIN} userName={DUMMY_COMMENT2.userName} text={DUMMY_COMMENT2.text} time={DUMMY_COMMENT2.time}/>,
-      <DiscussionPost isAdmin={IS_ADMIN} userName={DUMMY_COMMENT1.userName} text={DUMMY_COMMENT1.text} time={DUMMY_COMMENT1.time}/>,
-      <DiscussionPost isAdmin={IS_ADMIN} userName={DUMMY_COMMENT2.userName} text={DUMMY_COMMENT2.text} time={DUMMY_COMMENT2.time}/>,
-      <DiscussionPost isAdmin={IS_ADMIN} userName={DUMMY_COMMENT1.userName} text={DUMMY_COMMENT1.text} time={DUMMY_COMMENT1.time}/>,
-      <DiscussionPost isAdmin={IS_ADMIN} userName={DUMMY_COMMENT2.userName} text={DUMMY_COMMENT2.text} time={DUMMY_COMMENT2.time}/>
-    ]
-  )
+  const [comments, setComments] = useState();
+  
+  async function fetchData() {
+    try {
+      const response = await axios.get("/get_comments");
+      setComments(response);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  React.useEffect(() => {
+    fetchData();
+  }, []);
+
+  {comments.map((comment) => (
+    // tgif.sql for comments on IS_ADMIN in comments db
+    <DiscussionPost isAdmin={IS_ADMIN} userName={comment.user_id} text={comment.comment_text} time={comment.time_posted}/>
+  ))}
+  
 
   function postComment() {
     var textBox = document.getElementById("userInputDiscussion");
@@ -216,8 +221,19 @@ function ProposalDetails() {
       var newComment = <DiscussionPost isAdmin={IS_ADMIN} userName={DUMMY_USERNAME}
         text={commentText} time={commentDate}/>;
       addComment([newComment].concat(comments));
-    }
+
+      axios({
+        method: 'post',
+        url: '/post_comment',
+        data: {
+          comment_text: commentText
+        }
+      });}
+    
+
   }
+
+  
 
   return (
     <div className="proposalDetailsPage">
