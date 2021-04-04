@@ -152,6 +152,7 @@ function ProposalConditionalRender(isAdmin) {
   }
 }
 
+
 function ProposalDetails() {
   const [comments, setComments] = React.useState([]);
   
@@ -171,18 +172,24 @@ function ProposalDetails() {
     fetchData();
   }, []);
 
+  const[value, setValue] = React.useState('');
 
-  async function postComment() {
-    await axios({
-      method: 'post',
-      url: 'http://localhost:8000/post_comment',
-      data: {
-          comment_text: document.getElementById("userInputDiscussion").value
+  const handleSubmit = async () => {
+    try {
+      await axios({
+        method: 'post',
+        url: 'http://localhost:8000/post_comment',
+        data: {
+          comment_text: value
         }
       });
-    
+    } catch(error) {
+      console.log(error);
+    }
+    setValue('');
     fetchData();
-  }
+  };
+
 
   return (
     <div className="proposalDetailsPage">
@@ -217,15 +224,15 @@ function ProposalDetails() {
               <div className='commentBoxHeader'>
                 Leave a comment!
               </div>
-              <input className= 'userInputDiscussion' id='userInputDiscussion' type='textarea' placeholder='your comment'/>
+              <textarea value={value} onChange={(event) => {setValue(event.target.value)}} className= 'userInputDiscussion' id='userInputDiscussion' type='textarea' placeholder='your comment'/>
             </div>
           </div>
           <div className='postCommentBottomContainer postCommentContainer'>
-            <div className='postCommentButtonContainer'> 
-              <ProposalButton buttonClassName='genericProposalButton' buttonText='Post' onClickFunc={postComment}/>
+            <div className='postCommentButtonContainer'>
+              <ProposalButton buttonClassName='genericProposalButton' buttonText='Post' onClickFunc={handleSubmit}/>
             </div>
           </div>
-        </div>
+        </div>       
       </div>
     </div>
   );

@@ -98,8 +98,6 @@ const proposals = [
   }
 ]
 
-
-
 function Dashboard() {
   /* Contains all proposals. */
   const proposalHTML = []
@@ -133,15 +131,22 @@ function Dashboard() {
     } 
   }
 
-  function postComment() {
-    axios({
-      method: 'post',
-      url: 'http://localhost:8000/post_comment',
-      data: {
-        comment_text: document.getElementById("textbox").value
-      }
-    });
-  }
+  const[value, setValue] = React.useState('');
+
+  const handleSubmit = async () => {
+    try {
+      await axios({
+        method: 'post',
+        url: 'http://localhost:8000/post_comment',
+        data: {
+          comment_text: value
+        }
+      });
+    } catch(error) {
+      console.log(error);
+    }
+    setValue('');
+  };
   
 
   return (
@@ -156,25 +161,24 @@ function Dashboard() {
         </div>
         <div className="right-proposals">
           <div className="proposal-description">
-              <div className="proposal-head-title">{proposalTitle}</div>
-              <div className="proposal-head-description">{proposalDescription}</div>
-              <div className="dividing-line"> </div>
-              <div className="comment-area">
-                <textarea id="textbox" name="textbox" className="comment-box" placeholder="Please enter text here!" rows="7" cols="53"></textarea>
-                <div className="discussion-buttons">
-                  <button className="post-comment" onClick={postComment}>Post Comment</button>
-                  <Link to="/proposal-details">
-                    <button className="view-discussion" type="submit">View Discussion</button>
-                  </Link>
-                </div>
-              </div>
+            <div className="proposal-head-title">{proposalTitle}</div>
+            <div className="proposal-head-description">{proposalDescription}</div>
+            <div className="dividing-line"></div>
+            <div className="comment-area">
+              <textarea value={value} onChange={(event) => {setValue(event.target.value)}} id="textbox" name="textbox" className="comment-box" placeholder="Please enter text here!" rows="7" cols="53"></textarea>
+              <div className="discussion-buttons">
+              <button className="post-comment" onClick={handleSubmit}>Post Comment</button>
+              <Link to="/proposal-details">
+                  <button className="view-discussion" type="submit">View Discussion</button>
+              </Link>
+            </div>
+            </div>
             <div className="voting-buttons">
                 <button className="vote-yes">Vote Yes</button>
                 <button className="vote-no">Vote No</button>
-              </div>
+            </div>
           </div>
         </div>
-        
       </div>
     </div>
   );

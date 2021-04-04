@@ -1,7 +1,9 @@
 const express = require('express');
-const db = require('./db-connection');
+const cors = require('cors');
 require('dotenv').config();
-var cors = require('cors');
+
+const db = require('./db-connection');
+
 const app = express();
 const port = 8000;
 app.use(cors());
@@ -9,19 +11,16 @@ app.use(cors());
 // Enable body parser
 app.use(express.json());
 
-
-
-
 app.post('/post_comment', async (req, res) => {
   try {
-    let time_posted = new Date();
-    let user_id = 3;
-    let comment_text = req.body.comment_text;
-    let proposal_id = 1;
-    const query = await db.query(
-      "INSERT INTO comments (time_posted, user_id, comment_text, proposal_id) VALUES ($1, $2, $3, $4);", [time_posted, user_id, comment_text, proposal_id]
+    const timePosted = new Date();
+    const userId = req.query.user_id;
+    const commentText = req.body.comment_text;
+    const proposalId = req.query.proposal_id;
+    await db.query(
+      'INSERT INTO comments (time_posted, user_id, comment_text, proposal_id) VALUES ($1, $2, $3, $4);', [timePosted, userId, commentText, proposalId],
     );
-    res.send("Success");
+    res.send('Success');
   } catch (error) {
     console.log(error.stack);
   }
@@ -29,9 +28,9 @@ app.post('/post_comment', async (req, res) => {
 
 app.get('/get_comments', async (req, res) => {
   try {
-    let proposal_id = req.query.proposal_id;
+    const proposalId = req.query.proposal_id;
     const query = await db.query(
-      "SELECT * FROM comments WHERE proposal_id=$1;", [proposal_id]
+      'SELECT * FROM comments WHERE proposal_id=$1;', [proposalId],
     );
     res.send(query.rows);
   } catch (error) {
@@ -39,48 +38,6 @@ app.get('/get_comments', async (req, res) => {
   }
 });
 
-// app.get('/', (req, res) => {
-//   res.send('Hello World');
-// });
-
-// //Example endpoint that sends a try-catch wrapped query to the database
-// app.get('/test_db', async (req, res) => {
-//   try {
-//     const query = await db.query(
-//       'SELECT * FROM users;'
-//     );
-//     res.send(query.rows);
-//   } catch (error) {
-//     console.log(error.stack);
-//   }
-// });
-
-// //Example endpoint that sends a try-catch wrapped query to the database
-// app.get('/test_db2', async (req, res) => {
-//   let name = "Warren";
-//   try {
-//     const query = await db.query(
-//       "SELECT * FROM users WHERE username=$1;", [name]
-//     );
-//     res.send(query.rows);
-//   } catch (error) {
-//     console.log(error.stack);
-//   }
-// });
-
-// //Example endpoint that sends a try-catch wrapped query to the database
-// app.post('/test_db3', async (req, res) => {
-//   try {
-//     const query = await db.query(
-//       "INSERT INTO users (id, is_admin, username) VALUES ($1, $2, $3);", ['5', true, 'SuperAdmin']
-//     );
-//     res.send("Success");
-//   } catch (error) {
-//     console.log(error.stack);
-//   }
-// });
-
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });
- 
