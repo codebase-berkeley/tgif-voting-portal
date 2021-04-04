@@ -1,9 +1,11 @@
 const express = require('express');
+const cors = require('cors');
 const db = require('./db-connection');
 require('dotenv').config();
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 const port = 8000;
 
 app.get('/', (req, res) => {
@@ -24,12 +26,16 @@ app.get('/test_db', async (req, res) => {
 
 app.post('/submitVote', async (req, res) => {
   try {
-    console.log(req.body);
-    const query = await db.query(
-      'INSERT INTO votes(vote, has_voted, user_id, proposal_id) VALUES ($1, $2, $3, $4)',
-      [req.body.vote, true, req.body.user_id, req.body.proposal_id],
+    console.log(req);
+    const deleteEntry = await db.query(
+      'DELETE FROM votes WHERE user_id=$1 AND proposal_id=$2',
+      [req.body.user_id, req.body.proposal_id],
     );
-    res.send('ok');
+    const query = await db.query(
+      'INSERT INTO votes(vote, user_id, proposal_id) VALUES ($1, $2, $3)',
+      [req.body.vote, req.body.user_id, req.body.proposal_id],
+    );
+    res.send('Submitted vote...');
   } catch (error) {
     console.log(error.stack);
   }
@@ -37,11 +43,19 @@ app.post('/submitVote', async (req, res) => {
 
 app.get('/getAllVotes', async (req, res) => {
   try {
-    const query = await db.query(
-      'SELECT vote FROM votes WHERE proposal_id=$1',
-      [req.body.proposal_id],
+    const amountYesQuery = await db.query(
+      'SELECT COUNT(*) FROM votes WHERE proposal_id=$1 AND vote=TRUE;',
+      [req.query.proposal_id],
     );
-    res.send(query.rows);
+    const totalVotesQuery = await db.query(
+      'SELECT COUNT(*) FROM votes WHERE proposal_id=$1',
+      [req.query.proposal_id],
+    );
+    const totalUsersQuery = await db.query(
+      'SELECT COUNT(*) FROM users',
+    );
+    // totalVotesQuery.rows, totalUsersQuery.rows
+    res.send([amountYesQuery.rows, totalVotesQuery.rows, totalUsersQuery.rows]);
   } catch (error) {
     console.log(error.stack);
   }
@@ -49,12 +63,11 @@ app.get('/getAllVotes', async (req, res) => {
 
 app.get('/getProposalDetails', async (req, res) => {
   try {
-    console.log(req.query);
     const query = await db.query(
-      'SELECT title, organization, amount_requested, link, description_text FROM proposals WHERE id=$1',
+      'SELECT title, organization, amount_requested, link, description_text, deadline FROM proposals WHERE id=$1;',
       [req.query.proposal_id],
     );
-    res.send(query.rows);
+    res.send(query.rows[0]);
   } catch (error) {
     console.log(error.stack);
   }

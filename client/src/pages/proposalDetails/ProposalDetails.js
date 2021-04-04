@@ -2,24 +2,15 @@ import './ProposalDetails.css';
 import ProgressBar from 'react-bootstrap/ProgressBar';
 import DiscussionPost from './DiscussionPost.js';
 import ProposalButton from './ProposalButton.js';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from "axios";
 
 var IS_ADMIN = true;
 
 const YES_VOTE = true;
 const NO_VOTE = !YES_VOTE;
 
-var TOTAL_MEMBERS = 40;
-var AMOUNT_VOTED = 28; //replace with COUNT() votes from the data set.
-var AMOUNT_YES = 20; //replace with COUNT() of yes votes from the data set.
-var AMOUNT_NO = AMOUNT_VOTED - AMOUNT_YES;
-var PERCENT_YES = AMOUNT_YES / TOTAL_MEMBERS * 100;
-var PERCENT_NO = AMOUNT_NO / TOTAL_MEMBERS * 100;
-var PERCENT_UNVOTED = (TOTAL_MEMBERS - AMOUNT_VOTED) / TOTAL_MEMBERS * 100;
-
 var DUMMY_USERNAME = 'Beyonce';
-var DUMMY_DEADLINE = '3/5/21';
-var DUMMY_AMOUNT = 14360;
 var DUMMY_COMMENT1 = {
   userName: 'kalea',
   text: 'i like this proposal, i think we should approve it',
@@ -53,15 +44,40 @@ function amountToDollarString(amount) {
 
 function ProposalConditionalRender(isAdmin) {
 
-  var VOTE_VALUE = false;
-  var PROGRESS_VALUE = !VOTE_VALUE;
-
-  const [showProgressBars, setToggleView] = useState(VOTE_VALUE);
+  var PROGRESS_VALUE = false;
+  const [showProgressBars, setToggleView] = useState(!PROGRESS_VALUE);
 
     /** Toggles view for admin conditional frame; returns progress bars
      * if admin toggle is set to "progress" and admin voting buttons if set to "vote" */
     function ToggleComponents(showProgress) {
+      const [AMOUNT_YES, setYesVotes] = useState(0);
+      const [AMOUNT_VOTED, setVotesTotal] = useState(0);
+      const [TOTAL_MEMBERS, setTotalMembers] = useState(1);
+      const [PERCENT_NO, setPercentNo] = useState(0);
+      const [PERCENT_YES, setPercentYes] = useState(0);
+      const [PERCENT_UNVOTED, setPercentUnvoted] = useState(0);
+
+      async function fetchVoteInfo() {
+        const res = await axios.get('http://localhost:8000/getAllVotes', {params : {proposal_id: 1}});
+        const voteYes = res.data[0][0].count;
+        const votesTotal= res.data[1][0].count;
+        const totalMembers = res.data[2][0].count;
+        console.log(voteYes);
+        console.log(votesTotal);
+        console.log(totalMembers);
+        
+        setYesVotes(voteYes);
+        setVotesTotal(votesTotal);
+        setTotalMembers(totalMembers);
+        setPercentYes((voteYes/totalMembers)*100);
+        setPercentNo(((votesTotal - voteYes) / totalMembers)*100);
+        setPercentUnvoted(((totalMembers - votesTotal) / totalMembers) * 100);
+      }
       
+      useEffect(() => {
+        fetchVoteInfo();
+      }, [])
+
       const adminPressedYesButtonClassName = 'pressedYesButton adminButton';
       const adminUnpressedYesButtonClassName = 'unpressedYesButton adminButton';
       const [adminYesButtonClassName, setAdminYesButtonClassName] = useState(adminUnpressedYesButtonClassName);
@@ -71,6 +87,10 @@ function ProposalConditionalRender(isAdmin) {
       const [adminNoButtonClassName, setAdminNoButtonClassName] = useState(adminUnpressedNoButtonClassName);
 
       const [adminVote, changeAdminVote] = useState('Unvoted');
+
+      async function submitVote(voteDecision) {
+        await axios.post('http://localhost:8000/submitVote', { vote: voteDecision, user_id: 4, proposal_id: 1});
+      }
 
       if (showProgress == PROGRESS_VALUE) {
         return (
@@ -94,15 +114,19 @@ function ProposalConditionalRender(isAdmin) {
           <div className='adminVotingButtonsFrame adminToggleView'>
             <div className='leftButtonContainer buttonContainer'>
               <ProposalButton buttonText='Vote Yes' isVotingButton={true} buttonClassName={adminYesButtonClassName}
-                onClickFunc={() => {setAdminYesButtonClassName(adminPressedYesButtonClassName);
+                onClickFunc={async () => {setAdminYesButtonClassName(adminPressedYesButtonClassName);
                                     setAdminNoButtonClassName(adminUnpressedNoButtonClassName);;
+                                    await submitVote(true);
+                                    fetchVoteInfo();
                                     changeAdminVote(YES_VOTE);}}
               />
             </div>
             <div className='rightButtonContainer buttonContainer'>
               <ProposalButton buttonText='Vote No' isVotingButton={true} buttonClassName={adminNoButtonClassName}
-                onClickFunc={() => {setAdminYesButtonClassName(adminUnpressedYesButtonClassName);
+                onClickFunc={async () => {setAdminYesButtonClassName(adminUnpressedYesButtonClassName);
                                     setAdminNoButtonClassName(adminPressedNoButtonClassName);
+                                    await submitVote(false);
+                                    fetchVoteInfo();
                                     changeAdminVote(NO_VOTE);}}
               />
             </div>
@@ -114,6 +138,8 @@ function ProposalConditionalRender(isAdmin) {
     /** Returns the proposalConditionalRender for non-admins,
      * which contains the non-admin voting buttons */
     function NonAdminProposalConditionalRender() {
+
+      /** REACT STATES */
       const nonAdminPressedYesButtonClassName = 'pressedYesButton nonAdminButton';
       const nonAdminUnpressedYesButtonClassName = 'unpressedYesButton nonAdminButton';
       const [nonAdminYesButtonClassName, setNonAdminYesButtonClassName] = useState(nonAdminUnpressedYesButtonClassName);
@@ -123,6 +149,15 @@ function ProposalConditionalRender(isAdmin) {
       const [nonAdminNoButtonClassName, setNonAdminNoButtonClassName] = useState(nonAdminUnpressedNoButtonClassName);
 
       const [nonAdminVote, changeNonAdminVote] = useState('Unvoted');
+
+      async function submitVote(voteDecision) {
+        const response = await axios.post('http://localhost:8000/submitVote', {
+          vote: voteDecision,
+          user_id: 4,
+          proposal_id: 1
+        });
+        console.log(response);
+      }
       
       return (
         <div className='proposalConditional '>
@@ -131,6 +166,7 @@ function ProposalConditionalRender(isAdmin) {
               <ProposalButton buttonText='Vote Yes' buttonClassName={nonAdminYesButtonClassName}
                 onClickFunc={() => {setNonAdminYesButtonClassName(nonAdminPressedYesButtonClassName);
                                     setNonAdminNoButtonClassName(nonAdminUnpressedNoButtonClassName);;
+                                    submitVote(true);
                                     changeNonAdminVote(YES_VOTE);}}
               />
             </div>
@@ -138,6 +174,8 @@ function ProposalConditionalRender(isAdmin) {
               <ProposalButton buttonText='Vote No' buttonClassName={nonAdminNoButtonClassName}
                 onClickFunc={() => {setNonAdminYesButtonClassName(nonAdminUnpressedYesButtonClassName);
                                     setNonAdminNoButtonClassName(nonAdminPressedNoButtonClassName);
+                                    submitVote(false);
+                                    
                                     changeNonAdminVote(NO_VOTE);}}
               />
             </div>
@@ -159,7 +197,7 @@ function ProposalConditionalRender(isAdmin) {
                 </div> 
                 <div className="toggleRight">progress</div>
               </div>
-  </div>;
+    </div>;
 
   /* Actual returned html for the conditional render part of
   the proposal frame; admins get progress bars and voting buttons
@@ -177,6 +215,22 @@ function ProposalConditionalRender(isAdmin) {
 }
 
 function ProposalDetails() {
+  const [proposalTitle, setProposalTitle] = useState('Proposal Title');
+  const [proposalDescription, setProposalDescription] = useState('Generic proposal description');
+  const [proposalSponser, setProposalSponser] = useState('Proposal Sponser');
+  const [proposalAmount, setProposalAmount] = useState(0);
+  const [proposalDeadline, setProposalDeadline] = useState("");
+
+  async function fetchProposalDetails() { 
+    const response = await axios.get('http://localhost:8000/getProposalDetails', { params: { proposal_id: 1 } });
+    const proposalInfo = response.data;
+    setProposalTitle(proposalInfo.title);
+    setProposalDescription(proposalInfo.description_text);
+    setProposalSponser(proposalInfo.organization);
+    setProposalAmount(proposalInfo.amount_requested);
+    setProposalDeadline(proposalInfo.deadline);
+  }
+
   const [comments, addComment] = useState(
     [
       <DiscussionPost isAdmin={IS_ADMIN} userName={DUMMY_COMMENT1.userName} text={DUMMY_LONG_COMMENT} time={DUMMY_COMMENT1.time}/>,
@@ -215,22 +269,26 @@ function ProposalDetails() {
       var commentDate = `${currentDate.getMonth()}/${currentDate.getDate()}/${currentDate.getFullYear().toString().substr(-2)} ${twelveHrTime(currentHour)}:${twoDigitMins(currentDate.getMinutes())}${amOrPm(currentHour)}`;
       var newComment = <DiscussionPost isAdmin={IS_ADMIN} userName={DUMMY_USERNAME}
         text={commentText} time={commentDate}/>;
-      addComment([newComment].concat(comments));
+      addComment(comments.concat([newComment]));
     }
   }
+
+  useEffect(() => {
+    fetchProposalDetails();
+  }, [])
 
   return (
     <div className="proposalDetailsPage">
       <div className="proposalLeft">
         <div className="proposalSummary">
           <div className="proposalTitle">
-            Proposal Title
+            {proposalTitle}
             <hr className="underline"></hr>
           </div>
-          <div className="proposalSponsor">Proposal Sponsor </div>
-          <div className="proposalDescription">proposal description</div>
-          <div className="proposalAmount"> proposal amount: {`$${amountToDollarString(DUMMY_AMOUNT)}`}</div>
-          <div className="proposalDeadline"> proposal deadline: {DUMMY_DEADLINE} </div>
+          <div className="proposalSponsor">{proposalSponser}</div>
+          <div className="proposalDescription">{proposalDescription}</div>
+          <div className="proposalAmount"> Proposal Amount: {`$${proposalAmount}`}</div>
+          <div className="proposalDeadline"> Proposal Deadline: {proposalDeadline} </div>
         </div>
         {ProposalConditionalRender(IS_ADMIN)}
       </div>

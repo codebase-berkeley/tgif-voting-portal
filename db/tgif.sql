@@ -17,13 +17,13 @@ CREATE TABLE users
 
 CREATE TABLE proposals
 (
-
     id SERIAL PRIMARY KEY,
     title VARCHAR,
     organization VARCHAR,
     amount_requested FLOAT,
     link VARCHAR,
-    description_text VARCHAR
+    description_text VARCHAR,
+    deadline VARCHAR
 );
 
 CREATE TABLE comments
@@ -38,10 +38,8 @@ CREATE TABLE comments
 CREATE TABLE votes
 (
     vote BOOLEAN,
-    has_voted BOOLEAN, --not sure if this is necessary if we are only inserting a row once a user casts a vote
     user_id SERIAL REFERENCES users(id),
     proposal_id SERIAL REFERENCES proposals(id)
-
 );
 
 GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO root;
@@ -64,16 +62,22 @@ GRANT ALL PRIVILEGES ON DATABASE tgif TO root;
 
 -- Example:
 
-INSERT INTO users(is_admin, username)
+INSERT INTO users(id, is_admin, username)
 VALUES
-    (TRUE, 'Teresa'),
-    (FALSE, 'Warren'),
-    (FALSE, 'Ryan'),
-    (FALSE, 'Mentored');
+    (1, TRUE, 'Teresa'),
+    (2, FALSE, 'Warren'),
+    (3, FALSE, 'Ryan'),
+    (4, FALSE, 'Mentored');
 
-INSERT INTO proposals(id, title, organization, amount_requested, link, description_text)
+INSERT INTO proposals(id, title, organization, amount_requested, link, description_text, deadline)
 VALUES
     (1, 'Mentored Tree Planting Efforts', 'Codebase Mentored', 120.50,
-        'codebase.berkeley.edu', 'We are planning to plant 1,000,000 trees!'),
+        'codebase.berkeley.edu', 'We are planning to plant 1,000,000 trees!', '04/20/69'),
     (2, 'ASUC Garden', 'ASUC', 1050,
-        'rando link', 'ASUC will be planting a garden at sproul!');
+        'rando link', 'ASUC will be planting a garden at sproul!', '01/23/45');
+
+INSERT INTO votes(vote, user_id, proposal_id)
+VALUES
+    (TRUE, 1, 1),
+    (FALSE, 2, 2),
+    (FALSE, 3, 1);
