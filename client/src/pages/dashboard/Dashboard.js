@@ -6,7 +6,7 @@ import noIcon from '../../assets/Delete.svg';
 import yesIcon from '../../assets/Checked.svg';
 import SearchBar from '../../components/searchbar/SearchBar';
 import { Link } from "react-router-dom";
-import axios from "axios";
+import axios from 'axios';
 
 const proposals = [
   {
@@ -136,9 +136,9 @@ function Dashboard() {
   function postComment() {
     axios({
       method: 'post',
-      url: '/post_comment',
+      url: 'http://localhost:8000/post_comment',
       data: {
-        comment_text: textbox.input
+        comment_text: document.getElementById("textbox").value
       }
     });
   }
@@ -152,7 +152,7 @@ function Dashboard() {
           <div className="proposal-list">
             {proposalList}
           </div>
-          <div class="shadows" aria-hidden="true"></div>
+          <div className="shadows" aria-hidden="true"></div>
         </div>
         <div className="right-proposals">
           <div className="proposal-description">
@@ -160,11 +160,11 @@ function Dashboard() {
               <div className="proposal-head-description">{proposalDescription}</div>
               <div className="dividing-line"> </div>
               <div className="comment-area">
-                <textarea id="textbox" className="comment-box" placeholder="Please enter text here!" rows="7" cols="53"></textarea>
+                <textarea id="textbox" name="textbox" className="comment-box" placeholder="Please enter text here!" rows="7" cols="53"></textarea>
                 <div className="discussion-buttons">
                   <button className="post-comment" onClick={postComment}>Post Comment</button>
                   <Link to="/proposal-details">
-                    <button className="view-discussion">View Discussion</button>
+                    <button className="view-discussion" type="submit">View Discussion</button>
                   </Link>
                 </div>
               </div>

@@ -71,9 +71,13 @@ VALUES
     (FALSE, 'Ryan'),
     (FALSE, 'Mentored');
 
+INSERT INTO proposals(title, organization, amount_requested, link, description_text)
+VALUES
+    ('treeees', 'tgif', 19.2, 'link____', 'desc');
+
 INSERT INTO comments(id, time_posted, comment_text, user_id, proposal_id)
 VALUES
-    (1, 'Mar 31'),
-    (2, 'Apr 1'),
-    (2, 'May 4'),
-    (3, 'Apr 20');
+    (1, 'Mar 31', 'i lik', 33, 1),
+    (2, 'Apr 1', 'i dnt like', 123, 1),
+    (3, 'May 4', 'cool'), 890, 1)
+    (4, 'Apr 20', 'amazing', 17, 1);t

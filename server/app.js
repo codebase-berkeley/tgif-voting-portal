@@ -1,22 +1,25 @@
 const express = require('express');
 const db = require('./db-connection');
 require('dotenv').config();
-
+var cors = require('cors');
 const app = express();
 const port = 8000;
+app.use(cors());
 
+// Enable body parser
+app.use(express.json());
 
 
 
 
 app.post('/post_comment', async (req, res) => {
   try {
-    let time_posted = now();
-    let user_id;
-    let comment_text;
-    let proposal_id;
+    let time_posted = new Date();
+    let user_id = 3;
+    let comment_text = req.body.comment_text;
+    let proposal_id = 1;
     const query = await db.query(
-      "INSERT INTO comments (time_posted, comment_text, user_id, proposal_id) VALUES ($1, $2, $3, $4);", [time_posted, user_id, comment_text, proposal_id]
+      "INSERT INTO comments (time_posted, user_id, comment_text, proposal_id) VALUES ($1, $2, $3, $4);", [time_posted, user_id, comment_text, proposal_id]
     );
     res.send("Success");
   } catch (error) {
@@ -26,11 +29,11 @@ app.post('/post_comment', async (req, res) => {
 
 app.get('/get_comments', async (req, res) => {
   try {
-    let proposal_id;
+    let proposal_id = req.query.proposal_id;
     const query = await db.query(
       "SELECT * FROM comments WHERE proposal_id=$1;", [proposal_id]
     );
-    res.send("Success");
+    res.send(query.rows);
   } catch (error) {
     console.log(error.stack);
   }

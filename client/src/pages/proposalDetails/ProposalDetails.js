@@ -18,33 +18,8 @@ var PERCENT_YES = AMOUNT_YES / TOTAL_MEMBERS * 100;
 var PERCENT_NO = AMOUNT_NO / TOTAL_MEMBERS * 100;
 var PERCENT_UNVOTED = (TOTAL_MEMBERS - AMOUNT_VOTED) / TOTAL_MEMBERS * 100;
 
-var DUMMY_USERNAME = 'Beyonce';
 var DUMMY_DEADLINE = '3/5/21';
 var DUMMY_AMOUNT = 14360;
-var DUMMY_COMMENT1 = {
-  userName: 'kalea',
-  text: 'i like this proposal, i think we should approve it',
-  time: '3/26/21 3:12pm'
-};
-var DUMMY_COMMENT2 = {
-  userName: 'jorge',
-  text: 'i dont like this, their proposal sucks',
-  time: '3/27/21 10:09pm'
-};
-
-var DUMMY_LONG_COMMENT = `In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content. Lorem ipsum may be used as a placeholder before final copy is available. um is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content. Lorem ipsum may be used as a
-placeholder before final copy is available. It is a long established fact that a reader will be distracted by the readable content of a 
-page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less
-normal distribution of letters, as opposed to using 'Content here, content here', making it look like
-readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their
-default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy.
-Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour
-and the like).`;
-
-var DUMMY_MEDIUM_COMMENT = `In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content. Lorem ipsum may be used as a placeholder before final copy is available. um is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content. Lorem ipsum may be used as a
-placeholder before final copy is available. It is a long established fact that a reader will be distracted by the readable content of a 
-page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less
-normal distribution of letters.`;
 
 /** Takes in a number and converts it to a dollar amount string w/ commas
  * placed appropriately (every 3 spaces); does not include dollar sign */
@@ -178,12 +153,15 @@ function ProposalConditionalRender(isAdmin) {
 }
 
 function ProposalDetails() {
-  const [comments, setComments] = useState();
+  const [comments, setComments] = React.useState([]);
   
   async function fetchData() {
     try {
-      const response = await axios.get("/get_comments");
-      setComments(response);
+      const response = await axios.get("http://localhost:8000/get_comments", 
+                                          { params: 
+                                            { proposal_id: 1 }
+                                          });      
+      setComments(response.data);
     } catch (error) {
       console.error(error);
     }
@@ -193,47 +171,18 @@ function ProposalDetails() {
     fetchData();
   }, []);
 
-  {comments.map((comment) => (
-    // tgif.sql for comments on IS_ADMIN in comments db
-    <DiscussionPost isAdmin={IS_ADMIN} userName={comment.user_id} text={comment.comment_text} time={comment.time_posted}/>
-  ))}
-  
 
-  function postComment() {
-    var textBox = document.getElementById("userInputDiscussion");
-    var commentText = textBox.value;
-    if (commentText !== '') {
-      textBox.value = '';
-      var currentDate = new Date();
-      var twelveHrTime = (hour) => {
-        if (hour === 0) {
-          return 12;
-        } else if (hour <= 12) {
-          return hour;
-        } else {
-          return hour - 12;
+  async function postComment() {
+    await axios({
+      method: 'post',
+      url: 'http://localhost:8000/post_comment',
+      data: {
+          comment_text: document.getElementById("userInputDiscussion").value
         }
-      }
-      var twoDigitMins = (mins) => mins < 10 ? `0${mins}` : `${mins}`;
-      var currentHour = currentDate.getHours();
-      var amOrPm = (hour) => hour <= 12 ? 'am' : 'pm';
-      var commentDate = `${currentDate.getMonth()}/${currentDate.getDate()}/${currentDate.getFullYear().toString().substr(-2)} ${twelveHrTime(currentHour)}:${twoDigitMins(currentDate.getMinutes())}${amOrPm(currentHour)}`;
-      var newComment = <DiscussionPost isAdmin={IS_ADMIN} userName={DUMMY_USERNAME}
-        text={commentText} time={commentDate}/>;
-      addComment([newComment].concat(comments));
-
-      axios({
-        method: 'post',
-        url: '/post_comment',
-        data: {
-          comment_text: commentText
-        }
-      });}
+      });
     
-
+    fetchData();
   }
-
-  
 
   return (
     <div className="proposalDetailsPage">
@@ -257,7 +206,10 @@ function ProposalDetails() {
           <hr className="underline"></hr>
         </div>
         <div className='discussionCommentsView'>
-          {comments}
+        {comments.map((comment) => (
+          // tgif.sql for comments on IS_ADMIN in comments db
+          <DiscussionPost isAdmin={IS_ADMIN} userName={comment.user_id} text={comment.comment_text} time={comment.time_posted}/>
+        ))}
         </div>
         <div className='discussionPostCommentFrame'>
           <div className='postCommentTopContainer postCommentContainer'>
