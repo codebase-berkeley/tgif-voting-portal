@@ -15,3 +15,8 @@ Starting each application separately
 - run `yarn start` in the client folder to start the react app in localhost
 - run `yarn server` in the server folder to start the express server in localhost
 - run `yarn db` in root directory to rebuild + start the database. This will also let you run sql commands and interact with our db directly in this terminal window
+
+## Ports Used
+- React client: localhost:3000
+- Express server: localhost:8000
+- Postgres DB: localhost:5432
