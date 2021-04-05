@@ -180,6 +180,8 @@ function ProposalDetails() {
         method: 'post',
         url: 'http://localhost:8000/post_comment',
         data: {
+          user_id: 1,
+          proposal_id: 1,
           comment_text: value
         }
       });

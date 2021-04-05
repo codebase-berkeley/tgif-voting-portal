@@ -14,9 +14,9 @@ app.use(express.json());
 app.post('/post_comment', async (req, res) => {
   try {
     const timePosted = new Date();
-    const userId = req.query.user_id;
+    const userId = req.body.user_id;
     const commentText = req.body.comment_text;
-    const proposalId = req.query.proposal_id;
+    const proposalId = req.body.proposal_id;
     await db.query(
       'INSERT INTO comments (time_posted, user_id, comment_text, proposal_id) VALUES ($1, $2, $3, $4);', [timePosted, userId, commentText, proposalId],
     );
