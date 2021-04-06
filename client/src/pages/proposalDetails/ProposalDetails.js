@@ -9,6 +9,7 @@ var IS_ADMIN = true;
 
 const YES_VOTE = true;
 const NO_VOTE = !YES_VOTE;
+const ANON = 'anonymous';
 
 /** Takes in a number and converts it to a dollar amount string w/ commas
  * placed appropriately (every 3 spaces); does not include dollar sign */
@@ -275,7 +276,7 @@ function ProposalDetails() {
         <div className='discussionCommentsView'>
         {comments.map((comment) => (
           // tgif.sql for comments on IS_ADMIN in comments db
-          <DiscussionPost isAdmin={IS_ADMIN} userName={comment.user_id} text={comment.comment_text} time={comment.time_posted}/>
+          <DiscussionPost isAdmin={IS_ADMIN} userName={ANON} text={comment.comment_text} time={comment.time_posted}/>
         ))}
         </div>
         <div className='discussionPostCommentFrame'>

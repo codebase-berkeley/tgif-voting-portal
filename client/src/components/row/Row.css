@@ -13,6 +13,10 @@
     min-height: 2.5em;
 }
 
+.proposal-box:hover{
+    cursor: pointer;
+}
+
 .proposal-title {
     flex-direction: row;
     font-family: 'Lexend Deca', sans-serif;

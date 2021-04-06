@@ -10,64 +10,66 @@ import axios from 'axios';
 
 const proposals = [
   {
-      title: "some title1",
-      description: "fdsfdsafas",
+      title: "Mapping for Environmental Justice",
+      description: `Mapping for Environmental Justice (MEJ) is an
+      initiative to create interactive and publicly-accessible maps displaying
+      environmental justice data for individual states. With guidance from the
+      residents of impacted communities, MEJ combines environment, public health,
+      and demographic data into an indicator of vulnerability for communities in
+      every state.`,
       voted: yesIcon
   },
 
   {
-      title: "Please give us money. Thanks",
-      description: "fdsfdsafas",
+      title: "Give All Students Free Food",
+      description: "We want to give every student at UC Berkeley free food.",
       voted: noIcon
   },
 
   {
-    title: "aljewnoinxansxlwnlndwondwasdn",
-    description: "fdsfdsafas"
+    title: "Saving dogs",
+    description: "Top dog saves dogs!"
   },
   
   {
-    title: "We need help building XYZB",
+    title: "Paint the Campanile Big Again",
     description: "fdsfdsafas",
     voted: yesIcon
   },
 
   {
-    title: "some title2",
-    description: "fdsfdsafas",
+    title: "Recycling Project 1",
+    description: "Increase recycling by 500%",
+    voted: noIcon
+  },
+  
+  {
+    title: "Recycling Project 2",
+    description: "Increase recycling by 200%",
+    voted: noIcon
+  },
+  
+  {
+    title: "Recycling Project 3",
+    description: "Increase recycling by 300%",
     voted: noIcon
   },
 
   {
-    title: "some title3",
-    description: "fdsfdsafas"
+    title: "Make Big C Bigger!",
+    description: "MAKE BIG C BIG AGAIN!"
   },
 
   {
-    title: "We need help building XYZA",
+    title: "Plant 1,000,000 Trees",
     description: "fdsfdsafas",
     voted: yesIcon
   },
 
   {
-    title: "some title4",
-    description: "fdsfdsafas",
+    title: "Trees for the Lorax",
+    description: "Listen to the trees",
     voted: noIcon
-  },
-
-  {
-    title: "some title5",
-    description: "fdsfdsafas"
-  },
-
-  {
-    title: "hiya!",
-    description: "fdsfdsafas"
-  },
-
-  {
-    title: "ebic",
-    description: "fdsfdsafas"
   },
 
   {
@@ -105,6 +107,7 @@ function Dashboard() {
     proposalHTML.push(<Row changeTitle={(x) => {setProposalTitle(x)}} 
                           changeDescription={(x) => {setProposalDescription(x)}}
                           title={proposals[i].title} 
+                          description={proposals[i].description}
                           vote={proposals[i].voted ? proposals[i].voted : ""}/>);
   }
 
