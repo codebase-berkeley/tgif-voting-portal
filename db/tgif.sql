@@ -27,7 +27,8 @@ CREATE TABLE proposals
 );
 
 CREATE TABLE comments
-(
+(   
+    -- is_admin BOOLEAN -- we might need this to determine whether we display comments as anon
     id SERIAL PRIMARY KEY,
     time_posted TIMESTAMP,
     comment_text VARCHAR,
@@ -86,3 +87,4 @@ VALUES
     (TRUE, 1, 1),
     (FALSE, 2, 2),
     (FALSE, 3, 1);
+

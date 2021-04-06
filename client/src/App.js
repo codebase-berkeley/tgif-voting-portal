@@ -1,17 +1,32 @@
-import ProposalDetails from './pages/proposalDetails/ProposalDetails.js';
-import Dashboard from './pages/dashboard/Dashboard';
-import NavBar from './components/navbar/NavBar';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
+import Dashboard from './pages/dashboard/Dashboard';
+import ProposalDetails from './pages/proposalDetails/ProposalDetails.js';
+import NavBar from './components/navbar/NavBar.js';
+import React from "react";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+} from "react-router-dom";
 
 
 function App() {
   return (
-    <div className="App">
-      {/* <NavBar/>
-      <Dashboard /> */}
-      <ProposalDetails />
-    </div>
+    <Router>
+      <div className="App">
+        <NavBar/>
+        <Switch>
+          <Route path="/dashboard">
+            <Dashboard />
+          </Route>
+          <Route path="/proposal-details">
+            <ProposalDetails />
+          </Route>
+        </Switch>
+      </div>
+    </Router>
+    
   );
 }
 

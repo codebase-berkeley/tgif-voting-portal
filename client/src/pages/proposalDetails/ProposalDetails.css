@@ -2,7 +2,7 @@
     --descriptionAndProgressBarsWidth: 87%;
     background: var(--lightGrey);
     width: 100vw;
-    height: 100vh;
+    height: 90vh;
     display: flex;
     flex-direction:row;
     justify-content:center;
@@ -312,7 +312,7 @@ input:checked + .slider:before {
     border: 1px solid var(--grey);
     border-radius: 4px;
     color: var(--black);
-    font: 0.5em 'Lexend Deca', sans-serif;
+    font: 1em 'Lexend Deca', sans-serif;
     width: 100%;
     height: 50px;
 }

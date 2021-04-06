@@ -1,5 +1,6 @@
 import './NavBar.css';
 import {ReactComponent as TGIFIcon} from './../../assets/TGIF.svg'
+import {Link} from 'react-router-dom';
 
 function Navbar() {
     return (
@@ -7,7 +8,7 @@ function Navbar() {
             <div className = "navbar-content">
                 <div className="leftNavbar" >
                     <a href='#' id="tgif-logo">
-                        <TGIFIcon className="logo"/>
+                    <Link to="/dashboard"><TGIFIcon className="logo"/></Link>
                     </a>
                 </div>
                 <div className="rightNavbar">

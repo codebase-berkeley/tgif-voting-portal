@@ -5,6 +5,8 @@ import './Dashboard.css';
 import noIcon from '../../assets/Delete.svg';
 import yesIcon from '../../assets/Checked.svg';
 import SearchBar from '../../components/searchbar/SearchBar';
+import { Link } from "react-router-dom";
+import axios from 'axios';
 
 const proposals = [
   {
@@ -96,8 +98,6 @@ const proposals = [
   }
 ]
 
-
-
 function Dashboard() {
   /* Contains all proposals. */
   const proposalHTML = []
@@ -131,6 +131,26 @@ function Dashboard() {
     } 
   }
 
+  const[value, setValue] = React.useState('');
+
+  const handleSubmit = async () => {
+    try {
+      await axios({
+        method: 'post',
+        url: 'http://localhost:8000/post_comment',
+        data: {
+          user_id: 1,
+          proposal_id: 1,
+          comment_text: value
+        }
+      });
+    } catch(error) {
+      console.log(error);
+    }
+    setValue('');
+  };
+  
+
   return (
     <div className="dashboard">
       <div className="dashboard-screen">
@@ -139,27 +159,28 @@ function Dashboard() {
           <div className="proposal-list">
             {proposalList}
           </div>
-          <div class="shadows" aria-hidden="true"></div>
+          <div className="shadows" aria-hidden="true"></div>
         </div>
         <div className="right-proposals">
           <div className="proposal-description">
-              <div className="proposal-head-title">{proposalTitle}</div>
-              <div className="proposal-head-description">{proposalDescription}</div>
-              <div className="dividing-line"> </div>
-              <div className="comment-area">
-                <textarea id="textbox" className="comment-box" placeholder="Please enter text here!" rows="7" cols="53"></textarea>
-                <div className="discussion-buttons">
-                  <button className="post-comment">Post Comment</button>
-                  <button className="view-discussion">View Discussion</button>
-                </div>
-              </div>
+            <div className="proposal-head-title">{proposalTitle}</div>
+            <div className="proposal-head-description">{proposalDescription}</div>
+            <div className="dividing-line"></div>
+            <div className="comment-area">
+              <textarea value={value} onChange={(event) => {setValue(event.target.value)}} id="textbox" name="textbox" className="comment-box" placeholder="Please enter text here!" rows="7" cols="53"></textarea>
+              <div className="discussion-buttons">
+              <button className="post-comment" onClick={handleSubmit}>Post Comment</button>
+              <Link to="/proposal-details">
+                  <button className="view-discussion" type="submit">View Discussion</button>
+              </Link>
+            </div>
+            </div>
             <div className="voting-buttons">
                 <button className="vote-yes">Vote Yes</button>
                 <button className="vote-no">Vote No</button>
-              </div>
+            </div>
           </div>
         </div>
-        
       </div>
     </div>
   );
