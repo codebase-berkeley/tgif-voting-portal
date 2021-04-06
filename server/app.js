@@ -1,46 +1,38 @@
 const express = require('express');
-const db = require('./db-connection');
+const cors = require('cors');
 require('dotenv').config();
+
+const db = require('./db-connection');
 
 const app = express();
 const port = 8000;
+app.use(cors());
 
-app.get('/', (req, res) => {
-  res.send('Hello World');
-});
+// Enable body parser
+app.use(express.json());
 
-// Example endpoint that sends a try-catch wrapped query to the database
-app.get('/test_db', async (req, res) => {
+app.post('/post_comment', async (req, res) => {
   try {
-    const query = await db.query(
-      'SELECT * FROM users;',
-    );
-    res.send(query.rows);
-  } catch (error) {
-    console.log(error.stack);
-  }
-});
-
-// Example endpoint that sends a try-catch wrapped query to the database
-app.get('/test_db2', async (req, res) => {
-  const name = 'Warren';
-  try {
-    const query = await db.query(
-      'SELECT * FROM users WHERE username=$1;', [name],
-    );
-    res.send(query.rows);
-  } catch (error) {
-    console.log(error.stack);
-  }
-});
-
-// Example endpoint that sends a try-catch wrapped query to the database
-app.post('/test_db3', async (req, res) => {
-  try {
+    const timePosted = new Date();
+    const userId = req.body.user_id;
+    const commentText = req.body.comment_text;
+    const proposalId = req.body.proposal_id;
     await db.query(
-      'INSERT INTO users (id, is_admin, username) VALUES ($1, $2, $3);', ['5', true, 'SuperAdmin'],
+      'INSERT INTO comments (time_posted, user_id, comment_text, proposal_id) VALUES ($1, $2, $3, $4);', [timePosted, userId, commentText, proposalId],
     );
     res.send('Success');
+  } catch (error) {
+    console.log(error.stack);
+  }
+});
+
+app.get('/get_comments', async (req, res) => {
+  try {
+    const proposalId = req.query.proposal_id;
+    const query = await db.query(
+      'SELECT * FROM comments WHERE proposal_id=$1;', [proposalId],
+    );
+    res.send(query.rows);
   } catch (error) {
     console.log(error.stack);
   }
