@@ -86,13 +86,15 @@ function ProposalConditionalRender(isAdmin) {
       const [adminNoButtonClassName, setAdminNoButtonClassName] = useState(adminUnpressedNoButtonClassName);
 
       async function submitVote(voteDecision) {
-        const response = await axios.post('http://localhost:8000/submitVote', {
-          vote: voteDecision,
-          user_id: 4,
-          proposal_id: 1
-        });
-        if (response.data === null) {
-          console.log("Error in submitting vote.");
+        try {
+          const response = await axios.post('http://localhost:8000/submitVote', {
+            vote: voteDecision,
+            user_id: 4,
+            proposal_id: 1
+          });
+        } catch(error) {
+          console.log("There was an error in submitting your vote.");
+          console.log(error.stack);
         }
       }
 
@@ -153,13 +155,15 @@ function ProposalConditionalRender(isAdmin) {
       const [nonAdminVote, changeNonAdminVote] = useState('Unvoted');
 
       async function submitVote(voteDecision) {
-        const response = await axios.post('http://localhost:8000/submitVote', {
-          vote: voteDecision,
-          user_id: 4,
-          proposal_id: 1
-        });
-        if (response.data === null) {
-          console.log("Error in submitting vote.");
+        try {
+          const response = await axios.post('http://localhost:8000/submitVote', {
+            vote: voteDecision,
+            user_id: 4,
+            proposal_id: 1
+          });
+        } catch(error) {
+          console.log("There was an error in submitting your vote.");
+          console.log(error.stack);
         }
       }
       
@@ -225,17 +229,17 @@ function ProposalDetails() {
   const [proposalDeadline, setProposalDeadline] = useState("");
 
   async function fetchProposalDetails() { 
-    const response = await axios.get('http://localhost:8000/getProposalDetails', { params: { proposal_id: 1 } });
-    const proposalInfo = response.data;
-    if (!(proposalInfo === null)) {
+    try {
+      const response = await axios.get('http://localhost:8000/getProposalDetails', { params: { proposal_id: 1 } });
+      const proposalInfo = response.data;
       setProposalTitle(proposalInfo.title);
       setProposalDescription(proposalInfo.description_text);
       setProposalSponsor(proposalInfo.organization);
       setProposalAmount(proposalInfo.amount_requested.toFixed(2));
       setProposalDeadline(proposalInfo.deadline);
-    }
-    else{
+    } catch (error) {
       console.log("Error in fetching proposal details.");
+      console.log(error.stack);
     }
   }
 
