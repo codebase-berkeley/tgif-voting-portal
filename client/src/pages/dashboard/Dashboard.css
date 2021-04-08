@@ -98,6 +98,7 @@
 
 .comment-boxus:focus {
     outline: none;
+    resize: none;
 }
 
 .vote-yes {
