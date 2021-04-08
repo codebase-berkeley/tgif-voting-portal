@@ -125,6 +125,7 @@ function Dashboard() {
         filteredList.push(<Row changeTitle={(x) => {setProposalTitle(x)}}
                                 changeDescription={(x) => {setProposalDescription(x)}}
                                 title={proposalListDefault[i].title} 
+                                description={proposalListDefault[i].description}
                                 vote={proposalListDefault[i].voted ? proposalListDefault[i].voted : ""} />)
       }
       setInput(input);
