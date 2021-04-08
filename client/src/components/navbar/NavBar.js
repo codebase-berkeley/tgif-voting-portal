@@ -7,12 +7,10 @@ function Navbar() {
         <div className="top-navbar" id='nav'>
             <div className = "navbar-content">
                 <div className="leftNavbar" >
-                    <a href='#' id="tgif-logo">
                     <Link to="/dashboard"><TGIFIcon className="logo"/></Link>
-                    </a>
                 </div>
                 <div className="rightNavbar">
-                    <a href='#'>Admin</a>
+                    <Link to="/members">Admin</Link>
                     <a href='#'>Logout</a>
                 </div>
             </div>

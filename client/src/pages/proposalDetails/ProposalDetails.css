@@ -1,7 +1,7 @@
 .proposalDetailsPage {
     --descriptionAndProgressBarsWidth: 87%;
     background: var(--lightGrey);
-    height: 90vh;
+    height: 89vh;
     display: flex;
     flex-direction:row;
     justify-content:center;
@@ -59,7 +59,7 @@
     margin: 20px 0px 20px 0px;
 }
 
-.underline {
+.proposalDetailsUnderline {
     border-top: 2px solid var(--black);
     height: 4px;
     color: black;

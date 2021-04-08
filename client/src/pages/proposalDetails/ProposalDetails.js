@@ -275,7 +275,7 @@ function ProposalDetails() {
         <div className="proposalSummary">
           <div className="proposalTitle">
             {proposalTitle}
-            <hr className="underline"></hr>
+            <hr className="proposalDetailsUnderline"></hr>
           </div>
           <div className="proposalSponsor">{proposalSponsor}</div>
           <div className="proposalDescription">{proposalDescription}</div>
@@ -288,7 +288,7 @@ function ProposalDetails() {
       <div className="discussion">
         <div className="discussionTitle">
           Discussion
-          <hr className="underline"></hr>
+          <hr className="proposalDetailsUnderline"></hr>
         </div>
         <div className='discussionCommentsView'>
         {comments.map((comment) => (

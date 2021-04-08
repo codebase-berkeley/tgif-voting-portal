@@ -1,6 +1,5 @@
 const express = require('express');
-const cors = require('cors');
-const db = require('./db-connection');
+onst db = require('./db-connection');
 require('dotenv').config();
 
 const app = express();
@@ -18,6 +17,28 @@ app.post('/post_comment', async (req, res) => {
       'INSERT INTO comments (time_posted, user_id, comment_text, proposal_id) VALUES ($1, $2, $3, $4);', [timePosted, userId, commentText, proposalId],
     );
     res.send('Success');
+  } catch (error) {
+    console.log(error.stack);
+  }
+});
+
+app.get('/getMembers', async (req, res) => {
+  try {
+    const query = await db.query(
+      'SELECT * FROM users;'
+    );
+    res.send(query.rows);
+  } catch (error) {
+    console.log(error.stack);
+  }
+});
+
+app.get('/getUserVotes', async (req, res) => {
+  try {
+    const query = await db.query(
+      'SELECT user_id, COUNT(*) FROM votes GROUP BY user_id;',
+    );
+    res.send(query.rows);
   } catch (error) {
     console.log(error.stack);
   }
@@ -49,6 +70,17 @@ app.post('/submitVote', async (req, res) => {
   } catch (error) {
     console.log(error.stack);
     res.send(null);
+  }
+});
+
+app.get('/getProposalCount', async (req, res) => {
+  try {
+    const proposalCount = await db.query(
+      'SELECT COUNT(*) FROM proposals'
+    );
+    res.send(proposalCount.rows[0].count);
+  } catch (error) {
+    console.log(error.stack);
   }
 });
 
