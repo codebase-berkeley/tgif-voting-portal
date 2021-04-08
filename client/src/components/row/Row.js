@@ -6,7 +6,7 @@ function Row(props) {
             className="proposal-box"
             id={props.title}
             onClick={() => {props.changeTitle(props.title);
-                            props.changeDescription(props.title);}
+                            props.changeDescription(props.description);}
         }>
 
             <div className="proposal-title">{props.title}</div>

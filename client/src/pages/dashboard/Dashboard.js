@@ -10,91 +10,91 @@ import axios from 'axios';
 
 const proposals = [
   {
-      title: "some title1",
-      description: "fdsfdsafas",
+      title: "Mapping for Environmental Justice",
+      description: `MEJ is an
+      initiative to create interactive and publicly-accessible maps displaying
+      environmental justice data for individual states.`,
       voted: yesIcon
   },
 
   {
-      title: "Please give us money. Thanks",
-      description: "fdsfdsafas",
-      voted: noIcon
+    title: "Add Fire to the Fire Trails",
+    description: "The only thing missing from the fire trails are fire. This will help hikers connect with nature.",
+    voted: yesIcon
   },
 
   {
-    title: "aljewnoinxansxlwnlndwondwasdn",
-    description: "fdsfdsafas"
+      title: "Give All Students A Meal Plan",
+      description: `We want to give every student at UC Berkeley a meal plan for all
+      4 years.`,
+      voted: noIcon
   },
   
   {
-    title: "We need help building XYZB",
-    description: "fdsfdsafas",
+    title: "Paint the Campanile Pink",
+    description: "The campanile should be pink!",
     voted: yesIcon
   },
 
   {
-    title: "some title2",
-    description: "fdsfdsafas",
+    title: "Make Big C Bigger!",
+    description: "MAKE BIG C BIG AGAIN!"
+  },
+
+  {
+    title: "Give Oski A Makeover",
+    description: "Here's something we all know: Oski is creepy. We are asking for $1,000,000 to give him a makeover!",
+    voted: noIcon
+  },
+  
+  {
+    title: "Zero Waste 2020",
+    description: "Increase recycling by 200%",
     voted: noIcon
   },
 
   {
-    title: "some title3",
-    description: "fdsfdsafas"
+    title: "Save The Dogs",
+    description: "Top dog saves dogs!"
+  },
+  
+  {
+    title: "BerkeleyMoves! Carsharing Pilot",
+    description: "The UC Berkeley Parking & Transportation Berkeley",
+    voted: noIcon
   },
 
   {
-    title: "We need help building XYZA",
-    description: "fdsfdsafas",
+    title: "Plant 1,000,000 Trees",
+    description: "The goal is to plant 1,000,000 trees by the end of the year. ",
     voted: yesIcon
   },
 
   {
-    title: "some title4",
-    description: "fdsfdsafas",
+    title: "Trees for the Lorax",
+    description: "I speak for the trees",
     voted: noIcon
   },
 
   {
-    title: "some title5",
-    description: "fdsfdsafas"
-  },
-
-  {
-    title: "hiya!",
-    description: "fdsfdsafas"
-  },
-
-  {
-    title: "ebic",
-    description: "fdsfdsafas"
-  },
-
-  {
-    title: "We need help building XYZA",
-    description: "fdsfdsafas",
-    voted: yesIcon
-  },
-
-  {
-    title: "some title4",
-    description: "fdsfdsafas",
+    title: "ASUC Garden",
+    description: "We want to build a garden on Sproul",
     voted: noIcon
   },
 
   {
-    title: "some title5",
-    description: "fdsfdsafas"
+    title: "Biofuels Technology R&D and Procurement",
+    description: "Repurpose waste cooking oil produced by Cal Dining facilities into biodiesel for use as a cleaner alternative fuel for campus vehicles."
   },
 
   {
-    title: "hiya!",
-    description: "fdsfdsafas"
+    title: "Zero Waste Fellow",
+    description: "The creation of the Zero Waste Fellow position (similar to Carbon Neutrality or Engagement Fellows) will allow for institutionalized leadership that will continue to build upon and expand zero waste work."
   },
 
   {
-    title: "ebic",
-    description: "fdsfdsafas"
+    title: "Resilient Sustainibility Community Fellows",
+    description: "This project hopes to provide up to seven (7) post-baccalaureate fellowships for seniors."
   }
 ]
 
@@ -105,6 +105,7 @@ function Dashboard() {
     proposalHTML.push(<Row changeTitle={(x) => {setProposalTitle(x)}} 
                           changeDescription={(x) => {setProposalDescription(x)}}
                           title={proposals[i].title} 
+                          description={proposals[i].description}
                           vote={proposals[i].voted ? proposals[i].voted : ""}/>);
   }
 
@@ -113,8 +114,8 @@ function Dashboard() {
   const [proposalListDefault, setProposalListDefault] = useState(proposals);
   const [proposalList, setProposalList] = useState(proposalHTML);
 
-  const [proposalTitle, setProposalTitle] = useState("Project Title");
-  const [proposalDescription, setProposalDescription] = useState("Lorem Ipsum fdsafdasfdasfas");
+  const [proposalTitle, setProposalTitle] = useState("Mapping for Environmental Justice");
+  const [proposalDescription, setProposalDescription] = useState("MEJ is an initiative to create interactive and publicly-accessible maps displaying environmental justice data for individual states.");
 
   /* Updates proposalList state based on SearchBar input. */
   const updateInput = (input) => {
@@ -124,6 +125,7 @@ function Dashboard() {
         filteredList.push(<Row changeTitle={(x) => {setProposalTitle(x)}}
                                 changeDescription={(x) => {setProposalDescription(x)}}
                                 title={proposalListDefault[i].title} 
+                                description={proposalListDefault[i].description}
                                 vote={proposalListDefault[i].voted ? proposalListDefault[i].voted : ""} />)
       }
       setInput(input);
@@ -131,23 +133,25 @@ function Dashboard() {
     } 
   }
 
-  const[value, setValue] = React.useState('');
+  const[textboxValue, setTextboxValue] = React.useState('');
 
   const handleSubmit = async () => {
-    try {
-      await axios({
-        method: 'post',
-        url: 'http://localhost:8000/post_comment',
-        data: {
-          user_id: 1,
-          proposal_id: 1,
-          comment_text: value
-        }
-      });
-    } catch(error) {
-      console.log(error);
+    if (textboxValue !== '') {
+      try {
+        await axios({
+          method: 'post',
+          url: 'http://localhost:8000/post_comment',
+          data: {
+            user_id: 1,
+            proposal_id: 1,
+            comment_text: textboxValue
+          }
+        });
+      } catch(error) {
+        console.log(error);
+      }
+      setTextboxValue('');
     }
-    setValue('');
   };
   
 
@@ -167,7 +171,7 @@ function Dashboard() {
             <div className="proposal-head-description">{proposalDescription}</div>
             <div className="dividing-line"></div>
             <div className="comment-area">
-              <textarea value={value} onChange={(event) => {setValue(event.target.value)}} id="textbox" name="textbox" className="comment-box" placeholder="Please enter text here!" rows="7" cols="53"></textarea>
+              <textarea value={textboxValue} onChange={(event) => {setTextboxValue(event.target.value)}} id="textbox" name="textbox" className="comment-box" placeholder="Leave a comment" rows="7" cols="53"></textarea>
               <div className="discussion-buttons">
               <button className="post-comment" onClick={handleSubmit}>Post Comment</button>
               <Link to="/proposal-details">

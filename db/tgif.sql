@@ -75,10 +75,7 @@ VALUES
     (1, 'Mapping for Environmental Justice', 'MEJ Team', 63000.00,
         'mappingforej.berkeley.edu', 'Mapping for Environmental Justice (MEJ) is an
         initiative to create interactive and publicly-accessible maps displaying
-        environmental justice data for individual states. With guidance from the
-        residents of impacted communities, MEJ combines environment, public health,
-        and demographic data into an indicator of vulnerability for communities in
-        every state.', '4/28/21'),
+        environmental justice data for individual states.', '4/28/21'),
     (2, 'ASUC Garden', 'ASUC', 1050,
         'rando link', 'ASUC will be planting a garden at sproul!', '01/23/45');
 
@@ -88,3 +85,7 @@ VALUES
     (FALSE, 2, 2),
     (FALSE, 3, 1);
 
+INSERT INTO comments(time_posted, comment_text, user_id, proposal_id)
+VALUES
+    ('2021-04-05T10:27:41.886Z', 'I really like the mission of this proposal. It will add a lot of value to the community. I think we should approve it!', 2, 1),
+    ('2021-04-06T13:45:41.886Z', 'I don''t quite see the value in funding this proposal. Let''s not approve it', 3, 1);
