@@ -2,6 +2,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import Dashboard from './pages/dashboard/Dashboard';
 import ProposalDetails from './pages/proposalDetails/ProposalDetails.js';
+import ProposalManagement from './pages/proposalManagement/ProposalManagement.js';
 import NavBar from './components/navbar/NavBar.js';
 import React from "react";
 import {
@@ -22,6 +23,9 @@ function App() {
           </Route>
           <Route path="/proposal-details">
             <ProposalDetails />
+          </Route>
+          <Route path="/proposal-management">
+            <ProposalManagement />
           </Route>
         </Switch>
       </div>

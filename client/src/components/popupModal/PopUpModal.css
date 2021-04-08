@@ -1,0 +1,68 @@
+.page {
+    z-index: 0;
+}
+.overlay2 {
+    background-color: #353739;
+    position: fixed;
+    top: 0px;
+    opacity: 0.45;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    z-index: 1;
+}
+
+.ourModal {
+    background-color: #353739;
+    opacity: 100;
+    width: 350px;
+    height: 250px;
+    border-radius: 8px;
+    position: fixed;
+    color: white;
+    font-family: 'Lexend Deca', sans-serif;
+    border-width: 0px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+}
+
+.modalText {
+    color: white;
+    font-family: "IBM Plex Sans", sans-serif;
+    align-content: center;
+    font-size: 1.25em;
+    font-weight: bold;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    width: 100%;
+}
+
+.secondaryButton {
+    background: transparent;
+    border-radius: 5px;
+    border-color: transparent;
+    color: white;
+    margin: 2em 1em 1em 0.75em;
+    padding: 0.5em;
+    font-weight: bold;
+    font-size: 1em;
+}
+
+.primaryButton {
+    background-color: white;
+    border-radius: 5px;
+    color: #353739;
+    margin: 2em 2em 1em 0.75em;
+    padding: 0.5em;
+    height: 50px;
+    width: 100px;
+    font-weight: bold;
+    font-size: 1em;
+}

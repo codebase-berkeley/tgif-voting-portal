@@ -5,6 +5,7 @@
     flex-direction: column;
     align-items: center;
     margin-top: 1%;
+    z-index: 0;
 }
 
 .navbar-content {
