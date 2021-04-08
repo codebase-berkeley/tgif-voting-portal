@@ -30,6 +30,9 @@ function Members() {
         <div className="membersHeader">
           Members
           <hr className="membersUnderline"></hr>
+          <div className='editMembersIcon'>
+            editIcon
+          </div>
         </div>
         <div className="membersBottomContainer">
           <div className="membersTableContainer">
@@ -50,7 +53,7 @@ function Members() {
 										email={"email.joe"}
 										role={member.is_admin ? "Admin" : "Committee Member"}
 										privilege={"joe"}
-										votes={(member.count == null ? 0 : member.count) + "/" +proposals}
+										votes={(member.count == null ? 0 : member.count) + "/" + proposals}
 									/>)
 								})}
                 <tr>
@@ -58,21 +61,21 @@ function Members() {
                   <td>Smith@Smith.com</td>
                   <td>Head Karen</td>
                   <td>Admin</td>
-                  <td>None, just wants to speak to the manager</td>
+                  <td>20/30</td>
                 </tr>
                 <tr>
                   <td>Eve Jackson</td>
-                  <td>Jackso@enterprise.com</td>
+                  <td>Jackson@enterprise.com</td>
                   <td>Spy, nosy a**hole</td>
                   <td>Owner</td>
-                  <td>1000</td>
+                  <td>3/30</td>
                 </tr>
                 <tr>
                   <td>Someone Someone</td>
                   <td>someone@somewhere.edu</td>
                   <td>Lost in Life</td>
                   <td>Admin</td>
-                  <td>30</td>
+                  <td>30/30</td>
                 </tr>
               </tbody>
             </table>
