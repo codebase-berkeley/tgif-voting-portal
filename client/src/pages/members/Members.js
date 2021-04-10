@@ -1,6 +1,7 @@
 import {useEffect, useState} from 'react';
 import axios from "axios";
 import TableRow from '../../components/tableRow/TableRow.js';
+import {Edit2} from 'react-feather/';
 import './Members.css';
 
 function Members() {
@@ -31,7 +32,7 @@ function Members() {
           Members
           <hr className="membersUnderline"></hr>
           <div className='editMembersIcon'>
-            editIcon
+            <Edit2 size={45}/>
           </div>
         </div>
         <div className="membersBottomContainer">
@@ -51,32 +52,11 @@ function Members() {
                   return (<TableRow
 										name={member.username}
 										email={"email.joe"}
-										role={member.is_admin ? "Admin" : "Committee Member"}
-										privilege={"joe"}
+										role={"joe"}
+										privilege={member.is_admin ? "Admin" : "TGIF Committee"}
 										votes={(member.count == null ? 0 : member.count) + "/" + proposals}
 									/>)
 								})}
-                <tr>
-                  <td>Jill Smith</td>
-                  <td>Smith@Smith.com</td>
-                  <td>Head Karen</td>
-                  <td>Admin</td>
-                  <td>20/30</td>
-                </tr>
-                <tr>
-                  <td>Eve Jackson</td>
-                  <td>Jackson@enterprise.com</td>
-                  <td>Spy, nosy a**hole</td>
-                  <td>Owner</td>
-                  <td>3/30</td>
-                </tr>
-                <tr>
-                  <td>Someone Someone</td>
-                  <td>someone@somewhere.edu</td>
-                  <td>Lost in Life</td>
-                  <td>Admin</td>
-                  <td>30/30</td>
-                </tr>
               </tbody>
             </table>
           </div>

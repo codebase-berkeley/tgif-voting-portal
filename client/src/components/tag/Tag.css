@@ -1,0 +1,19 @@
+.tag {
+    color: white;
+    width: 40%;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+}
+
+.Admin {
+    background-color:#9AAA35;
+}
+
+.Owner {
+    background-color:#FEB700;
+}
+
+.TGIF {
+    background-color: #196E92;
+}

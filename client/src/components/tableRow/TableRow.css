@@ -1,0 +1,10 @@
+.member-row {
+    width: 90%;
+    border: 2px solid #CBC7C7;
+}
+
+.tags {
+    display: flex;
+    justify-content: center;
+    margin: 16px;
+}

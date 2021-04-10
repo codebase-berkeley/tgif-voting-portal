@@ -68,7 +68,16 @@ VALUES
     (1, TRUE, 'Teresa'),
     (2, FALSE, 'Warren'),
     (3, FALSE, 'Ryan'),
-    (4, FALSE, 'Mentored');
+    (4, FALSE, 'Mentored'),
+    (5, TRUE, 'Joe1'),
+    (6, FALSE, 'Joe2'),
+    (7, FALSE, 'Joe3'),
+    (8, FALSE, 'Joe4'),
+    (9, TRUE, 'Joe5'),
+    (10, FALSE, 'Joe6'),
+    (11, FALSE, 'Joe7'),
+    (12, FALSE, 'Joe8'),
+    (13, TRUE, 'Joe9');
 
 INSERT INTO proposals(id, title, organization, amount_requested, link, description_text, deadline)
 VALUES

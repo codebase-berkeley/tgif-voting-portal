@@ -2,37 +2,38 @@
     width: 100%;
     min-height: 100%;
     height: 89vh;
-    background-color: blueviolet;
+    padding-top: 32px;
 }
 
 .membersHeader {
-    /* background-color: lightcoral; */
     min-height: 95px;
     font-family: 'IBM Plex Sans', sans-serif;
     font-size: 3em;
-    height: 15%;
+    height: 2%;
     position: relative;
 }
 
 .editMembersIcon {
-    background-color: lightcoral;
     position: absolute;
+    margin-right: 2.3em;
     right: 0px;
     bottom: 0px;
     font-size: 0.5em;
 }
 
 .membersBottomContainer {
-    background-color: lightgreen;
     height: 85%;
     display: flex;
     justify-content: center;
 }
 
 .membersTableContainer {
-    background-color: bisque;
     width: 95%;
+    padding: 1em;
     font-family: 'Lexend Deca', sans-serif;
+    overflow-y: scroll;
+    margin-bottom: 2.5%;
+    margin-top: 16px;
 }
 
 .membersUnderline {
@@ -45,26 +46,20 @@
 }
 
 .tableHeaderRow {
-    /* background-color: lightgrey; */
     color: #626262;
+    border-bottom: 2px solid #CBC7C7;
 }
 
 #membersTable {
-    background-color: lightcyan;
     border-top: 0px;
     width: 100%;
-    /* height: 100%; */
 }
 
 tbody {
-    background-color: khaki;
-    border: 1px solid black;
-    border-radius: 10px;
-    /* border-collapse: separate;
-    border-spacing: 0px 20px; */
+    background-color: #F5F4F4;
 }
 
 td {
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding-top: 1%;
+    padding-bottom: 1%;
 }
