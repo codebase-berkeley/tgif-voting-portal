@@ -65,13 +65,13 @@
 
 .membersTableContainer {
     margin-top: 1em;
-    width: 96%;
+    width: 95%;
     overflow-y: auto;
     margin-bottom: 1%;
 }
 
 .membersTable {
-    width: 100%;
+    width: 99%;
     font-family: 'Lexend Deca', sans-serif;
 }
 
