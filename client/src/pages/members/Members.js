@@ -80,7 +80,7 @@ function Members() {
       }
   }
 
-  async function removeMember() {
+  async function removeMembers() {
     //Go through each checkbox and determine which users should be deleted
     var userIdsToDelete = [];
     members.forEach((member) => {
@@ -104,6 +104,35 @@ function Members() {
           console.log(error);
       }
       fetchMembers();
+    }
+  }
+
+  /** Handles clicking the Select All checkbox */
+  function selectAllCheckbox() {
+    const selectAllCb = document.getElementById('selectAllCheckbox');
+    members.forEach((member) => {
+      var id = member.id;
+      var checkbox = document.getElementById('checkbox' + id);
+      checkbox.checked = selectAllCb.checked;
+    });
+  }
+
+  /** Updates the Select All checkbox to reflect whether all checkboxes are checked or not.
+   * Called any time a checkbox is clicked. */
+  function updateSelectAllCheckbox() {
+    const selectAllCb = document.getElementById('selectAllCheckbox');
+    var amountChecked = 0;
+    members.forEach((member) => {
+      var id = member.id;
+      var checkbox = document.getElementById('checkbox' + id);
+      if (checkbox.checked) {
+        amountChecked += 1;
+      }
+    });
+    if (amountChecked < members.length) {
+      selectAllCb.checked = false;
+    } else if (amountChecked === members.length) {
+      selectAllCb.checked = true;
     }
   }
 
@@ -135,7 +164,7 @@ function Members() {
           </div>
           <div className={removeIconClassName}>
             <input className='removeMembersButton membersButton' type="image" src={removeMemberIcon} alt='Remove Icon'
-            title='Remove Selected Members' onClick={removeMember}/>
+            title='Remove Selected Members' onClick={removeMembers}/>
           </div>
           <div className={enterEditingIconClassName}>
             <input className='enterEditingButton membersButton' type="image" src={enterEditingIcon} alt='Enter Editing Icon'
@@ -151,7 +180,10 @@ function Members() {
             <table className="membersTable">
               <thead className='tableHeader'>
                 <tr>
-                  {editingMode ? (<th className='tableHeaderCell'>Select</th>) : null}
+                  {editingMode ? (<th className='tableHeaderCell'>
+                    Select All
+                    <input className='selectAllCheckbox' id='selectAllCheckbox' type="checkbox" onClick={selectAllCheckbox}/>
+                  </th> ) : null}
                   <th className='tableHeaderCell'>Member Name</th>
                   <th className='tableHeaderCell'>Email</th>
                   <th className='tableHeaderCell'>Role</th>
@@ -181,6 +213,7 @@ function Members() {
 										votes={(member.count == null ? 0 : member.count) + "/" + proposals}
                     editingMode = {editingMode}
                     checkboxId = {"checkbox" + member.id}
+                    checkboxOnClick = {updateSelectAllCheckbox}
 									/>)
 								})}
               </tbody>

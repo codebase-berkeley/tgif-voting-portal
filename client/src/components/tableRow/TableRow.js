@@ -11,7 +11,7 @@ function TableRow(props) {
   return (
     <React.Fragment>
       <tr className="member-row">
-        {props.addingMode ? (confirmAddMember) : (props.editingMode ? (<input id={props.checkboxId} type="checkbox"/>) : null)}
+        {props.addingMode ? (confirmAddMember) : (props.editingMode ? (<input className='membersCheckbox' id={props.checkboxId}type="checkbox" onClick={props.checkboxOnClick}/>) : null)}
         <td>{props.name}</td>
         <td>{props.email}</td>
         <td>{props.role}</td>
