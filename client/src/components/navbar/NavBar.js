@@ -12,8 +12,17 @@ function Navbar() {
                     </a>
                 </div>
                 <div className="rightNavbar">
-                    <a href='#'>Admin</a>
-                    <a href='#'>Logout</a>
+                    {/* <a href='#'>Admin</a> */}
+                    <a href='#'>
+                        <Link to="/proposal-management">
+                            <button className="nav-page" type="submit">Manage Proposals</button>
+                        </Link>
+                    </a>
+                    <a href='#'>
+                        <Link to="/dashboard">
+                            <button className="nav-page" type="submit">Logout</button>
+                        </Link>
+                    </a>
                 </div>
             </div>
             <div className="navbar-outline"></div>

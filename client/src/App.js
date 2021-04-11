@@ -3,7 +3,9 @@ import './App.css';
 import Dashboard from './pages/dashboard/Dashboard';
 import ProposalDetails from './pages/proposalDetails/ProposalDetails.js';
 import ProposalManagement from './pages/proposalManagement/ProposalManagement.js';
-import NavBar from './components/navbar/NavBar.js';
+// import ProposalTempManagement from './pages/proposalManagement/proposalPageTemp.js';
+import NavBar from './components/navbar/NavBar.js'
+;
 import React from "react";
 import {
   BrowserRouter as Router,

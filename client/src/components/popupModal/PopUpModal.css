@@ -1,6 +1,10 @@
 .page {
     z-index: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
+
 .overlay2 {
     background-color: #353739;
     position: fixed;
@@ -10,6 +14,8 @@
     height: 100vh;
     display: flex;
     z-index: 1;
+    justify-content: center;
+    align-items: center;
 }
 
 .ourModal {
@@ -19,6 +25,7 @@
     height: 250px;
     border-radius: 8px;
     position: fixed;
+    /* margin: auto; */
     color: white;
     font-family: 'Lexend Deca', sans-serif;
     border-width: 0px;
@@ -26,31 +33,40 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    margin-top: 20%;
     z-index: 2;
 }
 
 .modalText {
+    /* background: purple; */
     color: white;
     font-family: "IBM Plex Sans", sans-serif;
     align-content: center;
-    font-size: 1.25em;
+    font-size: 1.5em;
     font-weight: bold;
+    margin: 3em 2em 0em 2em;
 }
 
 .buttons {
+    /* background: red; */
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
+    position: relative;
+    bottom: 10px;
+    left: 20px;
     width: 100%;
 }
 
 .secondaryButton {
     background: transparent;
+    height: 40px;
+    width: 90px;
     border-radius: 5px;
     border-color: transparent;
     color: white;
     margin: 2em 1em 1em 0.75em;
-    padding: 0.5em;
+    font-family: "IBM Plex Sans", sans-serif;
     font-weight: bold;
     font-size: 1em;
 }
@@ -60,9 +76,9 @@
     border-radius: 5px;
     color: #353739;
     margin: 2em 2em 1em 0.75em;
-    padding: 0.5em;
-    height: 50px;
-    width: 100px;
+    height: 40px;
+    width: 90px;
+    font-family: "IBM Plex Sans", sans-serif;
     font-weight: bold;
     font-size: 1em;
 }
