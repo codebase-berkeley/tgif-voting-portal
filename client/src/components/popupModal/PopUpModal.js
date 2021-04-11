@@ -18,8 +18,7 @@ function PopUpModal(props) {
                     </button>
                 </div>
             </div>
-            <div className="overlay2">
-            
+            <div className="overlay">
             </div>
         </div>
     );

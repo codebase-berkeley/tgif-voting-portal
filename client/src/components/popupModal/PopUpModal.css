@@ -1,31 +1,37 @@
 .page {
     z-index: 0;
+    width: 100%;
+    height: 100%;
     display: flex;
+    /* position: absolute; */
     justify-content: center;
     align-items: center;
 }
 
-.overlay2 {
+.overlay {
     background-color: #353739;
-    position: fixed;
+    position: absolute;
     top: 0px;
+    left: 0px;
     opacity: 0.45;
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
     display: flex;
-    z-index: 1;
+    z-index: 2;
     justify-content: center;
     align-items: center;
 }
 
 .ourModal {
     background-color: #353739;
-    opacity: 100;
+    opacity: 1;
     width: 350px;
     height: 250px;
     border-radius: 8px;
-    position: fixed;
-    /* margin: auto; */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     color: white;
     font-family: 'Lexend Deca', sans-serif;
     border-width: 0px;
@@ -33,12 +39,10 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-top: 20%;
-    z-index: 2;
+    z-index: 3;
 }
 
 .modalText {
-    /* background: purple; */
     color: white;
     font-family: "IBM Plex Sans", sans-serif;
     align-content: center;
@@ -48,7 +52,6 @@
 }
 
 .buttons {
-    /* background: red; */
     display: flex;
     flex-direction: row;
     justify-content: flex-end;

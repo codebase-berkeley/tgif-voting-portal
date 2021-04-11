@@ -1,7 +1,5 @@
 import './Row.css';
 
-
-
 function Row(props) { 
     
     if (props.displayX) {

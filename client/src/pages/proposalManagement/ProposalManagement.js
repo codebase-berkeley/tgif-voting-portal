@@ -105,23 +105,17 @@ function ProposalManagement() {
     const [proposalTitle, setProposalTitle] = useState("Mapping for Environmental Justice");
     const [proposalDescription, setProposalDescription] = useState("MEJ is an initiative to create interactive and publicly-accessible maps displaying environmental justice data for individual states.");  
 
-
-    
-
-    const[textboxValue1, setTextboxValue1] = React.useState('');
-    const[textboxValue2, setTextboxValue2] = React.useState('');
-    const[textboxValue3, setTextboxValue3] = React.useState('');
-    const[textboxValue4, setTextboxValue4] = React.useState('');
-    const[textboxValue5, setTextboxValue5] = React.useState('');
+    const[textboxValueTitle, setTextboxValueTitle] = React.useState('');
+    const[textboxValueProp, setTextboxValueProp] = React.useState('');
+    const[textboxValueDescript, setTextboxValueDescript] = React.useState('');
+    const[textboxValueLink, setTextboxValueLink] = React.useState('');
+    const[textboxValueMoney, setTextboxValueMoney] = React.useState('');
 
     return (
         
-
+      <div className = "ProposalManagementOuter">
         <div className="proposalManagement">
-            {/* <PopUpModal warning="Are you sure you want to delete these proposals?"
-                    secondaryText="cancel"
-                    primaryText="delete"
-                    /> */}
+            
             <div className="proposalManagementLeft"> 
                 <div className="trashCan">
                     <img src={TrashCan} className="TrashCanIcon"></img>
@@ -137,13 +131,13 @@ function ProposalManagement() {
                         <h3>Create a Proposal</h3>
                     </div>
                     <div className = "PMtextboxes">
-                        <textarea value={textboxValue1} onChange={(event) => {setTextboxValue1(event.target.value)}} className= 'titleNewProposal' id='titleNewProposal' type='textarea' placeholder='title'/>
-                        <textarea value={textboxValue2} onChange={(event) => {setTextboxValue2(event.target.value)}} className= 'dateNewProposal' id='dateNewProposal' type='textarea' placeholder='MM/DD/YY'/>
+                        <textarea value={textboxValueTitle} onChange={(event) => {setTextboxValueTitle(event.target.value)}} className= 'titleNewProposal' id='titleNewProposal' type='textarea' placeholder='title'/>
+                        <textarea value={textboxValueProp} onChange={(event) => {setTextboxValueProp(event.target.value)}} className= 'dateNewProposal' id='dateNewProposal' type='textarea' placeholder='MM/DD/YY'/>
                     </div>
-                    <textarea value={textboxValue3} onChange={(event) => {setTextboxValue3(event.target.value)}} className= 'descriptionNewProposal' id='descriptionNewProposal' type='textarea' placeholder='Project description'/>
+                    <textarea value={textboxValueDescript} onChange={(event) => {setTextboxValueDescript(event.target.value)}} className= 'descriptionNewProposal' id='descriptionNewProposal' type='textarea' placeholder='Project description'/>
                     <div className = "bottomThree">
-                        <textarea value={textboxValue4} onChange={(event) => {setTextboxValue4(event.target.value)}} className= 'linkNewDescription' id='linkNewDescription' type='textarea' placeholder='link'/>
-                        <textarea value={textboxValue5} onChange={(event) => {setTextboxValue5(event.target.value)}} className= 'moneyNewDescription' id='moneyNewDescription' type='textarea' placeholder='$ requested'/>
+                        <textarea value={textboxValueLink} onChange={(event) => {setTextboxValueLink(event.target.value)}} className= 'linkNewDescription' id='linkNewDescription' type='textarea' placeholder='link'/>
+                        <textarea value={textboxValueMoney} onChange={(event) => {setTextboxValueMoney(event.target.value)}} className= 'moneyNewDescription' id='moneyNewDescription' type='textarea' placeholder='$ requested'/>
                         <button className="createProposalButton">
                             Create
                         </button>
@@ -151,6 +145,11 @@ function ProposalManagement() {
                 </div>
             </div>
         </div>
+        <PopUpModal warning="Are you sure you want to delete these proposals?"
+                    secondaryText="cancel"
+                    primaryText="delete"
+                    />
+      </div>  
     );
 }
 
