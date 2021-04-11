@@ -1,5 +1,4 @@
 .member-row {
-    width: 90%;
     border: 2px solid #CBC7C7;
 }
 
@@ -7,4 +6,9 @@
     display: flex;
     justify-content: center;
     margin: 16px;
+}
+
+.confirmAddMemberButton {
+    width: 30px;
+    height: auto;
 }

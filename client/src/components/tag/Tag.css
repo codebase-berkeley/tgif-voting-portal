@@ -1,19 +1,22 @@
 .tag {
     color: white;
     width: 40%;
+    min-width: fit-content;
     border-radius: 5px;
     display: flex;
     justify-content: center;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 .Admin {
     background-color:#9AAA35;
 }
 
-.Owner {
+.Non-Voting {
     background-color:#FEB700;
 }
 
-.TGIF {
+.Voting {
     background-color: #196E92;
 }

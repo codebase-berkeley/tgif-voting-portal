@@ -2,38 +2,14 @@
     width: 100%;
     min-height: 100%;
     height: 89vh;
-    padding-top: 32px;
 }
 
 .membersHeader {
     min-height: 95px;
     font-family: 'IBM Plex Sans', sans-serif;
     font-size: 3em;
-    height: 2%;
+    height: 14%;
     position: relative;
-}
-
-.editMembersIcon {
-    position: absolute;
-    margin-right: 2.3em;
-    right: 0px;
-    bottom: 0px;
-    font-size: 0.5em;
-}
-
-.membersBottomContainer {
-    height: 85%;
-    display: flex;
-    justify-content: center;
-}
-
-.membersTableContainer {
-    width: 95%;
-    padding: 1em;
-    font-family: 'Lexend Deca', sans-serif;
-    overflow-y: scroll;
-    margin-bottom: 2.5%;
-    margin-top: 16px;
 }
 
 .membersUnderline {
@@ -45,14 +21,73 @@
     margin-bottom: 0%;
 }
 
-.tableHeaderRow {
-    color: #626262;
-    border-bottom: 2px solid #CBC7C7;
+.hide {
+    display: none;
 }
 
-#membersTable {
-    border-top: 0px;
+.enterEditingIconContainer {
+    position: absolute;
+    right: 50px;
+    bottom: 10px;
+    font-size: 0em;
+}
+
+.exitEditingIconContainer {
+    position: absolute;
+    right: 50px;
+    bottom: 10px;
+    font-size: 0em;
+}
+
+.addMemberIconContainer {
+    position: absolute;
+    left: 50px;
+    bottom: 10px;
+    font-size: 0em;
+}
+
+.removeMembersIconContainer {
+    position: absolute;
+    left: 90px;
+    bottom: 4px;
+    font-size: 0em;
+}
+
+.membersButton:focus {
+    outline: 0;
+}
+
+.membersBottomContainer {
+    height: 85%;
+    display: flex;
+    justify-content: center;
+}
+
+.membersTableContainer {
+    margin-top: 1em;
+    width: 95%;
+    overflow-y: auto;
+    margin-bottom: 1%;
+}
+
+.membersTable {
     width: 100%;
+    font-family: 'Lexend Deca', sans-serif;
+}
+
+.tableHeader {
+    color: #626262;
+}
+
+.tableHeaderCell {
+    font-weight: normal;
+}
+
+th {
+    background-color: white;
+    position: sticky;
+    top: 0;
+    padding-bottom: 5px;
 }
 
 tbody {
@@ -62,4 +97,14 @@ tbody {
 td {
     padding-top: 1%;
     padding-bottom: 1%;
+}
+
+.addMemberTextbox {
+    background: var(--lightGrey);
+    border: 1px solid var(--grey);
+    border-radius: 4px;
+    color: var(--black);
+    font: 1em 'Lexend Deca', sans-serif;
+    text-align: center;
+    width: fit-content;
 }

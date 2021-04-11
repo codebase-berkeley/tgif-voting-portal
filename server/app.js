@@ -23,6 +23,32 @@ app.post('/post_comment', async (req, res) => {
   }
 });
 
+app.post('/addUser', async (req, res) => {
+  try {
+    const isAdmin = req.body.isAdmin;
+    const username = req.body.username;
+    await db.query(
+      'INSERT INTO users (is_admin, username) VALUES ($1, $2);', [isAdmin, username],
+    );
+    res.send('Added User');
+  } catch (error) {
+    console.log(error.stack);
+  }
+});
+
+app.delete('/deleteUser', async (req, res) => {
+  try {
+    const idsToDelete = req.body.listOfIds;
+    const queryList = "(" + idsToDelete.toString() + ")";
+    await db.query(
+      'DELETE FROM users WHERE id IN ' + queryList
+    );
+    res.send('Deleted All Selected Users');
+  } catch (error) {
+    console.log(error.stack);
+  }
+});
+
 app.get('/getMembers', async (req, res) => {
   try {
     const query = await db.query(
