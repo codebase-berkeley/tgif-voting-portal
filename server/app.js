@@ -41,8 +41,7 @@ app.delete('/deleteUsers', async (req, res) => {
     const idsToDelete = req.body.listOfIds;
     const queryList = idsToDelete.toString();
     await db.query(
-      'DELETE FROM users WHERE id IN ($1)',
-      [queryList],
+      `DELETE FROM users WHERE id IN (${queryList})`,
     );
     res.send('Deleted All Selected Users');
   } catch (error) {

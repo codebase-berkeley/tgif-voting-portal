@@ -112,3 +112,18 @@ td {
 .selectAllCheckbox {
     margin-left: 10px;
 }
+
+.confirmMemberButton {
+    border-radius: 5px;
+    color: white;
+    font-family: 'Lexend Deca', sans-serif;
+    font-size: 14px;
+    width: 100px;
+    height: 30px;
+    border-width: 0px;
+    background-color: var(--buttonGreen);
+}
+
+.confirmMemberButton:hover {
+    background-color: gray;
+}

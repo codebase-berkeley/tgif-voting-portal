@@ -1,24 +1,25 @@
 import './TableRow.css';
 import Tag from '../tag/Tag';
-import checkmarkIcon from '../../assets/checkmark.svg';
+import ProposalButton from '../../pages/proposalDetails/ProposalButton.js'
 import React from "react";
 
-function TableRow(props) {
-  let confirmAddMember = <td> <input className='confirmAddMemberButton membersButton' type="image"
-                          src={checkmarkIcon} alt='Confirm Add Member Icon'
-                          title='Confirm Member' onClick={props.handleSubmitFunc} /> </td>;
+function TableRow( { handleSubmitFunc, addingMode, editingMode, isChecked, checkboxOnClick, name, email, role, privilege, votes } ) {
+  let confirmAddMemberButton = <td> 
+                          <ProposalButton className='confirmAddMemberButton membersButton' hoverText='Confirm Member'
+                          buttonText='Confirm' buttonClassName='confirmMemberButton' onClickFunc={handleSubmitFunc}/>
+                          </td>
 
   return (
     <React.Fragment>
       <tr className="member-row">
-        {props.addingMode ? (confirmAddMember) : (props.editingMode ? (<td> <input className='membersCheckbox' type="checkbox" checked={props.isChecked} onClick={props.checkboxOnClick}/> </td>) : null)}
-        <td>{props.name}</td>
-        <td>{props.email}</td>
-        <td>{props.role}</td>
+        {addingMode ? (confirmAddMemberButton) : (editingMode ? (<td> <input className='membersCheckbox' type="checkbox" checked={isChecked} onClick={checkboxOnClick}/> </td>) : null)}
+        <td>{name}</td>
+        <td>{email}</td>
+        <td>{role}</td>
         <td className="tags">
-          <Tag privilege={props.privilege} text={props.privilege}/>
+          <Tag privilege={privilege} text={privilege}/>
         </td>
-        <td>{props.votes}</td>
+        <td>{votes}</td>
       </tr>
     </React.Fragment>
   );

@@ -8,16 +8,16 @@ import exitEditingIcon from '../../assets/checkmark.svg';
 import './Members.css';
 
 function Members() {
-  const memberNameRef = useRef(null);
-  const memberEmailRef = useRef(null);
-  const memberRoleRef = useRef(null);
-  const privilegeDropdownRef = useRef(null);
-  const selectAllCheckboxRef = useRef(null);
+  const memberNameTextboxRef = useRef();
+  const memberEmailTextboxRef = useRef();
+  const memberRoleTextboxRef = useRef();
+  const privilegeDropdownRef = useRef();
+  const selectAllCheckboxRef = useRef();
 
   const [editingMode, setEditingMode] = useState(false);
   const [isAddingMember, setIsAddingMember] = useState(false);
 
-	const [proposals, setProposals] = useState();
+	const [numOfProposals, setNumOfProposals] = useState();
   const [members, setMembers] = useState([]);
 
 
@@ -32,6 +32,29 @@ function Members() {
   const [enterEditingIconClassName, setEnterEditingIconClassName] = useState(enterEditingIconDefault);
   const [exitEditingIconClassName, setExitEditingIconClassName] = useState(exitEditingIconDefault + ' hide');
 
+  async function fetchMembers() {
+		const response = await axios.get('http://localhost:8000/getMembers');
+		const userCounts = await axios.get('http://localhost:8000/getUserVotes');
+		const totalProposals = await axios.get('http://localhost:8000/getProposalCount');
+		let users = response.data;
+    /* Add a <count> attribute to each user that reflects the # of
+    proposals they have voted on */
+		userCounts.data.forEach(user => {
+			users[user.user_id - 1].count = user.count;
+		});
+    /* Initialize false <checked> attributes for each user; used for checkbox tracking
+    while in editing mode */
+    users.forEach(user => {
+      user.checked = false;
+    })
+		setNumOfProposals(totalProposals.data);
+		setMembers(users);
+  }
+
+  useEffect(() => {
+    fetchMembers();
+  }, []);
+
   /** Handles clicking the pencil icon to start editing members */
   function enterEditingMode() {
     setAddIconClassName(addIconDefault);
@@ -39,7 +62,6 @@ function Members() {
     setEnterEditingIconClassName(enterEditingIconDefault + ' hide');
     setExitEditingIconClassName(exitEditingIconDefault);
     setEditingMode(true);
-    console.log(typeof members, "members: ", members);
   }
 
   /** Handles clicking the checkmark icon to exit member editing mode */
@@ -54,48 +76,43 @@ function Members() {
 
   /** Handles clicking the plus icon to add a new member */
   function addMember() {
-    if (!isAddingMember) {
-      setIsAddingMember(true);
-    } else {
-      confirmAddMember();
-    }
+    setIsAddingMember(!isAddingMember);
   }
 
   async function confirmAddMember() {
-      const nameTextbox = memberNameRef.current.value;
-      const emailTextbox = memberEmailRef.current.value;
-      const roleTextbox = memberRoleRef.current.value;
-      const privilegeDropdown = privilegeDropdownRef.current.value;
+    const nameTextbox = memberNameTextboxRef.current;
+    const emailTextbox = memberEmailTextboxRef.current;
+    const roleTextbox = memberRoleTextboxRef.current;
+    const privilegeDropdown = privilegeDropdownRef.current;
 
-      if (nameTextbox.value !== '' && emailTextbox.value !== ''
-          && roleTextbox.value !== '' && privilegeDropdown !== '') {
-        try {
-          const response = await axios({
-            method: 'post',
-            url: 'http://localhost:8000/addUser',
-            data: {
-              isAdmin: (privilegeDropdown.value === 'Admin' ? true : false),
-              username: nameTextbox.value
-            }
-          });
-          console.log(response);
-        } catch(error) {
-            console.log(error);
-        }
-        fetchMembers();
-        setIsAddingMember(false);
+    if (nameTextbox.value !== '' && emailTextbox.value !== ''
+        && roleTextbox.value !== '' && privilegeDropdown !== '') {
+      try {
+        await axios({
+          method: 'post',
+          url: 'http://localhost:8000/addUser',
+          data: {
+            isAdmin: (privilegeDropdown.value === 'Admin' ? true : false),
+            username: nameTextbox.value
+          }
+        });
+      } catch(error) {
+          console.log(error);
       }
+      fetchMembers();
+      setIsAddingMember(false);
+    }
   }
 
   async function removeMembers() {
-    //Go through each checkbox and determine which users should be deleted
+    /* Go through each checkbox and determine which users should be deleted */
     const userIdsToDelete = [];
     members.forEach((member) => {
       if (member.checked) {
         userIdsToDelete.push(member.id);
       }
     })
-    //Make backend DELETE request
+    /* Make backend DELETE request */
     if (userIdsToDelete != null && userIdsToDelete.length > 0) {
       try {
         await axios({
@@ -115,12 +132,11 @@ function Members() {
   /** Handles clicking the Select All checkbox */
   function selectAllCheckbox() {
     const selectAllCb = selectAllCheckboxRef.current;
-    console.log("Select All: ", selectAllCb.checked);
-    const newArr = [...members]; // make a copy of the original state (copy all members into list)
-    newArr.forEach((member) => {
-      member.checked = selectAllCb.checked;   // edit values in the new array
+    const copyArray = [...members];
+    copyArray.forEach((member) => {
+      member.checked = selectAllCb.checked;
     });
-    setMembers(newArr); // set state to the new array
+    setMembers(copyArray);
   }
 
   /** Updates the Select All checkbox to reflect whether all checkboxes are checked or not.
@@ -140,26 +156,6 @@ function Members() {
     }
   }
 
-  async function fetchMembers() {
-		const response = await axios.get('http://localhost:8000/getMembers');
-		const userCounts = await axios.get('http://localhost:8000/getUserVotes');
-		const totalProposals = await axios.get('http://localhost:8000/getProposalCount');
-		let users = response.data;
-		userCounts.data.forEach(user => {
-			users[user.user_id - 1].count = user.count;
-		});
-    users.forEach(user => {
-      user.checked = false;
-    })
-		setProposals(totalProposals.data);
-		setMembers(users);
-    // console.log(typeof members, "members: ", members);
-  }
-
-  useEffect(() => {
-    fetchMembers();
-  }, []);
-    
     return (
       <div className="members-page">
         <div className="membersHeader">
@@ -189,7 +185,7 @@ function Members() {
                 <tr>
                   {editingMode ? (<th className='tableHeaderCell'>
                     Select All
-                    <input ref={selectAllCheckboxRef} className='selectAllCheckbox' id='selectAllCheckbox' type="checkbox" onClick={selectAllCheckbox}/>
+                    <input ref={selectAllCheckboxRef} className='selectAllCheckbox' type="checkbox" onClick={selectAllCheckbox}/>
                   </th> ) : null}
                   <th className='tableHeaderCell'>Member Name</th>
                   <th className='tableHeaderCell'>Email</th>
@@ -200,15 +196,15 @@ function Members() {
               </thead>
               <tbody>
                 {isAddingMember ? (<TableRow
-                name={(<input ref={memberNameRef} id='addMemberNameTB' className='addMemberTextbox' type='text' placeholder='name'/>)}
-                email={(<input ref={memberEmailRef} id='addMemberEmailTB' className='addMemberTextbox' type='text' placeholder='email'/>)}
-                role={(<input ref={memberRoleRef} id='addMemberRoleTB' className='addMemberTextbox' type='text' placeholder='role'/>)}
-                privilege={(<select  ref={privilegeDropdownRef} id='privilegeDropdown'>
+                name={(<input ref={memberNameTextboxRef} className='addMemberTextbox' type='text' placeholder='name'/>)}
+                email={(<input ref={memberEmailTextboxRef} className='addMemberTextbox' type='text' placeholder='email'/>)}
+                role={(<input ref={memberRoleTextboxRef} className='addMemberTextbox' type='text' placeholder='role'/>)}
+                privilege={(<select ref={privilegeDropdownRef}>
                   <option value='Admin'>Admin</option>
                   <option value='Voting Member'>Voting Member</option>
                   <option value='Non-Voting Member'>Non-Voting Member</option>
                 </select>)}
-                votes={'0/' + proposals}
+                votes={'0/' + numOfProposals}
                 addingMode={true}
                 handleSubmitFunc={confirmAddMember}/>) : null}
                 {members.map((member) => {
@@ -217,11 +213,18 @@ function Members() {
 										email={"email@berkeley.edu"}
 										role={"ASUC Representative"}
 										privilege={member.is_admin ? "Admin" : "Voting Member"}
-										votes={(member.count == null ? 0 : member.count) + "/" + proposals}
+										votes={(member.count == null ? 0 : member.count) + "/" + numOfProposals}
                     editingMode = {editingMode}
-                    checkboxOnClick = {() => {  member.checked = !member.checked;
-                                                updateSelectAllCheckbox();
-                                                console.log("Checkbox for ", member.username, "is checked: ", member.checked)}}
+                    checkboxOnClick = {() => {
+                                              const copyArray = [...members];
+                                              copyArray.forEach((copyMember) => {
+                                                if (copyMember.id === member.id) {
+                                                  copyMember.checked = !copyMember.checked;
+                                                }
+                                              });
+                                              setMembers(copyArray);
+                                              updateSelectAllCheckbox();
+                                              }}
                     isChecked={member.checked}
 									/>)
 								})}
