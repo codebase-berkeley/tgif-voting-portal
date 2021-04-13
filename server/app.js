@@ -25,8 +25,8 @@ app.post('/post_comment', async (req, res) => {
 
 app.post('/addUser', async (req, res) => {
   try {
-    const isAdmin = req.body.isAdmin;
-    const username = req.body.username;
+    const { isAdmin } = req.body;
+    const { username } = req.body;
     await db.query(
       'INSERT INTO users (is_admin, username) VALUES ($1, $2);', [isAdmin, username],
     );
@@ -36,12 +36,13 @@ app.post('/addUser', async (req, res) => {
   }
 });
 
-app.delete('/deleteUser', async (req, res) => {
+app.delete('/deleteUsers', async (req, res) => {
   try {
     const idsToDelete = req.body.listOfIds;
-    const queryList = "(" + idsToDelete.toString() + ")";
+    const queryList = idsToDelete.toString();
     await db.query(
-      'DELETE FROM users WHERE id IN ' + queryList
+      'DELETE FROM users WHERE id IN ($1)',
+      [queryList],
     );
     res.send('Deleted All Selected Users');
   } catch (error) {
@@ -52,7 +53,7 @@ app.delete('/deleteUser', async (req, res) => {
 app.get('/getMembers', async (req, res) => {
   try {
     const query = await db.query(
-      'SELECT * FROM users;'
+      'SELECT * FROM users;',
     );
     res.send(query.rows);
   } catch (error) {

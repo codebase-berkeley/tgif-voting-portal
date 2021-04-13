@@ -1,7 +1,6 @@
-import {useEffect, useState} from 'react';
+import {useEffect, useState, useRef} from 'react';
 import axios from "axios";
 import TableRow from '../../components/tableRow/TableRow.js';
-import {Edit2} from 'react-feather/';
 import addMemberIcon from '../../assets/add.svg';
 import removeMemberIcon from '../../assets/trashCan.svg';
 import enterEditingIcon from '../../assets/edit.svg';
@@ -9,6 +8,12 @@ import exitEditingIcon from '../../assets/checkmark.svg';
 import './Members.css';
 
 function Members() {
+  const memberNameRef = useRef(null);
+  const memberEmailRef = useRef(null);
+  const memberRoleRef = useRef(null);
+  const privilegeDropdownRef = useRef(null);
+  const selectAllCheckboxRef = useRef(null);
+
   const [editingMode, setEditingMode] = useState(false);
   const [isAddingMember, setIsAddingMember] = useState(false);
 
@@ -55,10 +60,10 @@ function Members() {
   }
 
   async function confirmAddMember() {
-      var nameTextbox = document.getElementById('addMemberNameTB');
-      var emailTextbox = document.getElementById('addMemberEmailTB');
-      var roleTextbox = document.getElementById('addMemberRoleTB');
-      var privilegeDropdown = document.getElementById('privilegeDropdown');
+      const nameTextbox = memberNameRef.current;
+      const emailTextbox = memberEmailRef.current;
+      const roleTextbox = memberRoleRef.current;
+      const privilegeDropdown = privilegeDropdownRef.current;
 
       if (nameTextbox.value !== '' && emailTextbox.value !== ''
           && roleTextbox.value !== '' && privilegeDropdown !== '') {
@@ -82,10 +87,10 @@ function Members() {
 
   async function removeMembers() {
     //Go through each checkbox and determine which users should be deleted
-    var userIdsToDelete = [];
+    const userIdsToDelete = [];
     members.forEach((member) => {
-      var id = member.id;
-      var checkbox = document.getElementById('checkbox' + id);
+      const id = member.id;
+      const checkbox = document.getElementById('checkbox' + id);
       if (checkbox !== null && checkbox.checked) {
         userIdsToDelete.push(id);
       }
@@ -95,7 +100,7 @@ function Members() {
       try {
         const response = await axios({
           method: 'delete',
-          url: 'http://localhost:8000/deleteUser',
+          url: 'http://localhost:8000/deleteUsers',
           data: {
             listOfIds: userIdsToDelete
           }
@@ -111,8 +116,8 @@ function Members() {
   function selectAllCheckbox() {
     const selectAllCb = document.getElementById('selectAllCheckbox');
     members.forEach((member) => {
-      var id = member.id;
-      var checkbox = document.getElementById('checkbox' + id);
+      const id = member.id;
+      const checkbox = document.getElementById('checkbox' + id);
       checkbox.checked = selectAllCb.checked;
     });
   }
@@ -121,10 +126,10 @@ function Members() {
    * Called any time a checkbox is clicked. */
   function updateSelectAllCheckbox() {
     const selectAllCb = document.getElementById('selectAllCheckbox');
-    var amountChecked = 0;
+    let amountChecked = 0;
     members.forEach((member) => {
-      var id = member.id;
-      var checkbox = document.getElementById('checkbox' + id);
+      const id = member.id;
+      const checkbox = document.getElementById('checkbox' + id);
       if (checkbox.checked) {
         amountChecked += 1;
       }
@@ -149,9 +154,9 @@ function Members() {
     console.log(typeof members, members);
   }
 
-    useEffect(() => {
-      fetchMembers();
-    }, []);
+  useEffect(() => {
+    fetchMembers();
+  }, []);
     
     return (
       <div className="members-page">
@@ -182,7 +187,7 @@ function Members() {
                 <tr>
                   {editingMode ? (<th className='tableHeaderCell'>
                     Select All
-                    <input className='selectAllCheckbox' id='selectAllCheckbox' type="checkbox" onClick={selectAllCheckbox}/>
+                    <input ref={selectAllCheckboxRef} className='selectAllCheckbox' id='selectAllCheckbox' type="checkbox" onClick={selectAllCheckbox}/>
                   </th> ) : null}
                   <th className='tableHeaderCell'>Member Name</th>
                   <th className='tableHeaderCell'>Email</th>
@@ -193,10 +198,10 @@ function Members() {
               </thead>
               <tbody>
                 {isAddingMember ? (<TableRow
-                name={(<input id='addMemberNameTB' className='addMemberTextbox' type='text' placeholder='name'/>)}
-                email={(<input id='addMemberEmailTB' className='addMemberTextbox' type='text' placeholder='email'/>)}
-                role={(<input id='addMemberRoleTB' className='addMemberTextbox' type='text' placeholder='role'/>)}
-                privilege={(<select id='privilegeDropdown'>
+                name={(<input ref={memberNameRef} id='addMemberNameTB' className='addMemberTextbox' type='text' placeholder='name'/>)}
+                email={(<input ref={memberEmailRef} id='addMemberEmailTB' className='addMemberTextbox' type='text' placeholder='email'/>)}
+                role={(<input ref={memberRoleRef} id='addMemberRoleTB' className='addMemberTextbox' type='text' placeholder='role'/>)}
+                privilege={(<select  ref={privilegeDropdownRef} id='privilegeDropdown'>
                   <option value='Admin'>Admin</option>
                   <option value='Voting Member'>Voting Member</option>
                   <option value='Non-Voting Member'>Non-Voting Member</option>
