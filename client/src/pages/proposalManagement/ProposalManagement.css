@@ -12,7 +12,7 @@
 .proposalManagementLeft{
     margin-left: 2em;
     margin-top: 1em;
-    width: 30%;
+    width: 40%;
 }
 
 .proposalManagementRight {
@@ -36,20 +36,17 @@
 .titleNewProposal{
     width : 60%;
     margin-right: 10%;
-    border-radius: 12px;
     height:100%;
 }
 
 .dateNewProposal{
     width: 30%;
-    border-radius: 12px;
     height: 100%;
 }
 
 .descriptionNewProposal{
     height: 70%;
     width: 100%;
-    border-radius: 12px;
     margin-top: 2%;
     margin-bottom: 2%;
 }
@@ -62,21 +59,19 @@
 
 .linkNewDescription{
     height:100%;
-    border-radius: 12px;
     width: 40%;
     margin-right:3%;
 }
 
 .moneyNewDescription{
     height:100%;
-    border-radius: 12px;
     width: 15%;
     margin-right: 32%;
+
 }
 
 .whiteBox {
     background: white;
-    border-radius: 12px;
     width: 100%;
     height: 100%;
     display: flex;
@@ -101,7 +96,6 @@ textarea {
 
 .createProposalButton {
     background: var(--darkGrey);
-    border-radius: 12px;
     font-family: 'IBM Plex Sans', sans-serif;
     font-size: 1rem;
     color: white;
@@ -116,4 +110,34 @@ textarea {
 .bottomThree:focus {
     outline: none;
     resize: none;
+}
+
+.enterDeletingIconContainer {
+    position: absolute;
+    right: 50px;
+    bottom: 10px;
+    font-size: 0em;
+}
+
+.exitDeletingIconContainer {
+    position: absolute;
+    right: 50px;
+    bottom: 10px;
+    font-size: 0em;
+}
+
+.proposalsButton:focus {
+    outline: 0;
+}
+
+.hide {
+    display: none;
+}
+
+textarea{
+    border-radius: 12px;
+}
+
+textarea:focus {
+    outline:none;
 }

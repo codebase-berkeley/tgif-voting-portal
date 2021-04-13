@@ -23,7 +23,6 @@ CREATE TABLE proposals
     amount_requested FLOAT,
     link VARCHAR,
     description_text VARCHAR,
-    deadline VARCHAR
 );
 
 CREATE TABLE comments
@@ -75,9 +74,9 @@ VALUES
     (1, 'Mapping for Environmental Justice', 'MEJ Team', 63000.00,
         'mappingforej.berkeley.edu', 'Mapping for Environmental Justice (MEJ) is an
         initiative to create interactive and publicly-accessible maps displaying
-        environmental justice data for individual states.', '4/28/21'),
+        environmental justice data for individual states.'),
     (2, 'ASUC Garden', 'ASUC', 1050,
-        'rando link', 'ASUC will be planting a garden at sproul!', '01/23/45');
+        'rando link', 'ASUC will be planting a garden at sproul!');
 
 INSERT INTO votes(vote, user_id, proposal_id)
 VALUES

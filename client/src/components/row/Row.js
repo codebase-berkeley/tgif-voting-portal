@@ -1,15 +1,14 @@
 import './Row.css';
 
 function Row(props) { 
-    
-    if (props.displayX) {
-        return doDisplayX(props);
+    if (props.mode && props.isManagement) {
+        return rowDeletionMode(props);
     } else {
-        return dontDisplayX(props);
+        return rowDefaultMode(props);
     }
 }
 
-function doDisplayX(props) {
+function rowDeletionMode(props) {
     return (
         <div
             className="proposal-box"
@@ -19,7 +18,7 @@ function doDisplayX(props) {
         }>
             <div className="whole-row">
                 <div className="leftRow">
-                    <img src={props.x} className="x-box"></img>
+                    <input className='proposalsCheckbox' type="checkbox"/>
                 </div>
                 <div className="rightRow">
                     <div className="proposal-title">{props.title}</div>
@@ -30,7 +29,7 @@ function doDisplayX(props) {
     );
 }
 
-function dontDisplayX(props) {
+function rowDefaultMode(props) {
     return (
         <div
             className="proposal-box"

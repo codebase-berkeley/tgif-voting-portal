@@ -4,6 +4,12 @@ import React, { useState, useEffect } from 'react';
 import Row from '../../components/row/Row';
 import TrashCan from '../../assets/TrashCan.svg';
 import xIcon from '../../assets/xIcon.svg';
+import axios from "axios";
+import ProposalButton from '../proposalDetails/ProposalButton';
+
+// replace with other team's svgs later
+import enterEditingIcon from '../../assets/Checked.svg';
+import exitEditingIcon from '../../assets/xIcon.svg';
 
 const proposals = [
     {
@@ -86,18 +92,10 @@ const proposals = [
   ]
 
 function ProposalManagement() {
-    /* Contains all proposals. */
-    const proposalHTML = []
-    for (let i = 0; i < proposals.length; i++) {
-        proposalHTML.push(<Row changeTitle={(x) => {setProposalTitle(x)}} 
-                            changeDescription={(x) => {setProposalDescription(x)}}
-                            title={proposals[i].title} 
-                            description={proposals[i].description}
-                            displayX="true"
-                            x={xIcon}
-                            vote={proposals[i].voted ? proposals[i].voted : ""}
-                            />);
-    } 
+    
+  /* Contains all proposals. */
+  const proposalHTML = []
+
 
     const [proposalListDefault, setProposalListDefault] = useState(proposals);
     const [proposalList, setProposalList] = useState(proposalHTML);
@@ -111,11 +109,83 @@ function ProposalManagement() {
     const[textboxValueLink, setTextboxValueLink] = React.useState('');
     const[textboxValueMoney, setTextboxValueMoney] = React.useState('');
 
+    const [deletingMode, setDeletingMode] = useState(false);
+    
+    /* REACT STATES FOR EDIT BUTTONS */
+  var enterEditingIconDefault = 'enterDeletingIconContainer';
+  var exitEditingIconDefault = 'exitDeletingIconContainer';
+  var IS_MANAGEMENT = true;
+
+  const [enterEditingIconClassName, setEnterEditingIconClassName] = useState(enterEditingIconDefault);
+  const [exitEditingIconClassName, setExitEditingIconClassName] = useState(exitEditingIconDefault + ' hide');
+
+  /** Handles clicking the pencil icon to start deleting proposals */
+  function enterDeletingMode() {
+    setEnterEditingIconClassName(enterEditingIconDefault + ' hide');
+    setExitEditingIconClassName(exitEditingIconDefault);
+    setDeletingMode(true);
+  }
+
+  /** Handles clicking the checkmark icon to exit proposal deleting mode */
+  function exitDeletingMode() {
+    setEnterEditingIconClassName(enterEditingIconDefault);
+    setExitEditingIconClassName(exitEditingIconDefault + ' hide');
+    setDeletingMode(false);
+  }
+
+    const submitProposal = async () => {
+      try {
+        const response = await axios.post('http://localhost:8000/submitVote', {
+        vote: "yes",
+        user_id: "yolo",
+        proposal_id: 2
+      });
+        /*await axios({
+          method: 'post',
+          url: 'http://localhost:8000/submitProposal',
+          data: {
+            title: textboxValueTitle,
+            organization: textboxValueProp,
+            amount_requested: textboxValueMoney,
+            link: textboxValueLink,
+            description_text: textboxValueDescript
+          }
+        });*/
+    } catch(error) {
+      console.log("There was an error in submitting your proposal.");
+      console.log(error.stack);
+    }
+    setTextboxValueTitle('');
+    setTextboxValueProp('');
+    setTextboxValueDescript('');
+    setTextboxValueLink('');
+    setTextboxValueMoney(''); 
+  }
+
+  for (let i = 0; i < proposals.length; i++) {
+    proposalHTML.push(<Row changeTitle={(x) => {setProposalTitle(x)}} 
+                        changeDescription={(x) => {setProposalDescription(x)}}
+                        title={proposals[i].title} 
+                        description={proposals[i].description}
+                        mode={deletingMode}
+                        isManagement= {IS_MANAGEMENT}
+                        x={xIcon}
+                        vote={proposals[i].voted ? proposals[i].voted : ""}
+                        />);
+} 
+
     return (
         
       <div className = "ProposalManagementOuter">
+          <div className={enterEditingIconClassName}>
+            <input className='enterEditingButton proposalsButton' type="image" src={enterEditingIcon} alt='Enter Deleting Mode'
+            title='Edit Members' onClick={enterDeletingMode}/>
+          </div>
+          <div className={exitEditingIconClassName}>
+            <input className='exitEditingButton proposalsButton' type="image" src={exitEditingIcon} alt='Exit Deleting Mode'
+            title='Finish Editing' onClick={exitDeletingMode}/>
+          </div>
         <div className="proposalManagement">
-            
             <div className="proposalManagementLeft"> 
                 <div className="trashCan">
                     <img src={TrashCan} className="TrashCanIcon"></img>
@@ -138,17 +208,15 @@ function ProposalManagement() {
                     <div className = "bottomThree">
                         <textarea value={textboxValueLink} onChange={(event) => {setTextboxValueLink(event.target.value)}} className= 'linkNewDescription' id='linkNewDescription' type='textarea' placeholder='link'/>
                         <textarea value={textboxValueMoney} onChange={(event) => {setTextboxValueMoney(event.target.value)}} className= 'moneyNewDescription' id='moneyNewDescription' type='textarea' placeholder='$ requested'/>
-                        <button className="createProposalButton">
-                            Create
-                        </button>
+                        <ProposalButton buttonClassName='genericProposalButton' buttonText='Create' onClickFunc={submitProposal}/>
                     </div>   
                 </div>
             </div>
         </div>
-        <PopUpModal warning="Are you sure you want to delete these proposals?"
+        { <PopUpModal warning="Are you sure you want to delete these proposals?"
                     secondaryText="cancel"
                     primaryText="delete"
-                    />
+                    />}
       </div>  
     );
 }
