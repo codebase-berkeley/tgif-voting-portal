@@ -8,6 +8,7 @@ import SearchBar from '../../components/searchbar/SearchBar';
 import { Link } from "react-router-dom";
 import axios from 'axios';
 
+
 const proposals = [
   {
       title: "Mapping for Environmental Justice",
@@ -20,14 +21,13 @@ const proposals = [
   {
     title: "Add Fire to the Fire Trails",
     description: "The only thing missing from the fire trails are fire. This will help hikers connect with nature.",
-    voted: yesIcon
+    voted: noIcon
   },
 
   {
       title: "Give All Students A Meal Plan",
       description: `We want to give every student at UC Berkeley a meal plan for all
-      4 years.`,
-      voted: noIcon
+      4 years.`
   },
   
   {
@@ -44,18 +44,18 @@ const proposals = [
   {
     title: "Give Oski A Makeover",
     description: "Here's something we all know: Oski is creepy. We are asking for $1,000,000 to give him a makeover!",
-    voted: noIcon
+    voted: yesIcon
   },
   
   {
     title: "Zero Waste 2020",
-    description: "Increase recycling by 200%",
-    voted: noIcon
+    description: "Increase recycling by 200%"
   },
 
   {
     title: "Save The Dogs",
-    description: "Top dog saves dogs!"
+    description: "Top dog saves dogs!",
+    voted: yesIcon
   },
   
   {
@@ -66,14 +66,13 @@ const proposals = [
 
   {
     title: "Plant 1,000,000 Trees",
-    description: "The goal is to plant 1,000,000 trees by the end of the year. ",
-    voted: yesIcon
+    description: "The goal is to plant 1,000,000 trees by the end of the year. "
   },
 
   {
     title: "Trees for the Lorax",
     description: "I speak for the trees",
-    voted: noIcon
+    voted: yesIcon
   },
 
   {
@@ -126,6 +125,8 @@ function Dashboard() {
                                 changeDescription={(x) => {setProposalDescription(x)}}
                                 title={proposalListDefault[i].title} 
                                 description={proposalListDefault[i].description}
+                                displayX="false"
+                                x=""    
                                 vote={proposalListDefault[i].voted ? proposalListDefault[i].voted : ""} />)
       }
       setInput(input);

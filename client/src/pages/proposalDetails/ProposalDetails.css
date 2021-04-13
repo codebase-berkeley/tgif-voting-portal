@@ -8,6 +8,10 @@
     align-items:center;
 }
 
+textarea {
+    resize: none;
+  }
+
 .proposalLeft{
     background: white; 
     width: 35%;
