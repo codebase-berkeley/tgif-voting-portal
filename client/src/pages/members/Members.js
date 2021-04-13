@@ -20,6 +20,7 @@ function Members() {
 	const [proposals, setProposals] = useState();
   const [members, setMembers] = useState([]);
 
+
   /* REACT STATES FOR EDIT/ADD/REMOVE BUTTONS */
   var addIconDefault = 'addMemberIconContainer';
   var removeIconDefault = 'removeMembersIconContainer';
@@ -38,6 +39,7 @@ function Members() {
     setEnterEditingIconClassName(enterEditingIconDefault + ' hide');
     setExitEditingIconClassName(exitEditingIconDefault);
     setEditingMode(true);
+    console.log(typeof members, "members: ", members);
   }
 
   /** Handles clicking the checkmark icon to exit member editing mode */
@@ -60,10 +62,10 @@ function Members() {
   }
 
   async function confirmAddMember() {
-      const nameTextbox = memberNameRef.current;
-      const emailTextbox = memberEmailRef.current;
-      const roleTextbox = memberRoleRef.current;
-      const privilegeDropdown = privilegeDropdownRef.current;
+      const nameTextbox = memberNameRef.current.value;
+      const emailTextbox = memberEmailRef.current.value;
+      const roleTextbox = memberRoleRef.current.value;
+      const privilegeDropdown = privilegeDropdownRef.current.value;
 
       if (nameTextbox.value !== '' && emailTextbox.value !== ''
           && roleTextbox.value !== '' && privilegeDropdown !== '') {
@@ -89,16 +91,14 @@ function Members() {
     //Go through each checkbox and determine which users should be deleted
     const userIdsToDelete = [];
     members.forEach((member) => {
-      const id = member.id;
-      const checkbox = document.getElementById('checkbox' + id);
-      if (checkbox !== null && checkbox.checked) {
-        userIdsToDelete.push(id);
+      if (member.checked) {
+        userIdsToDelete.push(member.id);
       }
     })
     //Make backend DELETE request
     if (userIdsToDelete != null && userIdsToDelete.length > 0) {
       try {
-        const response = await axios({
+        await axios({
           method: 'delete',
           url: 'http://localhost:8000/deleteUsers',
           data: {
@@ -114,23 +114,22 @@ function Members() {
 
   /** Handles clicking the Select All checkbox */
   function selectAllCheckbox() {
-    const selectAllCb = document.getElementById('selectAllCheckbox');
-    members.forEach((member) => {
-      const id = member.id;
-      const checkbox = document.getElementById('checkbox' + id);
-      checkbox.checked = selectAllCb.checked;
+    const selectAllCb = selectAllCheckboxRef.current;
+    console.log("Select All: ", selectAllCb.checked);
+    const newArr = [...members]; // make a copy of the original state (copy all members into list)
+    newArr.forEach((member) => {
+      member.checked = selectAllCb.checked;   // edit values in the new array
     });
+    setMembers(newArr); // set state to the new array
   }
 
   /** Updates the Select All checkbox to reflect whether all checkboxes are checked or not.
    * Called any time a checkbox is clicked. */
   function updateSelectAllCheckbox() {
-    const selectAllCb = document.getElementById('selectAllCheckbox');
+    const selectAllCb = selectAllCheckboxRef.current;
     let amountChecked = 0;
     members.forEach((member) => {
-      const id = member.id;
-      const checkbox = document.getElementById('checkbox' + id);
-      if (checkbox.checked) {
+      if (member.checked) {
         amountChecked += 1;
       }
     });
@@ -149,9 +148,12 @@ function Members() {
 		userCounts.data.forEach(user => {
 			users[user.user_id - 1].count = user.count;
 		});
+    users.forEach(user => {
+      user.checked = false;
+    })
 		setProposals(totalProposals.data);
 		setMembers(users);
-    console.log(typeof members, members);
+    // console.log(typeof members, "members: ", members);
   }
 
   useEffect(() => {
@@ -217,8 +219,10 @@ function Members() {
 										privilege={member.is_admin ? "Admin" : "Voting Member"}
 										votes={(member.count == null ? 0 : member.count) + "/" + proposals}
                     editingMode = {editingMode}
-                    checkboxId = {"checkbox" + member.id}
-                    checkboxOnClick = {updateSelectAllCheckbox}
+                    checkboxOnClick = {() => {  member.checked = !member.checked;
+                                                updateSelectAllCheckbox();
+                                                console.log("Checkbox for ", member.username, "is checked: ", member.checked)}}
+                    isChecked={member.checked}
 									/>)
 								})}
               </tbody>
