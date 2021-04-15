@@ -100,13 +100,31 @@ const proposals = [
 function Dashboard() {
   /* Contains all proposals. */
   const proposalHTML = []
-  for (let i = 0; i < proposals.length; i++) {
-    proposalHTML.push(<Row changeTitle={(x) => {setProposalTitle(x)}} 
-                          changeDescription={(x) => {setProposalDescription(x)}}
-                          title={proposals[i].title} 
-                          description={proposals[i].description}
-                          vote={proposals[i].voted ? proposals[i].voted : ""}/>);
+  // for (let i = 0; i < proposals.length; i++) {
+  //   proposalHTML.push(<Row changeTitle={(x) => {setProposalTitle(x)}} 
+  //                         changeDescription={(x) => {setProposalDescription(x)}}
+  //                         title={proposals[i].title} 
+  //                         description={proposals[i].description}
+  //                         vote={proposals[i].voted ? proposals[i].voted : ""}/>);
+  // }
+
+  const [proposals, setProposals] = useState([]);
+
+  async function fetchProposals() {
+		const response = await axios.get('http://localhost:8000/getProposals');
+    console.log(response);
+    let proposal_lst = response.data;
+    /* Initialize false <checked> attributes for each proposal; used for checkbox tracking
+    while in deleting mode */
+    proposal_lst.forEach(proposal => {
+      proposal_lst.checked = false;
+    })
+		setProposals(proposal_lst);
   }
+
+  useEffect(() => {
+    fetchProposals();
+  }, []);
 
   /* Create states for SearchBar. */
   const [input, setInput] = useState("");
@@ -162,7 +180,16 @@ function Dashboard() {
         <div className="left-proposals">
           <SearchBar keyword={input} setKeyword={updateInput}/>
           <div className="proposal-list">
-            {proposalList}
+            {proposals.map((proposal) => (
+                        <Row changeTitle={(x) => {setProposalTitle(x)}}
+                        changeDescription={(x) => {setProposalDescription(x)}}
+                        title={proposal.title} 
+                        description={proposal.description_text}
+                        displayX="false"
+                        x=""    
+                        vote={proposal.voted ? proposal.voted : ""} />
+                          
+                    ))}
           </div>
           <div className="shadows" aria-hidden="true"></div>
         </div>

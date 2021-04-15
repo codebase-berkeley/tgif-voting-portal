@@ -8,6 +8,22 @@ app.use(express.json());
 app.use(cors());
 const port = 8000;
 
+app.post('/submitProposal', async(req,res) =>{
+  try {
+    const title = req.body.title;
+    const organization = req.body.organization;
+    const amount_requested = req.body.amount_requested;
+    const link = req.body.link;
+    const description_text = req.body.description_text;
+    await db.query(
+      'INSERT INTO proposals (title, organization, amount_requested, link, description_text) VALUES ($1, $2, $3, $4, $5);', [title, organization,amount_requested,link,description_text],
+    );
+    res.send('Success')
+  } catch (error) {
+    console.log(error.stack);
+  }
+});
+
 app.post('/post_comment', async (req, res) => {
   try {
     const timePosted = new Date();
@@ -28,6 +44,17 @@ app.get('/get_comments', async (req, res) => {
     const proposalId = req.query.proposal_id;
     const query = await db.query(
       'SELECT * FROM comments WHERE proposal_id=$1;', [proposalId],
+    );
+    res.send(query.rows);
+  } catch (error) {
+    console.log(error.stack);
+  }
+});
+
+app.get('/getProposals', async (req, res) => {
+  try {
+    const query = await db.query(
+      'SELECT * FROM proposals;'
     );
     res.send(query.rows);
   } catch (error) {
@@ -95,4 +122,4 @@ app.get('/getProposalDetails', async (req, res) => {
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
-});
+});// // // // // // // // // // // 

@@ -22,7 +22,8 @@ CREATE TABLE proposals
     organization VARCHAR,
     amount_requested FLOAT,
     link VARCHAR,
-    description_text VARCHAR,
+    description_text VARCHAR, 
+    checked BOOLEAN
 );
 
 CREATE TABLE comments
@@ -69,7 +70,7 @@ VALUES
     (3, FALSE, 'Ryan'),
     (4, FALSE, 'Mentored');
 
-INSERT INTO proposals(id, title, organization, amount_requested, link, description_text, deadline)
+INSERT INTO proposals(id, title, organization, amount_requested, link, description_text)
 VALUES
     (1, 'Mapping for Environmental Justice', 'MEJ Team', 63000.00,
         'mappingforej.berkeley.edu', 'Mapping for Environmental Justice (MEJ) is an
@@ -77,6 +78,10 @@ VALUES
         environmental justice data for individual states.'),
     (2, 'ASUC Garden', 'ASUC', 1050,
         'rando link', 'ASUC will be planting a garden at sproul!');
+    -- (3, 'ASUC Garden', 'ASUC', 1050,
+    --     'rando link', 'ASUC will be planting a garden at sproul!')
+    -- (4, 'ASUC Garden', 'ASUC', 1050,
+    --     'rando link', 'ASUC will be planting a garden at sproul!');
 
 INSERT INTO votes(vote, user_id, proposal_id)
 VALUES

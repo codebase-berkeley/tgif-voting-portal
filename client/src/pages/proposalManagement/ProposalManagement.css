@@ -1,22 +1,26 @@
 .proposalManagement {
     display: flex;
     background: var(--lightGrey);
+    min-height: 100vh;
 }
 
-.proposalManagment {
+.proposalManagement {
     display: flex;
-    align-items: center;
-    justify-content: center;
+    /* align-items: center; */
+    /* justify-content: center; */
+    height: 80%;
 }
 
 .proposalManagementLeft{
     margin-left: 2em;
     margin-top: 1em;
     width: 40%;
+    height: 100%;
 }
 
 .proposalManagementRight {
     width: 70%;
+    /* height: 90%; */
     padding: 50px;
     display: flex;
 
@@ -114,20 +118,32 @@ textarea {
 
 .enterDeletingIconContainer {
     position: absolute;
-    right: 50px;
-    bottom: 10px;
+    /* right: 50px; */
+    /* bottom: 0px; */
+    width: 20%;
+    right: 5px;
+    top: 45px;
     font-size: 0em;
+    z-index: 2;
 }
 
 .exitDeletingIconContainer {
     position: absolute;
-    right: 50px;
-    bottom: 10px;
+    width: 20%;
+    /* right: 50px; */
+    /* bottom: 0px; */
+    right: 5px;
+    top: 45px;
     font-size: 0em;
+    z-index: 2;
 }
 
 .proposalsButton:focus {
     outline: 0;
+    
+    /* right: 5px;
+    top: 10px; */
+    
 }
 
 .hide {
