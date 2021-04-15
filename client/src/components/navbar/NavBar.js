@@ -9,23 +9,22 @@ function Navbar() {
         <div className="top-navbar" id='nav'>
             <div className = "navbar-content">
                 <div className="leftNavbar" >
-                    <a href='#' id="tgif-logo">
                     <Link to="/dashboard"><TGIFIcon className="logo"/></Link>
-                    </a>
                 </div>
                 <div className="rightNavbar">
                     {IS_ADMIN ?
-                    <a href='#'>
-                        <Link to="/proposal-management">
-                            <button className="nav-page" type="submit">Manage Proposals</button>
+                        <>
+                        <Link to="/members">
+                            <button className="nav-page" type="submit">Members</button>
                         </Link>
-                    </a>
+                        <Link to="/proposal-management">
+                            <button className="nav-page" type="submit">Manage</button>
+                        </Link>
+                        </>
                     : null}
-                    <a href='#'>
                         <Link to="/dashboard">
                             <button className="nav-page" type="submit">Logout</button>
                         </Link>
-                    </a>
                 </div>
             </div>
             <div className="navbar-outline"></div>

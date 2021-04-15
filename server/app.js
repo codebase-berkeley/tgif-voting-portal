@@ -23,6 +23,54 @@ app.post('/post_comment', async (req, res) => {
   }
 });
 
+app.post('/addUser', async (req, res) => {
+  try {
+    const { isAdmin } = req.body;
+    const { username } = req.body;
+    await db.query(
+      'INSERT INTO users (is_admin, username) VALUES ($1, $2);', [isAdmin, username],
+    );
+    res.send('Added User');
+  } catch (error) {
+    console.log(error.stack);
+  }
+});
+
+app.delete('/deleteUsers', async (req, res) => {
+  try {
+    const idsToDelete = req.body.listOfIds;
+    const queryList = idsToDelete.toString();
+    await db.query(
+      `DELETE FROM users WHERE id IN (${queryList})`,
+    );
+    res.send('Deleted All Selected Users');
+  } catch (error) {
+    console.log(error.stack);
+  }
+});
+
+app.get('/getMembers', async (req, res) => {
+  try {
+    const query = await db.query(
+      'SELECT * FROM users;',
+    );
+    res.send(query.rows);
+  } catch (error) {
+    console.log(error.stack);
+  }
+});
+
+app.get('/getUserVotes', async (req, res) => {
+  try {
+    const query = await db.query(
+      'SELECT user_id, COUNT(*) FROM votes GROUP BY user_id;',
+    );
+    res.send(query.rows);
+  } catch (error) {
+    console.log(error.stack);
+  }
+});
+
 app.get('/get_comments', async (req, res) => {
   try {
     const proposalId = req.query.proposal_id;
@@ -49,6 +97,17 @@ app.post('/submitVote', async (req, res) => {
   } catch (error) {
     console.log(error.stack);
     res.send(null);
+  }
+});
+
+app.get('/getProposalCount', async (req, res) => {
+  try {
+    const proposalCount = await db.query(
+      'SELECT COUNT(*) FROM proposals'
+    );
+    res.send(proposalCount.rows[0].count);
+  } catch (error) {
+    console.log(error.stack);
   }
 });
 
