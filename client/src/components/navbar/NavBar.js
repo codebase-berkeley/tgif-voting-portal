@@ -14,11 +14,17 @@ function Navbar() {
                 <div className="rightNavbar">
                     {IS_ADMIN ?
                         <>
-                        <Link to="/members">Members</Link>
-                        <Link to="/proposal-management"><button className="nav-page" type="submit">Manage</button></Link>
+                        <Link to="/members">
+                            <button className="nav-page" type="submit">Members</button>
+                        </Link>
+                        <Link to="/proposal-management">
+                            <button className="nav-page" type="submit">Manage</button>
+                        </Link>
                         </>
                     : null}
-                        <Link to="/dashboard"><button className="nav-page" type="submit">Logout</button></Link>
+                        <Link to="/dashboard">
+                            <button className="nav-page" type="submit">Logout</button>
+                        </Link>
                 </div>
             </div>
             <div className="navbar-outline"></div>
