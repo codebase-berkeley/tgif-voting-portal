@@ -188,7 +188,6 @@ function ProposalDetails() {
   const [proposalDescription, setProposalDescription] = useState('');
   const [proposalSponsor, setProposalSponsor] = useState('');
   const [proposalAmount, setProposalAmount] = useState(0);
-  const [proposalDeadline, setProposalDeadline] = useState('');
 
   const [comments, setComments] = React.useState([]);
   const[textboxValue, setTextboxValue] = React.useState('');
@@ -201,7 +200,6 @@ function ProposalDetails() {
       setProposalDescription(proposalInfo.description_text);
       setProposalSponsor(proposalInfo.organization);
       setProposalAmount(amountToDollarString(proposalInfo.amount_requested.toFixed(2)));
-      setProposalDeadline(proposalInfo.deadline);
     } catch (error) {
         console.log("Error in fetching proposal details.");
         console.log(error.stack);
@@ -280,7 +278,6 @@ function ProposalDetails() {
           <div className="proposalSponsor">{proposalSponsor}</div>
           <div className="proposalDescription">{proposalDescription}</div>
           <div className="proposalAmount"> Proposal Amount: {`$${proposalAmount}`}</div>
-          <div className="proposalDeadline"> Proposal Deadline: {proposalDeadline} </div>
         </div>
         {ProposalConditionalRender(IS_ADMIN)}
       </div>
