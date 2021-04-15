@@ -2,7 +2,7 @@ import {useEffect, useState, useRef} from 'react';
 import axios from "axios";
 import TableRow from '../../components/tableRow/TableRow.js';
 import addMemberIcon from '../../assets/add.svg';
-import removeMemberIcon from '../../assets/TrashCan.svg';
+import removeMemberIcon from '../../assets/trashCan.svg';
 import enterEditingIcon from '../../assets/edit.svg';
 import exitEditingIcon from '../../assets/checkmark.svg';
 import './Members.css';
