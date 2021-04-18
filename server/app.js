@@ -27,8 +27,10 @@ app.post('/addUser', async (req, res) => {
   try {
     const { isAdmin } = req.body;
     const { username } = req.body;
+    const { email } = req.body;
+    const { role } = req.body;
     await db.query(
-      'INSERT INTO users (is_admin, username) VALUES ($1, $2);', [isAdmin, username],
+      'INSERT INTO users (is_admin, username, email, tgif_role) VALUES ($1, $2, $3, $4);', [isAdmin, username, email, role],
     );
     res.send('Added User');
   } catch (error) {

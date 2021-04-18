@@ -99,7 +99,9 @@ function Members() {
           url: 'http://localhost:8000/addUser',
           data: {
             isAdmin: (privilegeDropdown.value === 'Admin' ? true : false),
-            username: nameTextbox.value
+            username: nameTextbox.value,
+            email: emailTextbox.value,
+            role: (roleTextbox.value)
           }
         });
       } catch(error) {
@@ -110,48 +112,45 @@ function Members() {
     }
   }
 
-  const [displayRemoveModal, setDisplayRemoveModal] = useState(false);
+  const [removeModal, setRemoveModal] = useState(null);
 
-  async function removeMembers() {
-    /* Go through each checkbox and determine which users should be deleted */
+  function handleRemove() {
+    /* Go through each checkbox and determine which users were selected */
     const userIdsToDelete = [];
     members.forEach((member) => {
       if (member.checked) {
         userIdsToDelete.push(member.id);
       }
     })
-    const numUsersSelected = userIdsToDelete.length;
-    setDisplayRemoveModal(true);
+    const numSelected = userIdsToDelete.length;
 
+    async function removeMembers() {
+      try {
+        await axios({
+          method: 'delete',
+          url: 'http://localhost:8000/deleteUsers',
+          data: {
+            listOfIds: userIdsToDelete
+          }
+        });
+      } catch(error) {
+          console.log(error);
+      }
+      fetchMembers();
+    }
 
-    /* Make backend DELETE request */
-    // if (userIdsToDelete != null && userIdsToDelete.length > 0) {
-    //   try {
-    //     await axios({
-    //       method: 'delete',
-    //       url: 'http://localhost:8000/deleteUsers',
-    //       data: {
-    //         listOfIds: userIdsToDelete
-    //       }
-    //     });
-    //   } catch(error) {
-    //       console.log(error);
-    //   }
-    //   fetchMembers();
-    // }
-  }
-
-  function showRemoveModal(numUsersSelected) {
-    return (
-      <div>
+    if (numSelected > 0) {
+      var pluralOrSingular = (numSelected > 1) ? 'users' : 'user';
+      setRemoveModal(
         <PopUpModal
-          warning={`Are you sure you want to remove ${numUsersSelected}`}
+          warning={`Are you sure you want to remove ${numSelected} ${pluralOrSingular}?`}
           primaryText='remove'
           secondaryText='cancel'
-          primaryFunc={() => console.log(`removed ${numUsersSelected} users`)}
+          primaryFunc={() => {removeMembers(); setRemoveModal(null);}}
+          secondaryFunc={() => setRemoveModal(null)}
         />
-      </div>
-    )
+      )
+    }
   }
 
   /** Handles clicking the Select All checkbox */
@@ -183,7 +182,6 @@ function Members() {
 
     return (
       <div className="members-page">
-        {displayRemoveModal ? showRemoveModal() : null}
         <div className="membersHeader">
           Members
           <hr className="membersUnderline"></hr>
@@ -193,7 +191,7 @@ function Members() {
           </div>
           <div className={removeIconClassName}>
             <input className='removeMembersButton membersButton' type="image" src={removeMemberIcon} alt='Remove Icon'
-            title='Remove Selected Members' onClick={removeMembers}/>
+            title='Remove Selected Members' onClick={handleRemove}/>
           </div>
           <div className={enterEditingIconClassName}>
             <input className='enterEditingButton membersButton' type="image" src={enterEditingIcon} alt='Enter Editing Icon'
@@ -236,8 +234,8 @@ function Members() {
                 {members.map((member) => {
                   return (<TableRow
 										name={member.username}
-										email={"email@berkeley.edu"}
-										role={"ASUC Representative"}
+										email={member.email}
+										role={member.tgif_role}
 										privilege={member.is_admin ? "Admin" : "Voting Member"}
 										votes={(member.count == null ? 0 : member.count) + "/" + numOfProposals}
                     editingMode = {editingMode}
@@ -258,6 +256,7 @@ function Members() {
             </table>
           </div>
         </div>
+        {removeModal}
       </div>
     );
 }

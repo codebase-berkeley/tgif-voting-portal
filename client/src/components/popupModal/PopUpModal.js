@@ -16,10 +16,12 @@ function PopUpModal(props) {
                     {props.warning}
                 </div>
                 <div className="buttons"> 
-                    <button className="secondaryButton" onClick={closeModal}>
+                    <button className="secondaryButton" onClick={() => {props.secondaryFunc();
+                                                                        closeModal();}}>
                         {props.secondaryText}
                     </button>
-                    <button className="primaryButton" onClick={props.primaryFunc}>
+                    <button className="primaryButton" onClick={() => {props.primaryFunc();
+                                                                      closeModal()}}>
                         {props.primaryText}
                     </button>
                 </div>

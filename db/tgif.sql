@@ -12,7 +12,9 @@ CREATE TABLE users
     id SERIAL PRIMARY KEY,
     is_admin BOOLEAN, 
     --    hashed_password VARCHAR,
-    username VARCHAR
+    username VARCHAR,
+    email VARCHAR,
+    tgif_role VARCHAR
 );
 
 CREATE TABLE proposals
@@ -22,7 +24,7 @@ CREATE TABLE proposals
     organization VARCHAR,
     amount_requested FLOAT,
     link VARCHAR,
-    description_text VARCHAR,
+    description_text VARCHAR
 );
 
 CREATE TABLE comments
@@ -62,21 +64,27 @@ GRANT ALL PRIVILEGES ON DATABASE tgif TO root;
 
 -- Example:
 
-INSERT INTO users(is_admin, username)
+INSERT INTO users(is_admin, username, email, tgif_role)
 VALUES
-    (TRUE, 'Teresa'),
-    (FALSE, 'Warren'),
-    (FALSE, 'Ryan'),
-    (FALSE, 'Mentored'),
-    (TRUE, 'User 5'),
-    (FALSE, 'User 6'),
-    (FALSE, 'User 7'),
-    (FALSE, 'User 8'),
-    (TRUE, 'User 9'),
-    (FALSE, 'User 10'),
-    (FALSE, 'User 11'),
-    (FALSE, 'User 12'),
-    (TRUE, 'User 13');
+    (TRUE, 'Teresa Yu', 'teresa@berkeley.edu', 'TGIF Coordinator'),
+    (TRUE, 'Jessie McGinley', 'jessiem23@berkeley.edu', 'Program Associate'),
+    (TRUE, 'Elizabeth Reyes', 'elizabeth.reyes@berkeley.edu', 'Program Associate'),
+    (TRUE, 'Joshua Kay', 'joshua_kay@berkeley.edu', 'Program Associate'),
+
+    (FALSE, 'Moe Sumino', 'moe_sumino@berkeley.edu', 'ASUC Representative'),
+    (FALSE, 'Youjin Chung', 'youjin.chung@berkeley.edu', 'Faculty Representative'),
+    (FALSE, 'Ben Perez', 'ben.perez1978@berkeley.edu', 'Administration Representative'),
+    (FALSE, 'Mike Edwards', 'mike.edwards@berkeley.edu', 'Capital Projects Representative'),
+    (FALSE, 'Nanticha Lutt', 'nan_lutt@berkeley.edu', 'GA Representative'),
+    (FALSE, 'Elias Garcia', 'elias_garcia@berkeley.edu', 'Environmental Justice - At Large Representative'),
+    (FALSE, 'Sarah Bui', 'sarah.bui123@berkeley.edu', 'Undergraduate At-Large Representative'),
+
+    (FALSE, 'Sharon Daraphonhdeth', 'sharon@berkeley.edu', 'SERC Director'),
+    (FALSE, 'Harrisen Min', 'harrisen.min@berkeley.edu', 'Committee on Student Fees Representative'),
+    (FALSE, 'Kira Stoll', 'kira.stoll@berkeley.edu', 'Office of Sustainability Director'),
+    (FALSE, 'Bruce Chamberlain', 'bruce.chamberlain24@berkeley.edu', 'Energy Office Representative'),
+    (FALSE, 'Samantha Deng', 'samantha.deng@berkeley.edu', 'Committee on Student Fees Representative'),
+    (FALSE, 'Judy Chess', 'judy.chess45@berkeley.edu', 'Capital Planning Representative');
 
 INSERT INTO proposals(id, title, organization, amount_requested, link, description_text, deadline)
 VALUES
