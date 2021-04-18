@@ -8,6 +8,7 @@ import SearchBar from '../../components/searchbar/SearchBar';
 import { Link } from "react-router-dom";
 import axios from 'axios';
 
+var PRIVILEGES ='Non-Voting Member';
 
 const proposals = [
   {
@@ -180,10 +181,12 @@ function Dashboard() {
               </Link>
             </div>
             </div>
-            <div className="voting-buttons">
-                <button className="vote-yes">Vote Yes</button>
-                <button className="vote-no">Vote No</button>
-            </div>
+            {(PRIVILEGES === 'Voting Member')
+              ? <div className="voting-buttons">
+                  <button className="vote-yes">Vote Yes</button>
+                  <button className="vote-no">Vote No</button>
+              </div>
+              : null}
           </div>
         </div>
       </div>

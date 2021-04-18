@@ -42,9 +42,19 @@ app.delete('/deleteUsers', async (req, res) => {
   try {
     const idsToDelete = req.body.listOfIds;
     const queryList = idsToDelete.toString();
+
+    await db.query(
+      `DELETE FROM comments WHERE user_id IN (${queryList})`,
+    );
+
+    await db.query(
+      `DELETE FROM votes WHERE user_id IN (${queryList})`,
+    );
+
     await db.query(
       `DELETE FROM users WHERE id IN (${queryList})`,
     );
+
     res.send('Deleted All Selected Users');
   } catch (error) {
     console.log(error.stack);
@@ -125,15 +135,16 @@ app.get('/getAllVotes', async (req, res) => {
       [req.query.proposal_id],
     );
 
-    const totalUsersQuery = await db.query(
-      'SELECT COUNT(*) FROM users',
+    const votingMember = 'Voting Member';
+    const totalVotingMembersQuery = await db.query(
+      'SELECT COUNT(*) FROM users WHERE privileges=$1', [votingMember],
     );
 
     res.send(
       {
         amountYes: parseInt(amountYesQuery.rows[0].count),
         totalVotes: parseInt(totalVotesQuery.rows[0].count),
-        totalUsers: parseInt(totalUsersQuery.rows[0].count),
+        totalVotingMembers: parseInt(totalVotingMembersQuery.rows[0].count),
       },
     );
   } catch (error) {

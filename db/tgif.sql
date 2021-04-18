@@ -92,7 +92,19 @@ VALUES
         initiative to create interactive and publicly-accessible maps displaying
         environmental justice data for individual states.'),
     ('ASUC Garden', 'ASUC', 1050,
-        'rando link', 'ASUC will be planting a garden at sproul!');
+        'asuc.berkeley.edu', 'ASUC will be planting a garden at sproul!'),
+    ('Berkeley Student Farms Seed Library', 'Berkeley Seed Library', 3652.12,
+        'tgif.berkeley.edu/overview/grant-cycles/mini-grant-2020/', 'The seed library
+        will address a foundational barrier of access to the start-up resources necessary
+        for expanding and sustaining the many gardens across campus that help grow food security.'),
+    ('#OurEnvironmentalism', 'Grad Student Assembly', 5000, 'ourenvironmentalism.com',
+        'The #OurEnvironmentalism campaign seeks to reclaim the legacies of environmentalism
+        and sustainability for communities of color and challenge the white-dominated, inaccessible
+        narrative of modern environmentalism by sharing personal stories of sustainability, highlighting
+        EJ-focused students and activists of color on Cal’s campus'),
+    ('Planting native milkweed habitat for monarch butterflies', 'Global Environment Theme House (GETH)', 500.00,
+    'geth.berkeley.edu', 'This proposal seeks to plant native California milkweed plants in demonstration plots on Clark Kerr campus as
+    an educational project as part of the Global Environment Theme House (GETH).');
 
 INSERT INTO votes(vote, user_id, proposal_id)
 VALUES

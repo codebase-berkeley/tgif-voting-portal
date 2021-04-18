@@ -8,6 +8,9 @@ import exitEditingIcon from '../../assets/checkmark.svg';
 import PopUpModal from '../../components/popupModal/PopUpModal.js'
 import './Members.css';
 
+//TODO: Replace with appropriate value once login backend is done and user's id + privileges persist throughout entire portal
+var PRIVILEGES = 'Admin';
+
 function Members() {
   const memberNameTextboxRef = useRef();
   const memberEmailTextboxRef = useRef();
@@ -92,7 +95,8 @@ function Members() {
     const privilegesDropdown = privilegesDropdownRef.current;
 
     if (nameTextbox.value !== '' && emailTextbox.value !== ''
-        && roleTextbox.value !== '' && privilegesDropdown !== '') {
+        && roleTextbox.value !== '' && privilegesDropdown !== ''
+        && PRIVILEGES === 'Admin') {
       try {
         await axios({
           method: 'post',
@@ -125,22 +129,24 @@ function Members() {
     const numSelected = userIdsToDelete.length;
 
     async function removeMembers() {
-      try {
-        await axios({
-          method: 'delete',
-          url: 'http://localhost:8000/deleteUsers',
-          data: {
-            listOfIds: userIdsToDelete
-          }
-        });
-      } catch(error) {
-          console.log(error);
+      if (PRIVILEGES === 'Admin') {
+        try {
+          await axios({
+            method: 'delete',
+            url: 'http://localhost:8000/deleteUsers',
+            data: {
+              listOfIds: userIdsToDelete
+            }
+          });
+        } catch(error) {
+            console.log(error);
+        }
+        fetchMembers();
       }
-      fetchMembers();
     }
 
     if (numSelected > 0) {
-      var pluralOrSingular = (numSelected > 1) ? 'users' : 'user';
+      var pluralOrSingular = (numSelected > 1) ? 'members' : 'member';
       setRemoveModal(
         <PopUpModal
           warning={`Are you sure you want to remove ${numSelected} ${pluralOrSingular}?`}
@@ -180,6 +186,7 @@ function Members() {
     }
   }
 
+  if (PRIVILEGES === 'Admin') {
     return (
       <div className="members-page">
         <div className="membersHeader">
@@ -259,6 +266,13 @@ function Members() {
         {removeModal}
       </div>
     );
+  } else {
+    return(
+      <div>
+        You do not have permission to view this page. Contact a portal admin if you believe this is a mistake.
+      </div>
+    )
+  }
 }
 
 export default Members;
