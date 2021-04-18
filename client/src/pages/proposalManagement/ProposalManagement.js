@@ -42,7 +42,6 @@ function ProposalManagement() {
   const [proposalDescription, setProposalDescription] = useState("MEJ is an initiative to create interactive and publicly-accessible maps displaying environmental justice data for individual states.");  
 
   const[textboxValueTitle, setTextboxValueTitle] = React.useState('');
-  const[textboxValueProp, setTextboxValueProp] = React.useState('');
   const[textboxValueDescript, setTextboxValueDescript] = React.useState('');
   const[textboxValueLink, setTextboxValueLink] = React.useState('');
   const[textboxValueMoney, setTextboxValueMoney] = React.useState('');
@@ -53,11 +52,13 @@ function ProposalManagement() {
   var enterEditingIconDefault = 'enterDeletingIconContainer';
   var exitEditingIconDefault = 'exitDeletingIconContainer';
   var deleteIconDefault = 'trashCan';
+  // var displayModal = false;
   var IS_MANAGEMENT = true;
 
   const [enterEditingIconClassName, setEnterEditingIconClassName] = useState(enterEditingIconDefault);
   const [exitEditingIconClassName, setExitEditingIconClassName] = useState(exitEditingIconDefault + ' hide');
   const [deleteIconClassName, setDeleteIconClassName] = useState(deleteIconDefault + ' hide');
+  const [displayModal, setDisplayModal] = useState(false);
 
   /** Handles clicking the pencil icon to start deleting proposals */
   function enterDeletingMode() {
@@ -77,15 +78,27 @@ function ProposalManagement() {
     // console.log(deletingMode);
   }
 
+  function displayDeleteProposalsModal() {
+    setDisplayModal(true);
+    // return (
+    // <PopUpModal warning="Are you sure you want to delete these proposals?"
+    //                 secondaryText="cancel"
+    //                 primaryText="delete"
+    //                 primaryFunc={removeProposals}
+    //                 />
+    // );
+  }
     const submitProposal = async () => {
-      if (textboxValueTitle !== ''){
+      if (isNaN(parseInt(textboxValueMoney))){
+        console.log("String submited for value");
+      }
+      else if (textboxValueTitle !== ''){
         try {
           await axios({
             method: 'post',
             url: 'http://localhost:8000/submitProposal',
             data: {
               title: textboxValueTitle,
-              organization: textboxValueProp,
               amount_requested: (isNaN(parseInt(textboxValueMoney)) ? 0 : parseInt(textboxValueMoney)),
               link: textboxValueLink,
               description_text: textboxValueDescript
@@ -97,7 +110,6 @@ function ProposalManagement() {
         console.log(error.stack); 
       }
       setTextboxValueTitle('');
-      setTextboxValueProp('');
       setTextboxValueDescript('');
       setTextboxValueLink('');
       setTextboxValueMoney(''); 
@@ -132,15 +144,6 @@ function ProposalManagement() {
     }
   }
 
-  function displayDeleteProposalsModal() {
-    return (
-    <PopUpModal warning="Are you sure you want to delete these proposals?"
-                    secondaryText="cancel"
-                    primaryText="delete"
-                    primaryFunc={removeProposals}
-                    />
-    );
-  }
     return (
         
       <div className = "ProposalManagementOuter">
@@ -193,7 +196,6 @@ function ProposalManagement() {
                     </div>
                     <div className = "PMtextboxes">
                         <textarea value={textboxValueTitle} onChange={(event) => {setTextboxValueTitle(event.target.value)}} className= 'titleNewProposal' id='titleNewProposal' type='textarea' placeholder='title'/>
-                        <textarea value={textboxValueProp} onChange={(event) => {setTextboxValueProp(event.target.value)}} className= 'dateNewProposal' id='dateNewProposal' type='textarea' placeholder='MM/DD/YY'/>
                     </div>
                     <textarea value={textboxValueDescript} onChange={(event) => {setTextboxValueDescript(event.target.value)}} className= 'descriptionNewProposal' id='descriptionNewProposal' type='textarea' placeholder='Project description'/>
                     <div className = "bottomThree">
@@ -208,6 +210,12 @@ function ProposalManagement() {
                     secondaryText="cancel"
                     primaryText="delete"
                     /> */}
+        if (displayModal) {
+          <PopUpModal warning="Are you sure you want to delete these proposals?"
+          secondaryText="cancel"
+          primaryText="delete"
+          />
+        }
         
       </div>  
     );

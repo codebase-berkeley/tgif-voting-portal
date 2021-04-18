@@ -5,22 +5,17 @@ import './Dashboard.css';
 import noIcon from '../../assets/Delete.svg';
 import yesIcon from '../../assets/Checked.svg';
 import SearchBar from '../../components/searchbar/SearchBar';
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import axios from 'axios';
 
 
 function Dashboard() {
   /* Contains all proposals. */
   const proposalHTML = []
-  // for (let i = 0; i < proposals.length; i++) {
-  //   proposalHTML.push(<Row changeTitle={(x) => {setProposalTitle(x)}} 
-  //                         changeDescription={(x) => {setProposalDescription(x)}}
-  //                         title={proposals[i].title} 
-  //                         description={proposals[i].description}
-  //                         vote={proposals[i].voted ? proposals[i].voted : ""}/>);
-  // }
 
   const [proposals, setProposals] = useState([]);
+
+  let { wantedPropID } = useParams();
 
   async function fetchProposals() {
 		const response = await axios.get('http://localhost:8000/getProposals');
@@ -36,7 +31,6 @@ function Dashboard() {
 
   useEffect(() => {
     fetchProposals();
-    updatePropID();
   }, []);
 
   /* Create states for SearchBar. */
@@ -46,21 +40,6 @@ function Dashboard() {
 
   const [proposalTitle, setProposalTitle] = useState("Mapping for Environmental Justice");
   const [proposalDescription, setProposalDescription] = useState("MEJ is an initiative to create interactive and publicly-accessible maps displaying environmental justice data for individual states.");
-  const [currPropID, setCurrPropID] = useState('');
-
-  const updatePropID = async () => {
-    try {
-      await axios({
-        method: 'post',
-        url: 'http://localhost:8000/currentPropID',
-        data: {
-          propID: currPropID
-        }
-      });
-    } catch(error) {
-      console.log(error);
-    }
-  };
 
   /* Updates proposalList state based on SearchBar input. */
   const updateInput = (input) => {
@@ -76,9 +55,27 @@ function Dashboard() {
                                 vote={proposalListDefault[i].voted ? proposalListDefault[i].voted : ""} />)
       }
       setInput(input);
-      setProposalList(filteredList);
+      setProposals(filteredList);
     } 
   }
+
+  // function updateProposalLists(input) {
+  //   let filteredList = [];
+  //   /* Initialize false <checked> attributes for each proposal; used for checkbox tracking
+  //   while in deleting mode */
+  //   proposals.forEach(proposal => {
+  //     if (proposal.title.toLowerCase().includes(input.toLowerCase())) {
+  //       <Row changeTitle={(x) => {setProposalTitle(x)}}
+  //         changeDescription={(x) => {setProposalDescription(x)}}
+  //         title={proposal.title} 
+  //         description={proposal.description_text}
+  //         vote={proposal.voted ? proposal.voted : ""} 
+  //         id={proposal.id}
+  //         />
+  //     }
+  //   })
+	// 	//setProposals(filteredList);
+  // }
 
   const[textboxValue, setTextboxValue] = React.useState('');
 
@@ -90,7 +87,7 @@ function Dashboard() {
           url: 'http://localhost:8000/post_comment',
           data: {
             user_id: 1,
-            proposal_id: 1,
+            proposal_id: {wantedPropID},
             comment_text: textboxValue
           }
         });
@@ -115,7 +112,6 @@ function Dashboard() {
                         description={proposal.description_text}
                         vote={proposal.voted ? proposal.voted : ""} 
                         id={proposal.id}
-                        lol={(x) => {setCurrPropID(x)}}
                         />
                           
                     ))}
@@ -132,7 +128,7 @@ function Dashboard() {
               <textarea value={textboxValue} onChange={(event) => {setTextboxValue(event.target.value)}} id="textbox" name="textbox" className="comment-box" placeholder="Leave a comment" rows="7" cols="53"></textarea>
               <div className="discussion-buttons">
               <button className="post-comment" onClick={handleSubmit}>Post Comment</button>
-              <Link to="/proposal-details">
+              <Link to={`/proposal-details/${wantedPropID}`}>
                   <button className="view-discussion" type="submit">View Discussion</button>
               </Link>
             </div>

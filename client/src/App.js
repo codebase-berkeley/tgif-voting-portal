@@ -10,23 +10,26 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
+  Link
 } from "react-router-dom";
 import axios from'axios';
 
-// const [proposals, setProposals] = useState([]);
 
-// async function fetchProposals() {
-//   const response = await axios.get('http://localhost:8000/getProposals');
-//   console.log(response);
-//   let proposal_lst = response.data;
-//   setProposals(proposal_lst);
-// }
-
-// useEffect(() => {
-//   fetchProposals();
-// }, [])
 
 function App() {
+  // const [proposals, setProposals] = useState([]);
+
+  // async function fetchProposals() {
+  //   const response = await axios.get('http://localhost:8000/getProposals');
+  //   console.log(response);
+  //   let proposal_lst = response.data;
+  //   setProposals(proposal_lst);
+  // }
+  
+  // useEffect(() => {
+  //   fetchProposals();
+  // }, [])
+
   return (
     <Router>
       <div className="App">
@@ -47,6 +50,7 @@ function App() {
           <Route path="/proposal-management">
             <ProposalManagement />
           </Route>
+          <Route path="/proposal-details/:id" children={<ProposalDetails />} />
         </Switch>
       </div>
     </Router>

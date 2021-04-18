@@ -40,10 +40,7 @@ function rowDeletionMode(props) {
 }
 
 function rowDashboardMode(props) {
-    // var n = '/' + '3';//{props.propID}.toString();
-
     return (
-        // <Link to={n}>
         <div
             className="proposal-box"
             id={props.title}
@@ -55,7 +52,6 @@ function rowDashboardMode(props) {
             <img src={props.vote} className="vote-status"></img>
 
         </div>
-        // </Link>
         
     );
 }
