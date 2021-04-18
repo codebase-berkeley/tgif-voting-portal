@@ -90,7 +90,7 @@ function Dashboard() {
           url: 'http://localhost:8000/post_comment',
           data: {
             user_id: 1,
-            proposal_id: 1,
+            proposal_id: 3,
             comment_text: textboxValue
           }
         });
@@ -132,7 +132,7 @@ function Dashboard() {
               <textarea value={textboxValue} onChange={(event) => {setTextboxValue(event.target.value)}} id="textbox" name="textbox" className="comment-box" placeholder="Leave a comment" rows="7" cols="53"></textarea>
               <div className="discussion-buttons">
               <button className="post-comment" onClick={handleSubmit}>Post Comment</button>
-              <Link to="/proposal-details">
+              <Link to="/proposal-details/" + {proposal_id}>
                   <button className="view-discussion" type="submit">View Discussion</button>
               </Link>
             </div>

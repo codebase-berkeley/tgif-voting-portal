@@ -41,8 +41,8 @@ function App() {
           <Route path="/dashboard">
             <Dashboard />
           </Route>
-          <Route path="/proposal-details">
-            <ProposalDetails />
+          <Route path="/proposal-details/:id" children={<ProposalDetails />}>
+    
           </Route>
           <Route path="/proposal-management">
             <ProposalManagement />
