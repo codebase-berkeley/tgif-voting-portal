@@ -12,7 +12,7 @@ function Members() {
   const memberNameTextboxRef = useRef();
   const memberEmailTextboxRef = useRef();
   const memberRoleTextboxRef = useRef();
-  const privilegeDropdownRef = useRef();
+  const privilegesDropdownRef = useRef();
   const selectAllCheckboxRef = useRef();
 
   const [editingMode, setEditingMode] = useState(false);
@@ -89,19 +89,19 @@ function Members() {
     const nameTextbox = memberNameTextboxRef.current;
     const emailTextbox = memberEmailTextboxRef.current;
     const roleTextbox = memberRoleTextboxRef.current;
-    const privilegeDropdown = privilegeDropdownRef.current;
+    const privilegesDropdown = privilegesDropdownRef.current;
 
     if (nameTextbox.value !== '' && emailTextbox.value !== ''
-        && roleTextbox.value !== '' && privilegeDropdown !== '') {
+        && roleTextbox.value !== '' && privilegesDropdown !== '') {
       try {
         await axios({
           method: 'post',
           url: 'http://localhost:8000/addUser',
           data: {
-            isAdmin: (privilegeDropdown.value === 'Admin' ? true : false),
+            privileges: privilegesDropdown.value,
             username: nameTextbox.value,
             email: emailTextbox.value,
-            role: (roleTextbox.value)
+            role: roleTextbox.value
           }
         });
       } catch(error) {
@@ -223,7 +223,7 @@ function Members() {
                 name={(<input ref={memberNameTextboxRef} className='addMemberTextbox' type='text' placeholder='name'/>)}
                 email={(<input ref={memberEmailTextboxRef} className='addMemberTextbox' type='text' placeholder='email'/>)}
                 role={(<input ref={memberRoleTextboxRef} className='addMemberTextbox' type='text' placeholder='role'/>)}
-                privilege={(<select ref={privilegeDropdownRef}>
+                privileges={(<select ref={privilegesDropdownRef}>
                   <option value='Admin'>Admin</option>
                   <option value='Voting Member'>Voting Member</option>
                   <option value='Non-Voting Member'>Non-Voting Member</option>
@@ -236,7 +236,7 @@ function Members() {
 										name={member.username}
 										email={member.email}
 										role={member.tgif_role}
-										privilege={member.is_admin ? "Admin" : "Voting Member"}
+										privileges={member.privileges}
 										votes={(member.count == null ? 0 : member.count) + "/" + numOfProposals}
                     editingMode = {editingMode}
                     checkboxOnClick = {() => {

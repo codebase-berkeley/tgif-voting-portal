@@ -9,10 +9,10 @@ function Tag(props) {
    * - Voting Member
    * - Non-Voting Member
    */
-  let classes = props.privilege + " tag";
+  let tagClassName = props.privileges + " tag";
 
   return (
-      <div className={classes}>{props.privilege}</div>
+      <div className={tagClassName}>{props.privileges}</div>
   )
 }
 

@@ -13,10 +13,10 @@
     background-color:#9AAA35;
 }
 
-.Non-Voting {
-    background-color:#FEB700;
-}
-
 .Voting {
     background-color: #196E92;
+}
+
+.Non-Voting {
+    background-color:#f4b415;
 }
