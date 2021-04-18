@@ -5,6 +5,7 @@ import addMemberIcon from '../../assets/add.svg';
 import removeMemberIcon from '../../assets/trashCan.svg';
 import enterEditingIcon from '../../assets/edit.svg';
 import exitEditingIcon from '../../assets/checkmark.svg';
+import PopUpModal from '../../components/popupModal/PopUpModal.js'
 import './Members.css';
 
 function Members() {
@@ -109,6 +110,8 @@ function Members() {
     }
   }
 
+  const [displayRemoveModal, setDisplayRemoveModal] = useState(false);
+
   async function removeMembers() {
     /* Go through each checkbox and determine which users should be deleted */
     const userIdsToDelete = [];
@@ -117,21 +120,38 @@ function Members() {
         userIdsToDelete.push(member.id);
       }
     })
+    const numUsersSelected = userIdsToDelete.length;
+    setDisplayRemoveModal(true);
+
+
     /* Make backend DELETE request */
-    if (userIdsToDelete != null && userIdsToDelete.length > 0) {
-      try {
-        await axios({
-          method: 'delete',
-          url: 'http://localhost:8000/deleteUsers',
-          data: {
-            listOfIds: userIdsToDelete
-          }
-        });
-      } catch(error) {
-          console.log(error);
-      }
-      fetchMembers();
-    }
+    // if (userIdsToDelete != null && userIdsToDelete.length > 0) {
+    //   try {
+    //     await axios({
+    //       method: 'delete',
+    //       url: 'http://localhost:8000/deleteUsers',
+    //       data: {
+    //         listOfIds: userIdsToDelete
+    //       }
+    //     });
+    //   } catch(error) {
+    //       console.log(error);
+    //   }
+    //   fetchMembers();
+    // }
+  }
+
+  function showRemoveModal(numUsersSelected) {
+    return (
+      <div>
+        <PopUpModal
+          warning={`Are you sure you want to remove ${numUsersSelected}`}
+          primaryText='remove'
+          secondaryText='cancel'
+          primaryFunc={() => console.log(`removed ${numUsersSelected} users`)}
+        />
+      </div>
+    )
   }
 
   /** Handles clicking the Select All checkbox */
@@ -163,6 +183,7 @@ function Members() {
 
     return (
       <div className="members-page">
+        {displayRemoveModal ? showRemoveModal() : null}
         <div className="membersHeader">
           Members
           <hr className="membersUnderline"></hr>
