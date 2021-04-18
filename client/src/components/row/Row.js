@@ -1,4 +1,11 @@
 import './Row.css';
+import React from "react";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+} from "react-router-dom";
 
 function Row(props) { 
     if (props.mode && props.isManagement) {
@@ -21,7 +28,7 @@ function rowDeletionMode(props) {
         >
             <div className="whole-row">
                 <div className="leftRow">
-                    <input className='proposalsCheckbox' type="checkbox"/>
+                    <input className='proposalsCheckbox' type="checkbox" checked={props.isChecked} onClick={props.proposalCheckboxOnClick}/>
                 </div>
                 <div className="rightRow">
                     <div className="proposal-title">{props.title}</div>
@@ -33,7 +40,10 @@ function rowDeletionMode(props) {
 }
 
 function rowDashboardMode(props) {
+    // var n = '/' + '3';//{props.propID}.toString();
+
     return (
+        // <Link to={n}>
         <div
             className="proposal-box"
             id={props.title}
@@ -45,6 +55,7 @@ function rowDashboardMode(props) {
             <img src={props.vote} className="vote-status"></img>
 
         </div>
+        // </Link>
         
     );
 }

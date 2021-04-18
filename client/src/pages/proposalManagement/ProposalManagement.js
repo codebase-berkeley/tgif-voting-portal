@@ -14,9 +14,10 @@ import exitEditingIcon from '../../assets/xIcon.svg';
 
 function ProposalManagement() {
   /* Contains all proposals. */
-  const proposalHTML = [];
+  //const proposalHTML = [];
 
   const [proposals, setProposals] = useState([]);
+  // const [selectedProposals, setSelectedProposals] = useState([]);
 
   async function fetchProposals() {
 		const response = await axios.get('http://localhost:8000/getProposals');
@@ -24,8 +25,8 @@ function ProposalManagement() {
     let proposal_lst = response.data;
     /* Initialize false <checked> attributes for each proposal; used for checkbox tracking
     while in deleting mode */
-    proposal_lst.forEach(proposal => {
-      proposal_lst.checked = false;
+    proposal_lst.forEach((proposal) => {
+      proposal.checked = false;
     })
 		setProposals(proposal_lst);
   }
@@ -35,7 +36,7 @@ function ProposalManagement() {
   }, []);
 
   const [proposalListDefault, setProposalListDefault] = useState(proposals);
-  const [proposalList, setProposalList] = useState(proposalHTML);
+ //const [proposalList, setProposalList] = useState(proposalHTML);
 
   const [proposalTitle, setProposalTitle] = useState("Mapping for Environmental Justice");
   const [proposalDescription, setProposalDescription] = useState("MEJ is an initiative to create interactive and publicly-accessible maps displaying environmental justice data for individual states.");  
@@ -51,15 +52,18 @@ function ProposalManagement() {
     /* REACT STATES FOR EDIT BUTTONS */
   var enterEditingIconDefault = 'enterDeletingIconContainer';
   var exitEditingIconDefault = 'exitDeletingIconContainer';
+  var deleteIconDefault = 'trashCan';
   var IS_MANAGEMENT = true;
 
   const [enterEditingIconClassName, setEnterEditingIconClassName] = useState(enterEditingIconDefault);
   const [exitEditingIconClassName, setExitEditingIconClassName] = useState(exitEditingIconDefault + ' hide');
+  const [deleteIconClassName, setDeleteIconClassName] = useState(deleteIconDefault + ' hide');
 
   /** Handles clicking the pencil icon to start deleting proposals */
   function enterDeletingMode() {
     setEnterEditingIconClassName(enterEditingIconDefault + ' hide');
     setExitEditingIconClassName(exitEditingIconDefault);
+    setDeleteIconClassName(deleteIconDefault);
     setDeletingMode(true);
     // console.log(deletingMode);
   }
@@ -68,6 +72,7 @@ function ProposalManagement() {
   function exitDeletingMode() {
     setEnterEditingIconClassName(enterEditingIconDefault);
     setExitEditingIconClassName(exitEditingIconDefault + ' hide');
+    setDeleteIconClassName(deleteIconDefault + ' hide');
     setDeletingMode(false);
     // console.log(deletingMode);
   }
@@ -100,30 +105,42 @@ function ProposalManagement() {
   };
 
   async function removeProposals() {
+    // display the modal, if modal returns a true value for primaryClicked, then do somemthing, 
+    //else prob just exit this function and stop displaying modal
     /* Go through each checkbox and determine which users should be deleted */
-    const userIdsToDelete = [];
-    // members.forEach((member) => {
-    //   if (member.checked) {
-    //     userIdsToDelete.push(member.id);
-    //   }
-    // })
+    const propsIdsToDelete = [];
+    proposals.forEach((prop) => {
+      if (prop.checked) {
+        propsIdsToDelete.push(prop.id);
+      }
+    })
     /* Make backend DELETE request */
-    if (userIdsToDelete != null && userIdsToDelete.length > 0) {
+    if (propsIdsToDelete != null && propsIdsToDelete.length > 0) {
       try {
         await axios({
           method: 'delete',
-          url: 'http://localhost:8000/deleteProposals',
+          url: 'http://localhost:8000/delete_proposal',
           data: {
-            listOfIds: userIdsToDelete
+            listOfIDs: propsIdsToDelete
           }
         });
+        fetchProposals();
       } catch(error) {
           console.log(error);
       }
-      fetchProposals();
+      
     }
   }
 
+  function displayDeleteProposalsModal() {
+    return (
+    <PopUpModal warning="Are you sure you want to delete these proposals?"
+                    secondaryText="cancel"
+                    primaryText="delete"
+                    primaryFunc={removeProposals}
+                    />
+    );
+  }
     return (
         
       <div className = "ProposalManagementOuter">
@@ -135,10 +152,15 @@ function ProposalManagement() {
             <input className='exitDeletingIconContainer proposalsButton' type="image" src={exitEditingIcon} alt='Exit Deleting Mode'
             title='Finish Editing' onClick={exitDeletingMode}/>
           </div>
+          {/* <div className={exitEditingIconClassName}>
+            <input className='exitDeletingIconContainer proposalsButton' type="image" src={exitEditingIcon} alt='Exit Deleting Mode'
+            title='Finish Editing' onClick={exitDeletingMode}/>
+          </div> */}
             <div className="proposalManagement">
             <div className="proposalManagementLeft"> 
-                <div className="trashCan">  
-                    <img src={TrashCan} className="TrashCanIcon"></img>   
+                <div className={deleteIconClassName}>   
+                    <input className='removeProposalsButton proposalsButton' type="image" src={TrashCan} alt='Delete Selected Proposals'
+                    title='Remove Selected Proposals' onClick={displayDeleteProposalsModal}/>
                 </div>
                 <div className="proposal-list">
                     {proposals.map((proposal) => (
@@ -148,8 +170,18 @@ function ProposalManagement() {
                           mode={deletingMode}
                           isManagement= {IS_MANAGEMENT}
                           vote={proposal.voted ? proposal.voted : ""}
+                          proposalCheckboxOnClick = {() => {
+                            const proposalsCopy = [...proposals];
+                            proposalsCopy.forEach((proposalCopy) => {
+                              if (proposalCopy.id === proposal.id) {
+                                proposalCopy.checked = !proposalCopy.checked;
+                              }
+                              });
+                              setProposals(proposalsCopy);
+                              // updateSelectAllCheckbox();
+                              }}
+                            isChecked={proposal.checked}
                           />
-                          
                     ))}
                 </div>
             </div>
@@ -172,10 +204,11 @@ function ProposalManagement() {
                 </div>
             </div>
         </div>
-        {/* { <PopUpModal warning="Are you sure you want to delete these proposals?"
+        {/* <PopUpModal warning="Are you sure you want to delete these proposals?"
                     secondaryText="cancel"
                     primaryText="delete"
-                    />} */}
+                    /> */}
+        
       </div>  
     );
 }

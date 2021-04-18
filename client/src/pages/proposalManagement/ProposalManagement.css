@@ -91,12 +91,7 @@ textarea {
   }
 
 
-.TrashCanIcon {
-    display: flex;
-    justify-content: center;
-    width: 3em;
-    height: 3em;
-}
+
 
 .createProposalButton {
     background: var(--darkGrey);
@@ -135,6 +130,15 @@ textarea {
     right: 5px;
     top: 45px;
     font-size: 0em;
+    z-index: 2;
+}
+
+.removeProposalsButton {
+    position: absolute;
+    width: 3em;
+    height: 3em;
+    left: 5px;
+    top: 45px;
     z-index: 2;
 }
 

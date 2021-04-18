@@ -85,3 +85,7 @@
     font-weight: bold;
     font-size: 1em;
 }
+
+.hide {
+    display: none;
+}

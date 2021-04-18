@@ -62,6 +62,18 @@ app.get('/getProposals', async (req, res) => {
   }
 });
 
+app.get('/delete_proposal', async (req, res) => {
+  try {
+    const propsList = req.body.listOfIDs
+    await db.query(
+      `DELETE FROM proposals WHERE id IN (${propsList})`, 
+    );
+    res.send('Deleted selected proposals.');
+  } catch (error) {
+    console.log(error.stack);
+  }
+});
+
 app.post('/submitVote', async (req, res) => {
   try {
     const deleteEntry = await db.query(

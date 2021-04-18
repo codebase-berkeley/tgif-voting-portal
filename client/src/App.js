@@ -5,20 +5,38 @@ import ProposalDetails from './pages/proposalDetails/ProposalDetails.js';
 import ProposalManagement from './pages/proposalManagement/ProposalManagement.js';
 // import ProposalTempManagement from './pages/proposalManagement/proposalPageTemp.js';
 import NavBar from './components/navbar/NavBar.js'
-;
-import React from "react";
+import {React, useState, useEffect} from "react";
 import {
   BrowserRouter as Router,
   Switch,
   Route,
 } from "react-router-dom";
+import axios from'axios';
 
+// const [proposals, setProposals] = useState([]);
+
+// async function fetchProposals() {
+//   const response = await axios.get('http://localhost:8000/getProposals');
+//   console.log(response);
+//   let proposal_lst = response.data;
+//   setProposals(proposal_lst);
+// }
+
+// useEffect(() => {
+//   fetchProposals();
+// }, [])
 
 function App() {
   return (
     <Router>
       <div className="App">
         <NavBar/>
+
+        {/* {proposals.map((proposal) => (
+        <li>
+          <Link to={proposal.id.toString()}></Link>
+        </li> 
+        ))} */}
         <Switch>
           <Route path="/dashboard">
             <Dashboard />

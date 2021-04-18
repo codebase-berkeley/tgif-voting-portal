@@ -6,7 +6,7 @@ import React, { useState, useEffect } from 'react';
 import axios from "axios";
 
 var IS_ADMIN = true;
-var PROPOSAL_ID = 1;
+var PROPOSAL_ID;
 var USER_ID = 4
 
 const ANON = 'John Doe';
@@ -26,6 +26,15 @@ function ProposalConditionalRender(isAdmin) {
         console.log("There was an error in submitting your vote.");
         console.log(error.stack);
     }
+  }
+
+  async function fetchCurrPropID() {
+		const response = await axios.get('http://localhost:8000/currentPropID');
+    let propID = response.data.propID;
+    /* Initialize false <checked> attributes for each proposal; used for checkbox tracking
+    while in deleting mode */
+		PROPOSAL_ID = propID;
+    console.log(propID);
   }
 
   function AdminProposalConditionalRender() {
