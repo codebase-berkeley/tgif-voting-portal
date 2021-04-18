@@ -6,7 +6,7 @@ import React, { useState, useEffect } from 'react';
 import axios from "axios";
 
 var IS_ADMIN = true;
-var PROPOSAL_ID;
+// var PROPOSAL_ID;
 var USER_ID = 4
 
 const ANON = 'John Doe';
@@ -20,7 +20,7 @@ function ProposalConditionalRender(isAdmin) {
       const response = await axios.post('http://localhost:8000/submitVote', {
         vote: voteDecision,
         user_id: USER_ID,
-        proposal_id: PROPOSAL_ID
+        proposal_id: id
       });
     } catch(error) {
         console.log("There was an error in submitting your vote.");
@@ -61,7 +61,7 @@ function ProposalConditionalRender(isAdmin) {
       const [adminNoButtonClassName, setAdminNoButtonClassName] = useState(adminUnpressedNoButtonClassName);
 
       async function fetchVoteInfo() {
-        const res = await axios.get('http://localhost:8000/getAllVotes', {params : {proposal_id: PROPOSAL_ID}});
+        const res = await axios.get('http://localhost:8000/getAllVotes', {params : {proposal_id: id }});
         const voteYes = res.data.amountYes;
         const votesTotal= res.data.totalVotes;
         const totalMembers = res.data.totalUsers;
@@ -187,6 +187,7 @@ function ProposalConditionalRender(isAdmin) {
 
 function ProposalDetails() {
 
+  let { id } = useParams();
   /** Takes in a number and converts it to a dollar amount string w/ commas
   * placed appropriately (every 3 spaces); does not include dollar sign */
   function amountToDollarString(amount) {
@@ -203,7 +204,7 @@ function ProposalDetails() {
 
   async function fetchProposalDetails() { 
     try {
-      const response = await axios.get('http://localhost:8000/getProposalDetails', { params: { proposal_id: PROPOSAL_ID } });
+      const response = await axios.get('http://localhost:8000/getProposalDetails', { params: { proposal_id: id } });
       const proposalInfo = response.data;
       setProposalTitle(proposalInfo.title);
       setProposalDescription(proposalInfo.description_text);
@@ -219,7 +220,7 @@ function ProposalDetails() {
     try {
       const response = await axios.get("http://localhost:8000/get_comments", 
                                           { params: 
-                                            { proposal_id: PROPOSAL_ID }
+                                            { proposal_id: id }
                                           });      
       setComments(response.data);
     } catch (error) {
@@ -235,7 +236,7 @@ function ProposalDetails() {
           url: 'http://localhost:8000/post_comment',
           data: {
             user_id: USER_ID,
-            proposal_id: PROPOSAL_ID,
+            proposal_id: id,
             comment_text: textboxValue
           }
         });
