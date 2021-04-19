@@ -245,3 +245,24 @@ textarea {
     right: -30px;
     bottom: 1px;
 }
+
+.genericProposalButton {
+    background-color: var(--buttonGreen);
+    border-radius: 5px;
+    color: white;
+    font-family: 'Lexend Deca', sans-serif;
+    border-width: 0px;
+}
+
+.genericProposalButton:active {
+    background-color: var(--buttonGreenOpaque);
+}
+
+.adminButton {
+    border-radius: 5px;
+    color: white;
+    font-family: 'Lexend Deca', sans-serif;
+    width: 100px;
+    height: 40px;
+    border-width: 0px;
+}

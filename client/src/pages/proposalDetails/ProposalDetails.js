@@ -43,9 +43,9 @@ function ProposalConditionalRender(privileges) {
       const totalVotingMembers = res.data.totalVotingMembers;
       setVotesTotal(votesTotal);
       setTotalMembers(totalVotingMembers);
-      setPercentYes((voteYes / totalVotingMembers) * 100);
-      setPercentNo(((votesTotal - voteYes) / totalVotingMembers) * 100);
-      setPercentUnvoted(((totalVotingMembers - votesTotal) / totalVotingMembers) * 100);
+      setPercentYes(((voteYes / totalVotingMembers) * 100).toFixed(2));
+      setPercentNo((((votesTotal - voteYes) / totalVotingMembers) * 100).toFixed(2));
+      setPercentUnvoted((((totalVotingMembers - votesTotal) / totalVotingMembers) * 100).toFixed(2));
     }
     
     useEffect(() => {
@@ -183,6 +183,7 @@ function ProposalDetails() {
           }
         });
       } catch(error) {
+
           console.log(error);
       }
       setTextboxValue('');
@@ -227,7 +228,7 @@ function ProposalDetails() {
             {proposalTitle}
             <hr className="proposalDetailsUnderline"></hr>
           </div>
-          <div className="proposalSponsor">{proposalSponsor}</div>
+          <div className="proposalSponsor">Sponsor: {proposalSponsor}</div>
           <div className={(PRIVILEGES === 'Non-Voting Member') ? ' proposalDescription nonVotingProposalDescription' : "proposalDescription"}>{proposalDescription}</div>
           <div className="proposalAmount"> Proposal Amount: {`$${proposalAmount}`}</div>
         </div>
@@ -259,7 +260,7 @@ function ProposalDetails() {
               <ProposalButton buttonClassName='genericProposalButton' buttonText='Post' onClickFunc={handleSubmitComment}/>
             </div>
           </div>
-        </div>       
+        </div>
       </div>
     </div>
   );

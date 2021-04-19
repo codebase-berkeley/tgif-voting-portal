@@ -5,10 +5,11 @@ import './Dashboard.css';
 import noIcon from '../../assets/Delete.svg';
 import yesIcon from '../../assets/Checked.svg';
 import SearchBar from '../../components/searchbar/SearchBar';
+import ProposalButton from '../proposalDetails/ProposalButton.js';
 import { Link } from "react-router-dom";
 import axios from 'axios';
 
-var PRIVILEGES ='Non-Voting Member';
+var PRIVILEGES ='Voting Member';
 
 const proposals = [
   {
@@ -155,7 +156,15 @@ function Dashboard() {
       setTextboxValue('');
     }
   };
-  
+
+  /* VOTING BUTTON STATES */
+  const dashboardPressedYesButtonClassName = 'dashboardPressedYesButton votingMemberVotingButton';
+  const dashboardUnpressedYesButtonClassName = 'dashboardUnpressedYesButton votingMemberVotingButton';
+  const [dashboardYesButtonClassName, setDashboardYesButtonClassName] = useState(dashboardUnpressedYesButtonClassName);
+
+  const dashboardPressedNoButtonClassName = 'dashboardPressedNoButton votingMemberVotingButton';
+  const dashboardUnpressedNoButtonClassName = 'dashboardUnpressedNoButton votingMemberVotingButton';
+  const [dashboardNoButtonClassName, setDashboardNoButtonClassName] = useState(dashboardUnpressedNoButtonClassName);
 
   return (
     <div className="dashboard">
@@ -172,21 +181,33 @@ function Dashboard() {
             <div className="proposal-head-title">{proposalTitle}</div>
             <div className="proposal-head-description">{proposalDescription}</div>
             <div className="dividing-line"></div>
-            <div className="comment-area">
-              <textarea value={textboxValue} onChange={(event) => {setTextboxValue(event.target.value)}} id="textbox" name="textbox" className="comment-box" placeholder="Leave a comment" rows="7" cols="53"></textarea>
+            <div className={PRIVILEGES === 'Voting Member' ? "comment-area" : "comment-area nonvoting-comment-area"}>
+              <textarea className="comment-box" value={textboxValue} onChange={(event) => {setTextboxValue(event.target.value)}} id="textbox" name="textbox" placeholder="Leave a comment" rows="7" cols="53"></textarea>
               <div className="discussion-buttons">
-              <button className="post-comment" onClick={handleSubmit}>Post Comment</button>
-              <Link to="/proposal-details">
+                <button className="post-comment" onClick={handleSubmit}>Post Comment</button>
+                <Link to="/proposal-details">
                   <button className="view-discussion" type="submit">View Discussion</button>
-              </Link>
-            </div>
+                </Link>
+              </div>
             </div>
             {(PRIVILEGES === 'Voting Member')
-              ? <div className="voting-buttons">
-                  <button className="vote-yes">Vote Yes</button>
-                  <button className="vote-no">Vote No</button>
-              </div>
-              : null}
+              ? <div className="dashboardVotingButtonsContainer">
+                  <div className='leftDashboardButtonContainer dashboardButtonContainer'>
+                    <ProposalButton buttonText='Vote Yes' buttonClassName={dashboardYesButtonClassName}
+                      onClickFunc={() => {setDashboardYesButtonClassName(dashboardPressedYesButtonClassName);
+                                          setDashboardNoButtonClassName(dashboardUnpressedNoButtonClassName);}}
+                    />
+                  </div>
+
+                  <div className='rightDashboardButtonContainer dashboardButtonContainer'>
+                    <ProposalButton buttonText='Vote No' buttonClassName={dashboardNoButtonClassName}
+                      onClickFunc={() => {setDashboardYesButtonClassName(dashboardUnpressedYesButtonClassName);
+                                          setDashboardNoButtonClassName(dashboardPressedNoButtonClassName);}}
+                    />
+                  </div>
+                </div>
+              : null
+            }
           </div>
         </div>
       </div>
