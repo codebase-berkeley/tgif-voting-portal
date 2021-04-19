@@ -89,8 +89,10 @@ function ProposalManagement() {
     // );
   }
     const submitProposal = async () => {
-      if (isNaN(parseInt(textboxValueMoney))){
+      if (textboxValueMoney !== '' && isNaN(parseInt(textboxValueMoney))){
         console.log("String submited for value");
+        document.getElementById("moneyNewDescription").style.borderColor="#FF0000";
+        document.getElementById("moneyNewDescription").style.backgroundColor="#ffcccb";
       }
       else if (textboxValueTitle !== ''){
         try {
@@ -113,6 +115,13 @@ function ProposalManagement() {
       setTextboxValueDescript('');
       setTextboxValueLink('');
       setTextboxValueMoney(''); 
+      document.getElementById("moneyNewDescription").style.borderColor= '#757575';
+      document.getElementById("moneyNewDescription").style.backgroundColor="white";
+      document.getElementById("titleNewProposal").style.borderColor="#757575";
+      document.getElementById("titleNewProposal").style.backgroundColor="white";
+    } else {
+      document.getElementById("titleNewProposal").style.borderColor="#FF0000";
+      document.getElementById("titleNewProposal").style.backgroundColor="#ffcccb";
     }
   };
 

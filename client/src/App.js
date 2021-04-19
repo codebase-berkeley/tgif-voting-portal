@@ -50,7 +50,7 @@ function App() {
           <Route path="/proposal-management">
             <ProposalManagement />
           </Route>
-          <Route path="/proposal-details/:id" children={<ProposalDetails />} />
+          <Route path="/proposal-details/:PROPOSAL_ID" children={<ProposalDetails />} />
         </Switch>
       </div>
     </Router>

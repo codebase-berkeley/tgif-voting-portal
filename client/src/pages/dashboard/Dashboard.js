@@ -5,17 +5,17 @@ import './Dashboard.css';
 import noIcon from '../../assets/Delete.svg';
 import yesIcon from '../../assets/Checked.svg';
 import SearchBar from '../../components/searchbar/SearchBar';
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from 'axios';
 
 
 function Dashboard() {
   /* Contains all proposals. */
-  const proposalHTML = []
+  // const proposalHTML = []
 
   const [proposals, setProposals] = useState([]);
 
-  let { wantedPropID } = useParams();
+  const [filteredProposalsList, setFilteredProposalsList] = useState([]);
 
   async function fetchProposals() {
 		const response = await axios.get('http://localhost:8000/getProposals');
@@ -27,6 +27,7 @@ function Dashboard() {
       proposal_lst.checked = false;
     })
 		setProposals(proposal_lst);
+    setFilteredProposalsList(proposal_lst);
   }
 
   useEffect(() => {
@@ -35,47 +36,24 @@ function Dashboard() {
 
   /* Create states for SearchBar. */
   const [input, setInput] = useState("");
-  const [proposalListDefault, setProposalListDefault] = useState(proposals);
-  const [proposalList, setProposalList] = useState(proposalHTML);
+  // const [proposalList, setProposalList] = useState(proposalHTML);
 
   const [proposalTitle, setProposalTitle] = useState("Mapping for Environmental Justice");
   const [proposalDescription, setProposalDescription] = useState("MEJ is an initiative to create interactive and publicly-accessible maps displaying environmental justice data for individual states.");
+  const [wantedPropID, setWantedPropID] = useState(1);
 
   /* Updates proposalList state based on SearchBar input. */
   const updateInput = (input) => {
     let filteredList = [];
     for (let i = 0; i < proposals.length; i++) {
-      if (proposalListDefault[i].title.toLowerCase().includes(input.toLowerCase())) {
-        filteredList.push(<Row changeTitle={(x) => {setProposalTitle(x)}}
-                                changeDescription={(x) => {setProposalDescription(x)}}
-                                title={proposalListDefault[i].title} 
-                                description={proposalListDefault[i].description}
-                                displayX="false"
-                                x=""    
-                                vote={proposalListDefault[i].voted ? proposalListDefault[i].voted : ""} />)
+      if (proposals[i].title.toLowerCase().includes(input.toLowerCase())) {
+        filteredList.push(proposals[i]);
       }
       setInput(input);
-      setProposals(filteredList);
+      setFilteredProposalsList(filteredList);
     } 
   }
 
-  // function updateProposalLists(input) {
-  //   let filteredList = [];
-  //   /* Initialize false <checked> attributes for each proposal; used for checkbox tracking
-  //   while in deleting mode */
-  //   proposals.forEach(proposal => {
-  //     if (proposal.title.toLowerCase().includes(input.toLowerCase())) {
-  //       <Row changeTitle={(x) => {setProposalTitle(x)}}
-  //         changeDescription={(x) => {setProposalDescription(x)}}
-  //         title={proposal.title} 
-  //         description={proposal.description_text}
-  //         vote={proposal.voted ? proposal.voted : ""} 
-  //         id={proposal.id}
-  //         />
-  //     }
-  //   })
-	// 	//setProposals(filteredList);
-  // }
 
   const[textboxValue, setTextboxValue] = React.useState('');
 
@@ -87,11 +65,7 @@ function Dashboard() {
           url: 'http://localhost:8000/post_comment',
           data: {
             user_id: 1,
-<<<<<<< HEAD
             proposal_id: {wantedPropID},
-=======
-            proposal_id: 3,
->>>>>>> 8da1e42eedcbcc0bf60f67ec694b848d0bbf6644
             comment_text: textboxValue
           }
         });
@@ -101,7 +75,6 @@ function Dashboard() {
       setTextboxValue('');
     }
   };
-  
 
   return (
     <div className="dashboard">
@@ -109,15 +82,15 @@ function Dashboard() {
         <div className="left-proposals">
           <SearchBar keyword={input} setKeyword={updateInput}/>
           <div className="proposal-list">
-            {proposals.map((proposal) => (
+            {filteredProposalsList.map((proposal) => (
                         <Row changeTitle={(x) => {setProposalTitle(x)}}
                         changeDescription={(x) => {setProposalDescription(x)}}
+                        changeWantedPropID={(x) => {setWantedPropID(x)}}
                         title={proposal.title} 
                         description={proposal.description_text}
                         vote={proposal.voted ? proposal.voted : ""} 
                         id={proposal.id}
                         />
-                          
                     ))}
             
           </div>
@@ -132,11 +105,7 @@ function Dashboard() {
               <textarea value={textboxValue} onChange={(event) => {setTextboxValue(event.target.value)}} id="textbox" name="textbox" className="comment-box" placeholder="Leave a comment" rows="7" cols="53"></textarea>
               <div className="discussion-buttons">
               <button className="post-comment" onClick={handleSubmit}>Post Comment</button>
-<<<<<<< HEAD
               <Link to={`/proposal-details/${wantedPropID}`}>
-=======
-              <Link to="/proposal-details/" + {proposal_id}>
->>>>>>> 8da1e42eedcbcc0bf60f67ec694b848d0bbf6644
                   <button className="view-discussion" type="submit">View Discussion</button>
               </Link>
             </div>
