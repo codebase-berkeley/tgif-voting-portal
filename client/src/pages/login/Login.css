@@ -42,3 +42,7 @@
     background-color: #A6B82E;
     color: white;
 }
+
+.failure-message {
+    font-family: 'IBM Plex Sans';
+}

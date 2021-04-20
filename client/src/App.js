@@ -1,6 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import Login from './pages/login/Login';
+import LoginFail from './pages/login/LoginFail';
 import Dashboard from './pages/dashboard/Dashboard';
 import ProposalDetails from './pages/proposalDetails/ProposalDetails.js';
 import Members from './pages/members/Members.js';
@@ -18,22 +19,28 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <NavBar/>
         <Switch>
           <Route path="/login">
             <Login />
           </Route>
           <Route path="/dashboard">
+            <NavBar/>
             <Dashboard />
           </Route>
           <Route path="/proposal-details">
+            <NavBar/>
             <ProposalDetails />
           </Route>
           <Route path="/members">
+            <NavBar/>
             <Members />
           </Route>
           <Route path="/proposal-management">
+            <NavBar/>
             <ProposalManagement />
+          </Route>
+          <Route path="/login-fail">
+            <LoginFail/>
           </Route>
         </Switch>
       </div>
