@@ -25,10 +25,12 @@ app.post('/post_comment', async (req, res) => {
 
 app.post('/addUser', async (req, res) => {
   try {
-    const { isAdmin } = req.body;
+    const { privileges } = req.body;
     const { username } = req.body;
+    const { email } = req.body;
+    const { role } = req.body;
     await db.query(
-      'INSERT INTO users (is_admin, username) VALUES ($1, $2);', [isAdmin, username],
+      'INSERT INTO users (privileges, username, email, tgif_role) VALUES ($1, $2, $3, $4);', [privileges, username, email, role],
     );
     res.send('Added User');
   } catch (error) {
@@ -40,9 +42,19 @@ app.delete('/deleteUsers', async (req, res) => {
   try {
     const idsToDelete = req.body.listOfIds;
     const queryList = idsToDelete.toString();
+
+    await db.query(
+      `DELETE FROM comments WHERE user_id IN (${queryList})`,
+    );
+
+    await db.query(
+      `DELETE FROM votes WHERE user_id IN (${queryList})`,
+    );
+
     await db.query(
       `DELETE FROM users WHERE id IN (${queryList})`,
     );
+
     res.send('Deleted All Selected Users');
   } catch (error) {
     console.log(error.stack);
@@ -103,7 +115,7 @@ app.post('/submitVote', async (req, res) => {
 app.get('/getProposalCount', async (req, res) => {
   try {
     const proposalCount = await db.query(
-      'SELECT COUNT(*) FROM proposals'
+      'SELECT COUNT(*) FROM proposals',
     );
     res.send(proposalCount.rows[0].count);
   } catch (error) {
@@ -123,15 +135,16 @@ app.get('/getAllVotes', async (req, res) => {
       [req.query.proposal_id],
     );
 
-    const totalUsersQuery = await db.query(
-      'SELECT COUNT(*) FROM users',
+    const votingMember = 'Voting Member';
+    const totalVotingMembersQuery = await db.query(
+      'SELECT COUNT(*) FROM users WHERE privileges=$1', [votingMember],
     );
 
     res.send(
       {
         amountYes: parseInt(amountYesQuery.rows[0].count),
         totalVotes: parseInt(totalVotesQuery.rows[0].count),
-        totalUsers: parseInt(totalUsersQuery.rows[0].count),
+        totalVotingMembers: parseInt(totalVotingMembersQuery.rows[0].count),
       },
     );
   } catch (error) {
@@ -142,7 +155,7 @@ app.get('/getAllVotes', async (req, res) => {
 app.get('/getProposalDetails', async (req, res) => {
   try {
     const query = await db.query(
-      'SELECT title, organization, amount_requested, link, description_text, deadline FROM proposals WHERE id=$1;',
+      'SELECT title, organization, amount_requested, link, description_text FROM proposals WHERE id=$1;',
       [req.query.proposal_id],
     );
     res.send(query.rows[0]);

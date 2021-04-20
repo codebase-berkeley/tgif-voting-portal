@@ -3,7 +3,7 @@ import Tag from '../tag/Tag';
 import ProposalButton from '../../pages/proposalDetails/ProposalButton.js'
 import React from "react";
 
-function TableRow( { handleSubmitFunc, addingMode, editingMode, isChecked, checkboxOnClick, name, email, role, privilege, votes } ) {
+function TableRow( { handleSubmitFunc, addingMode, editingMode, isChecked, checkboxOnClick, name, email, role, privileges, votes } ) {
   let confirmAddMemberButton = <td> 
                           <ProposalButton className='confirmAddMemberButton membersButton' hoverText='Confirm Member'
                           buttonText='Confirm' buttonClassName='confirmMemberButton' onClickFunc={handleSubmitFunc}/>
@@ -17,7 +17,7 @@ function TableRow( { handleSubmitFunc, addingMode, editingMode, isChecked, check
         <td>{email}</td>
         <td>{role}</td>
         <td className="tags">
-          <Tag privilege={privilege} text={privilege}/>
+          <Tag privileges={privileges} text={privileges}/>
         </td>
         <td>{votes}</td>
       </tr>

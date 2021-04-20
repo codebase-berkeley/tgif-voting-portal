@@ -10,9 +10,11 @@ WITH ENCRYPTED PASSWORD 'password';
 CREATE TABLE users
 (
     id SERIAL PRIMARY KEY,
-    is_admin BOOLEAN, 
+    privileges VARCHAR, --'Admin', 'Voting Member', 'Non-Voting Member'
     --    hashed_password VARCHAR,
-    username VARCHAR
+    username VARCHAR,
+    email VARCHAR,
+    tgif_role VARCHAR
 );
 
 CREATE TABLE proposals
@@ -22,12 +24,11 @@ CREATE TABLE proposals
     organization VARCHAR,
     amount_requested FLOAT,
     link VARCHAR,
-    description_text VARCHAR,
+    description_text VARCHAR
 );
 
 CREATE TABLE comments
-(   
-    -- is_admin BOOLEAN -- we might need this to determine whether we display comments as anon
+(
     id SERIAL PRIMARY KEY,
     time_posted TIMESTAMP,
     comment_text VARCHAR,
@@ -62,30 +63,48 @@ GRANT ALL PRIVILEGES ON DATABASE tgif TO root;
 
 -- Example:
 
-INSERT INTO users(is_admin, username)
+INSERT INTO users(privileges, username, email, tgif_role)
 VALUES
-    (TRUE, 'Teresa'),
-    (FALSE, 'Warren'),
-    (FALSE, 'Ryan'),
-    (FALSE, 'Mentored'),
-    (TRUE, 'User 5'),
-    (FALSE, 'User 6'),
-    (FALSE, 'User 7'),
-    (FALSE, 'User 8'),
-    (TRUE, 'User 9'),
-    (FALSE, 'User 10'),
-    (FALSE, 'User 11'),
-    (FALSE, 'User 12'),
-    (TRUE, 'User 13');
+    ('Admin', 'Teresa Yu', 'teresa@berkeley.edu', 'TGIF Coordinator'),
+    ('Admin', 'Jessie McGinley', 'jessiem23@berkeley.edu', 'Program Associate'),
+    ('Admin', 'Elizabeth Reyes', 'elizabeth.reyes@berkeley.edu', 'Program Associate'),
+    ('Admin', 'Joshua Kay', 'joshua_kay@berkeley.edu', 'Program Associate'),
 
-INSERT INTO proposals(id, title, organization, amount_requested, link, description_text, deadline)
+    ('Voting Member', 'Moe Sumino', 'moe_sumino@berkeley.edu', 'ASUC Representative'),
+    ('Voting Member', 'Youjin Chung', 'youjin.chung@berkeley.edu', 'Faculty Representative'),
+    ('Voting Member', 'Ben Perez', 'ben.perez1978@berkeley.edu', 'Administration Representative'),
+    ('Voting Member', 'Mike Edwards', 'mike.edwards@berkeley.edu', 'Capital Projects Representative'),
+    ('Voting Member', 'Nanticha Lutt', 'nan_lutt@berkeley.edu', 'GA Representative'),
+    ('Voting Member', 'Elias Garcia', 'elias_garcia@berkeley.edu', 'Environmental Justice - At Large Representative'),
+    ('Voting Member', 'Sarah Bui', 'sarah.bui123@berkeley.edu', 'Undergraduate At-Large Representative'),
+
+    ('Non-Voting Member', 'Sharon Daraphonhdeth', 'sharon@berkeley.edu', 'SERC Director'),
+    ('Non-Voting Member', 'Harrisen Min', 'harrisen.min@berkeley.edu', 'Committee on Student Fees Representative'),
+    ('Non-Voting Member', 'Kira Stoll', 'kira.stoll@berkeley.edu', 'Office of Sustainability Director'),
+    ('Non-Voting Member', 'Bruce Chamberlain', 'bruce.chamberlain24@berkeley.edu', 'Energy Office Representative'),
+    ('Non-Voting Member', 'Samantha Deng', 'samantha.deng@berkeley.edu', 'Committee on Student Fees Representative'),
+    ('Non-Voting Member', 'Judy Chess', 'judy.chess45@berkeley.edu', 'Capital Planning Representative');
+
+INSERT INTO proposals(title, organization, amount_requested, link, description_text)
 VALUES
-    (1, 'Mapping for Environmental Justice', 'MEJ Team', 63000.00,
+    ('Mapping for Environmental Justice', 'MEJ Team', 63000.00,
         'mappingforej.berkeley.edu', 'Mapping for Environmental Justice (MEJ) is an
         initiative to create interactive and publicly-accessible maps displaying
         environmental justice data for individual states.'),
-    (2, 'ASUC Garden', 'ASUC', 1050,
-        'rando link', 'ASUC will be planting a garden at sproul!');
+    ('ASUC Garden', 'ASUC', 1050,
+        'asuc.berkeley.edu', 'ASUC will be planting a garden at sproul!'),
+    ('Berkeley Student Farms Seed Library', 'Berkeley Seed Library', 3652.12,
+        'tgif.berkeley.edu/overview/grant-cycles/mini-grant-2020/', 'The seed library
+        will address a foundational barrier of access to the start-up resources necessary
+        for expanding and sustaining the many gardens across campus that help grow food security.'),
+    ('#OurEnvironmentalism', 'Grad Student Assembly', 5000, 'ourenvironmentalism.com',
+        'The #OurEnvironmentalism campaign seeks to reclaim the legacies of environmentalism
+        and sustainability for communities of color and challenge the white-dominated, inaccessible
+        narrative of modern environmentalism by sharing personal stories of sustainability, highlighting
+        EJ-focused students and activists of color on Cal’s campus'),
+    ('Planting native milkweed habitat for monarch butterflies', 'Global Environment Theme House (GETH)', 500.00,
+    'geth.berkeley.edu', 'This proposal seeks to plant native California milkweed plants in demonstration plots on Clark Kerr campus as
+    an educational project as part of the Global Environment Theme House (GETH).');
 
 INSERT INTO votes(vote, user_id, proposal_id)
 VALUES

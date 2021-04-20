@@ -5,13 +5,17 @@ import addMemberIcon from '../../assets/add.svg';
 import removeMemberIcon from '../../assets/trashCan.svg';
 import enterEditingIcon from '../../assets/edit.svg';
 import exitEditingIcon from '../../assets/checkmark.svg';
+import PopUpModal from '../../components/popupModal/PopUpModal.js'
 import './Members.css';
+
+//TODO: Replace with appropriate value once login backend is done and user's id + privileges persist throughout entire portal
+var PRIVILEGES = 'Admin';
 
 function Members() {
   const memberNameTextboxRef = useRef();
   const memberEmailTextboxRef = useRef();
   const memberRoleTextboxRef = useRef();
-  const privilegeDropdownRef = useRef();
+  const privilegesDropdownRef = useRef();
   const selectAllCheckboxRef = useRef();
 
   const [editingMode, setEditingMode] = useState(false);
@@ -88,17 +92,20 @@ function Members() {
     const nameTextbox = memberNameTextboxRef.current;
     const emailTextbox = memberEmailTextboxRef.current;
     const roleTextbox = memberRoleTextboxRef.current;
-    const privilegeDropdown = privilegeDropdownRef.current;
+    const privilegesDropdown = privilegesDropdownRef.current;
 
     if (nameTextbox.value !== '' && emailTextbox.value !== ''
-        && roleTextbox.value !== '' && privilegeDropdown !== '') {
+        && roleTextbox.value !== '' && privilegesDropdown !== ''
+        && PRIVILEGES === 'Admin') {
       try {
         await axios({
           method: 'post',
           url: 'http://localhost:8000/addUser',
           data: {
-            isAdmin: (privilegeDropdown.value === 'Admin' ? true : false),
-            username: nameTextbox.value
+            privileges: privilegesDropdown.value,
+            username: nameTextbox.value,
+            email: emailTextbox.value,
+            role: roleTextbox.value
           }
         });
       } catch(error) {
@@ -109,28 +116,46 @@ function Members() {
     }
   }
 
-  async function removeMembers() {
-    /* Go through each checkbox and determine which users should be deleted */
+  const [removeModal, setRemoveModal] = useState(null);
+
+  function handleRemove() {
+    /* Go through each checkbox and determine which users were selected */
     const userIdsToDelete = [];
     members.forEach((member) => {
       if (member.checked) {
         userIdsToDelete.push(member.id);
       }
     })
-    /* Make backend DELETE request */
-    if (userIdsToDelete != null && userIdsToDelete.length > 0) {
-      try {
-        await axios({
-          method: 'delete',
-          url: 'http://localhost:8000/deleteUsers',
-          data: {
-            listOfIds: userIdsToDelete
-          }
-        });
-      } catch(error) {
-          console.log(error);
+    const numSelected = userIdsToDelete.length;
+
+    async function removeMembers() {
+      if (PRIVILEGES === 'Admin') {
+        try {
+          await axios({
+            method: 'delete',
+            url: 'http://localhost:8000/deleteUsers',
+            data: {
+              listOfIds: userIdsToDelete
+            }
+          });
+        } catch(error) {
+            console.log(error);
+        }
+        fetchMembers();
       }
-      fetchMembers();
+    }
+
+    if (numSelected > 0) {
+      var pluralOrSingular = (numSelected > 1) ? 'members' : 'member';
+      setRemoveModal(
+        <PopUpModal
+          warning={`Are you sure you want to remove ${numSelected} ${pluralOrSingular}?`}
+          primaryText='remove'
+          secondaryText='cancel'
+          primaryFunc={() => {removeMembers(); setRemoveModal(null);}}
+          secondaryFunc={() => setRemoveModal(null)}
+        />
+      )
     }
   }
 
@@ -161,6 +186,7 @@ function Members() {
     }
   }
 
+  if (PRIVILEGES === 'Admin') {
     return (
       <div className="members-page">
         <div className="membersHeader">
@@ -172,7 +198,7 @@ function Members() {
           </div>
           <div className={removeIconClassName}>
             <input className='removeMembersButton membersButton' type="image" src={removeMemberIcon} alt='Remove Icon'
-            title='Remove Selected Members' onClick={removeMembers}/>
+            title='Remove Selected Members' onClick={handleRemove}/>
           </div>
           <div className={enterEditingIconClassName}>
             <input className='enterEditingButton membersButton' type="image" src={enterEditingIcon} alt='Enter Editing Icon'
@@ -204,7 +230,7 @@ function Members() {
                 name={(<input ref={memberNameTextboxRef} className='addMemberTextbox' type='text' placeholder='name'/>)}
                 email={(<input ref={memberEmailTextboxRef} className='addMemberTextbox' type='text' placeholder='email'/>)}
                 role={(<input ref={memberRoleTextboxRef} className='addMemberTextbox' type='text' placeholder='role'/>)}
-                privilege={(<select ref={privilegeDropdownRef}>
+                privileges={(<select ref={privilegesDropdownRef}>
                   <option value='Admin'>Admin</option>
                   <option value='Voting Member'>Voting Member</option>
                   <option value='Non-Voting Member'>Non-Voting Member</option>
@@ -215,9 +241,9 @@ function Members() {
                 {members.map((member) => {
                   return (<TableRow
 										name={member.username}
-										email={"email@berkeley.edu"}
-										role={"ASUC Representative"}
-										privilege={member.is_admin ? "Admin" : "Voting Member"}
+										email={member.email}
+										role={member.tgif_role}
+										privileges={member.privileges}
 										votes={(member.count == null ? 0 : member.count) + "/" + numOfProposals}
                     editingMode = {editingMode}
                     checkboxOnClick = {() => {
@@ -237,8 +263,16 @@ function Members() {
             </table>
           </div>
         </div>
+        {removeModal}
       </div>
     );
+  } else {
+    return(
+      <div>
+        You do not have permission to view this page. Contact a portal admin if you believe this is a mistake.
+      </div>
+    )
+  }
 }
 
 export default Members;

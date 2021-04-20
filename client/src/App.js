@@ -1,5 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
+import Login from './pages/login/Login';
 import Dashboard from './pages/dashboard/Dashboard';
 import ProposalDetails from './pages/proposalDetails/ProposalDetails.js';
 import Members from './pages/members/Members.js';
@@ -19,6 +20,9 @@ function App() {
       <div className="App">
         <NavBar/>
         <Switch>
+          <Route path="/login">
+            <Login />
+          </Route>
           <Route path="/dashboard">
             <Dashboard />
           </Route>

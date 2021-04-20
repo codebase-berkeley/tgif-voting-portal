@@ -83,5 +83,10 @@
     width: 90px;
     font-family: "IBM Plex Sans", sans-serif;
     font-weight: bold;
+    border-color: transparent;
     font-size: 1em;
+}
+
+.hide {
+    display: none;
 }
