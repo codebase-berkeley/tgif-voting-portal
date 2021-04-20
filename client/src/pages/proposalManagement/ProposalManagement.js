@@ -13,12 +13,7 @@ import exitEditingIcon from '../../assets/xIcon.svg';
 
 
 function ProposalManagement() {
-  /* Contains all proposals. */
-  //const proposalHTML = [];
-
   const [proposals, setProposals] = useState([]);
-  // const [selectedProposals, setSelectedProposals] = useState([]);
-
   async function fetchProposals() {
 		const response = await axios.get('http://localhost:8000/getProposals');
     console.log(response);
@@ -59,6 +54,7 @@ function ProposalManagement() {
   const [exitEditingIconClassName, setExitEditingIconClassName] = useState(exitEditingIconDefault + ' hide');
   const [deleteIconClassName, setDeleteIconClassName] = useState(deleteIconDefault + ' hide');
   const [displayModal, setDisplayModal] = useState(false);
+  const [removeModal, setRemoveModal] = useState(null);
 
   /** Handles clicking the pencil icon to start deleting proposals */
   function enterDeletingMode() {
@@ -80,14 +76,19 @@ function ProposalManagement() {
 
   function displayDeleteProposalsModal() {
     setDisplayModal(true);
-    // return (
-    // <PopUpModal warning="Are you sure you want to delete these proposals?"
-    //                 secondaryText="cancel"
-    //                 primaryText="delete"
-    //                 primaryFunc={removeProposals}
-    //                 />
-    // );
   }
+
+  // function showModal() {
+  //   if (displayModal) {
+  //     return (
+  //       <PopUpModal warning="Are you sure you want to delete these proposals?"
+  //             secondaryText="cancel"
+  //             primaryText="delete"
+  //             primaryFunc={removeProposals}
+  //             />
+  //       )
+  //   }
+  // }
     const submitProposal = async () => {
       if (textboxValueMoney !== '' && isNaN(parseFloat(textboxValueMoney))){
         console.log("String submited for value");
@@ -125,33 +126,50 @@ function ProposalManagement() {
     }
   };
 
-  async function removeProposals() {
-    // display the modal, if modal returns a true value for primaryClicked, then do somemthing, 
-    //else prob just exit this function and stop displaying modal
-    /* Go through each checkbox and determine which users should be deleted */
+  function handleRemoveProposals() {
+    /* Go through each checkbox and determine which proposals should be deleted */
     const propsIdsToDelete = [];
     proposals.forEach((prop) => {
+      console.log(prop);
       if (prop.checked) {
         propsIdsToDelete.push(prop.id);
       }
     })
-    /* Make backend DELETE request */
-    if (propsIdsToDelete != null && propsIdsToDelete.length > 0) {
-      try {
-        await axios({
-          method: 'delete',
-          url: 'http://localhost:8000/delete_proposal',
-          data: {
-            listOfIDs: propsIdsToDelete
-          }
-        });
+    const numSelected = propsIdsToDelete.length;
+
+    async function removeProposals() {
+    
+      /* Make backend DELETE request */
+      if (propsIdsToDelete != null && propsIdsToDelete.length > 0) {
+        try {
+          await axios({
+            method: 'delete',
+            url: 'http://localhost:8000/delete_proposal',
+            data: {
+              listOfIDs: propsIdsToDelete
+            }
+          });
+        } catch(error) {
+            console.log(error);
+        }
         fetchProposals();
-      } catch(error) {
-          console.log(error);
       }
-      
+    }
+    if (numSelected > 0) {
+      var pluralOrSingular = (numSelected > 1) ? 'proposals' : 'proposal';
+      setRemoveModal(
+        <PopUpModal
+          warning={`Are you sure you want to delete ${numSelected} ${pluralOrSingular}?`}
+          primaryText='remove'
+          secondaryText='cancel'
+          primaryFunc={() => {removeProposals(); setRemoveModal(null);}}
+          secondaryFunc={() => setRemoveModal(null)}
+        />
+        )
+
     }
   }
+  
 
     return (
         
@@ -164,15 +182,11 @@ function ProposalManagement() {
             <input className='exitDeletingIconContainer proposalsButton' type="image" src={exitEditingIcon} alt='Exit Deleting Mode'
             title='Finish Editing' onClick={exitDeletingMode}/>
           </div>
-          {/* <div className={exitEditingIconClassName}>
-            <input className='exitDeletingIconContainer proposalsButton' type="image" src={exitEditingIcon} alt='Exit Deleting Mode'
-            title='Finish Editing' onClick={exitDeletingMode}/>
-          </div> */}
             <div className="proposalManagement">
             <div className="proposalManagementLeft"> 
                 <div className={deleteIconClassName}>   
                     <input className='removeProposalsButton proposalsButton' type="image" src={TrashCan} alt='Delete Selected Proposals'
-                    title='Remove Selected Proposals' onClick={displayDeleteProposalsModal}/>
+                    title='Remove Selected Proposals' onClick={handleRemoveProposals}/>
                 </div>
                 <div className="proposal-list">
                     {proposals.map((proposal) => (
@@ -204,31 +218,20 @@ function ProposalManagement() {
                         <h3>Create a Proposal</h3>
                     </div>
                     <div className = "PMtextboxes">
-                        <textarea value={textboxValueTitle} onChange={(event) => {setTextboxValueTitle(event.target.value)}} className= 'titleNewProposal' id='titleNewProposal' type='textarea' placeholder='title'/>
+                        <textarea value={textboxValueTitle} onChange={(event) => {setTextboxValueTitle(event.target.value)}} className= 'titleNewProposal' id='titleNewProposal' type='textarea' placeholder='Title'/>
                     </div>
                     <textarea value={textboxValueDescript} onChange={(event) => {setTextboxValueDescript(event.target.value)}} className= 'descriptionNewProposal' id='descriptionNewProposal' type='textarea' placeholder='Project description'/>
                     <div className = "bottomThree">
-                        <textarea value={textboxValueLink} onChange={(event) => {setTextboxValueLink(event.target.value)}} className= 'linkNewDescription' id='linkNewDescription' type='textarea' placeholder='link'/>
-                        <textarea value={textboxValueMoney} onChange={(event) => {setTextboxValueMoney(event.target.value)}} className= 'moneyNewDescription' id='moneyNewDescription' type='textarea' placeholder='$ requested'/>
+                        <textarea value={textboxValueLink} onChange={(event) => {setTextboxValueLink(event.target.value)}} className= 'linkNewDescription' id='linkNewDescription' type='textarea' placeholder='Link'/>
+                        <textarea value={textboxValueMoney} onChange={(event) => {setTextboxValueMoney(event.target.value)}} className= 'moneyNewDescription' id='moneyNewDescription' type='textarea' placeholder='$00.00'/>
                         <ProposalButton buttonClassName='genericProposalButton' buttonText='Create' onClickFunc={submitProposal}/>
                     </div>   
                 </div>
             </div>
         </div>
-        {/* <PopUpModal warning="Are you sure you want to delete these proposals?"
-                    secondaryText="cancel"
-                    primaryText="delete"
-                    /> */}
-        {
-          <PopUpModal warning="Are you sure you want to delete these proposals?"
-          secondaryText="cancel"
-          primaryText="delete"
-          />
-        }
-        
+        {removeModal}
       </div>  
     );
 }
 
-    
 export default ProposalManagement;

@@ -9,6 +9,11 @@ function PopUpModal(props) {
     function closeModal() {
         setDisplayModalClassName(displayModalDefault + ' hide');
       }
+
+    function primaryFuncAndHide() {
+        props.primaryFunc();
+        setDisplayModalClassName(displayModalDefault + ' hide');
+    }
     return (
         <div className={displayModalClassName}>
             <div className="ourModal">
@@ -19,7 +24,7 @@ function PopUpModal(props) {
                     <button className="secondaryButton" onClick={closeModal}>
                         {props.secondaryText}
                     </button>
-                    <button className="primaryButton" onClick={props.primaryFunc}>
+                    <button className="primaryButton" onClick={primaryFuncAndHide}>
                         {props.primaryText}
                     </button>
                 </div>

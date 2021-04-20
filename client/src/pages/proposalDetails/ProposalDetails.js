@@ -8,8 +8,7 @@ import axios from "axios";
 
 var IS_ADMIN = true;
 let PROPOSAL_ID;
-console.log("proposal id is" + PROPOSAL_ID);
-var USER_ID = 4
+var USER_ID = 4;
 
 const ANON = 'John Doe';
 
@@ -181,8 +180,6 @@ function ProposalConditionalRender(isAdmin) {
 
 function ProposalDetails() {
   PROPOSAL_ID = useParams().id;
-  
-
   /** Takes in a number and converts it to a dollar amount string w/ commas
   * placed appropriately (every 3 spaces); does not include dollar sign */
   function amountToDollarString(amount) {

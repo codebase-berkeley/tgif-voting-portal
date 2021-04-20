@@ -64,12 +64,21 @@ app.get('/getProposals', async (req, res) => {
   }
 });
 
-app.get('/delete_proposal', async (req, res) => {
+app.delete('/delete_proposal', async (req, res) => {
   try {
-    const propsList = req.body.listOfIDs
+    const propsList = req.body.listOfIDs;
+    console.log("propslist:");
+    console.log(propsList);
+    await db.query(
+      `DELETE FROM comments WHERE proposal_id IN (${propsList})`, 
+    );
+    await db.query(
+      `DELETE FROM votes WHERE proposal_id IN (${propsList})`, 
+    );
     await db.query(
       `DELETE FROM proposals WHERE id IN (${propsList})`, 
     );
+    // console.log();
     res.send('Deleted selected proposals.');
   } catch (error) {
     console.log(error.stack);
