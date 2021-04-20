@@ -88,6 +88,18 @@ function ProposalManagement() {
     //                 />
     // );
   }
+
+  function showModal() {
+    if (displayModal) {
+      return (
+        <PopUpModal warning="Are you sure you want to delete these proposals?"
+              secondaryText="cancel"
+              primaryText="delete"
+              primaryFunc={removeProposals}
+              />
+        )
+    }
+  }
     const submitProposal = async () => {
       if (isNaN(parseInt(textboxValueMoney))){
         console.log("String submited for value");
@@ -120,12 +132,15 @@ function ProposalManagement() {
     // display the modal, if modal returns a true value for primaryClicked, then do somemthing, 
     //else prob just exit this function and stop displaying modal
     /* Go through each checkbox and determine which users should be deleted */
+    console.log('enter remove proposals');
     const propsIdsToDelete = [];
     proposals.forEach((prop) => {
+      console.log(prop);
       if (prop.checked) {
         propsIdsToDelete.push(prop.id);
       }
     })
+    console.log(propsIdsToDelete);
     /* Make backend DELETE request */
     if (propsIdsToDelete != null && propsIdsToDelete.length > 0) {
       try {
@@ -195,27 +210,18 @@ function ProposalManagement() {
                         <h3>Create a Proposal</h3>
                     </div>
                     <div className = "PMtextboxes">
-                        <textarea value={textboxValueTitle} onChange={(event) => {setTextboxValueTitle(event.target.value)}} className= 'titleNewProposal' id='titleNewProposal' type='textarea' placeholder='title'/>
+                        <textarea value={textboxValueTitle} onChange={(event) => {setTextboxValueTitle(event.target.value)}} className= 'titleNewProposal' id='titleNewProposal' type='textarea' placeholder='Title'/>
                     </div>
                     <textarea value={textboxValueDescript} onChange={(event) => {setTextboxValueDescript(event.target.value)}} className= 'descriptionNewProposal' id='descriptionNewProposal' type='textarea' placeholder='Project description'/>
                     <div className = "bottomThree">
-                        <textarea value={textboxValueLink} onChange={(event) => {setTextboxValueLink(event.target.value)}} className= 'linkNewDescription' id='linkNewDescription' type='textarea' placeholder='link'/>
-                        <textarea value={textboxValueMoney} onChange={(event) => {setTextboxValueMoney(event.target.value)}} className= 'moneyNewDescription' id='moneyNewDescription' type='textarea' placeholder='$ requested'/>
+                        <textarea value={textboxValueLink} onChange={(event) => {setTextboxValueLink(event.target.value)}} className= 'linkNewDescription' id='linkNewDescription' type='textarea' placeholder='Link'/>
+                        <textarea value={textboxValueMoney} onChange={(event) => {setTextboxValueMoney(event.target.value)}} className= 'moneyNewDescription' id='moneyNewDescription' type='textarea' placeholder='$00.00'/>
                         <ProposalButton buttonClassName='genericProposalButton' buttonText='Create' onClickFunc={submitProposal}/>
                     </div>   
                 </div>
             </div>
         </div>
-        {/* <PopUpModal warning="Are you sure you want to delete these proposals?"
-                    secondaryText="cancel"
-                    primaryText="delete"
-                    /> */}
-        if (displayModal) {
-          <PopUpModal warning="Are you sure you want to delete these proposals?"
-          secondaryText="cancel"
-          primaryText="delete"
-          />
-        }
+        {showModal()}
         
       </div>  
     );
