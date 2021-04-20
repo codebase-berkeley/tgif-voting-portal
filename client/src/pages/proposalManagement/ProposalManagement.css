@@ -115,8 +115,6 @@ textarea {
 .exitDeletingIconContainer {
     position: absolute;
     width: 20%;
-    /* right: 50px; */
-    /* bottom: 0px; */
     right: 5px;
     top: 45px;
     font-size: 0em;
@@ -134,10 +132,6 @@ textarea {
 
 .proposalsButton:focus {
     outline: 0;
-    
-    /* right: 5px;
-    top: 10px; */
-    
 }
 
 .hide {

@@ -22,9 +22,6 @@ function rowDeletionMode(props) {
         <div
             className="proposal-box"
             id={props.title}
-        //     onClick={() => {props.changeTitle(props.title);
-        //                     props.changeDescription(props.description);}
-        // }
         >
             <div className="whole-row">
                 <div className="leftRow">
@@ -45,7 +42,8 @@ function rowDashboardMode(props) {
             className="proposal-box"
             id={props.title}
             onClick={() => {props.changeTitle(props.title);
-                            props.changeDescription(props.description);}
+                            props.changeDescription(props.description);
+                            props.changeWantedPropID(props.id);}
         }>
         
             <div className="proposal-title">{props.title}</div>

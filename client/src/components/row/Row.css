@@ -17,14 +17,11 @@
 .whole-row {
     display: flex;
     flex-direction: row;
-    /* background: red; */
     width: 97%;
-    /* margin: 2px; */
 }
 
 .leftRow {
     display: flex;
-    /* background: blue; */
     align-items: center;
     justify-content: center;
 }
@@ -47,21 +44,11 @@
     height: 3em;
 }
 
-/* .x-box {
-    display: flex;
-    justify-content: center;
-    width: 1.5em;
-    height: 1.5em;
-    margin: 0em 0.8em 0em 0.4em;
-} */
-
 .proposalsCheckbox {
     background: purple;
     position: relative;
     width: 12px;
     margin: 5px;
-    /* align-items: center;
-    justify-content: space-evenly; */
 }
 
 img[src=""] {

@@ -3,11 +3,12 @@ import ProgressBar from 'react-bootstrap/ProgressBar';
 import DiscussionPost from './DiscussionPost.js';
 import ProposalButton from './ProposalButton.js';
 import React, { useState, useEffect } from 'react';
+import {useParams} from 'react-router-dom';
 import axios from "axios";
 
 var IS_ADMIN = true;
-var PROPOSAL_ID;
-var USER_ID = 4
+let PROPOSAL_ID;
+var USER_ID = 4;
 
 const ANON = 'John Doe';
 
@@ -28,14 +29,6 @@ function ProposalConditionalRender(isAdmin) {
     }
   }
 
-  async function fetchCurrPropID() {
-		const response = await axios.get('http://localhost:8000/currentPropID');
-    let propID = response.data.propID;
-    /* Initialize false <checked> attributes for each proposal; used for checkbox tracking
-    while in deleting mode */
-		PROPOSAL_ID = propID;
-    console.log(propID);
-  }
 
   function AdminProposalConditionalRender() {
     var PROGRESS_VALUE = false;
@@ -61,7 +54,7 @@ function ProposalConditionalRender(isAdmin) {
       const [adminNoButtonClassName, setAdminNoButtonClassName] = useState(adminUnpressedNoButtonClassName);
 
       async function fetchVoteInfo() {
-        const res = await axios.get('http://localhost:8000/getAllVotes', {params : {proposal_id: PROPOSAL_ID }});
+        const res = await axios.get('http://localhost:8000/getAllVotes', {params : {proposal_id: PROPOSAL_ID}});
         const voteYes = res.data.amountYes;
         const votesTotal= res.data.totalVotes;
         const totalMembers = res.data.totalUsers;
@@ -186,8 +179,7 @@ function ProposalConditionalRender(isAdmin) {
 
 
 function ProposalDetails() {
-
-  // let { id } = useParams();
+  PROPOSAL_ID = useParams().id;
   /** Takes in a number and converts it to a dollar amount string w/ commas
   * placed appropriately (every 3 spaces); does not include dollar sign */
   function amountToDollarString(amount) {
@@ -197,6 +189,7 @@ function ProposalDetails() {
   const [proposalTitle, setProposalTitle] = useState('');
   const [proposalDescription, setProposalDescription] = useState('');
   const [proposalSponsor, setProposalSponsor] = useState('');
+  const [proposalLink, setProposalLink] = useState('');
   const [proposalAmount, setProposalAmount] = useState(0);
 
   const [comments, setComments] = React.useState([]);
@@ -204,12 +197,15 @@ function ProposalDetails() {
 
   async function fetchProposalDetails() { 
     try {
-      const response = await axios.get('http://localhost:8000/getProposalDetails', { params: { proposal_id: PROPOSAL_ID } });
-      const proposalInfo = response.data;
-      setProposalTitle(proposalInfo.title);
-      setProposalDescription(proposalInfo.description_text);
-      setProposalSponsor(proposalInfo.organization);
-      setProposalAmount(amountToDollarString(proposalInfo.amount_requested.toFixed(2)));
+      const response = await axios.get('http://localhost:8000/get_proposal_details', 
+                                          { params: 
+                                            { proposal_id: PROPOSAL_ID }
+                                          });
+      setProposalTitle(response.data.title);
+      setProposalDescription(response.data.description_text);
+      setProposalLink(response.data.link);
+      setProposalSponsor(response.data.organization);
+      setProposalAmount(amountToDollarString(response.data.amount_requested.toFixed(2)));
     } catch (error) {
         console.log("Error in fetching proposal details.");
         console.log(error.stack);
@@ -251,7 +247,7 @@ function ProposalDetails() {
   useEffect(() => {
     fetchCommentData();
     fetchProposalDetails();
-  }, [])
+  }, []);
 
   /** Takes in an ISO timestamp string (as received from the database) and converts it
    * to a readable and meaningful string in the format 'MM/DD/YY HH:MM AM/PM' */
@@ -287,6 +283,7 @@ function ProposalDetails() {
           </div>
           <div className="proposalSponsor">{proposalSponsor}</div>
           <div className="proposalDescription">{proposalDescription}</div>
+          <a className="proposalLink" href = {proposalLink}>{proposalTitle}.pdf</a>
           <div className="proposalAmount"> Proposal Amount: {`$${proposalAmount}`}</div>
         </div>
         {ProposalConditionalRender(IS_ADMIN)}

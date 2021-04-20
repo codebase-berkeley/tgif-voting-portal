@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const db = require('./db-connection');
+const { Query } = require('pg');
 require('dotenv').config();
 
 const app = express();
@@ -128,18 +129,40 @@ app.get('/getAllVotes', async (req, res) => {
   }
 });
 
-app.get('/getProposalDetails', async (req, res) => {
+// app.get('/getProposalDetails', async (req, res) => {
+//   try {
+//     console.log("idk it's not working>:(");
+//     const query = await db.query(
+//       'SELECT title, organization, amount_requested, link, description_text, deadline FROM proposals WHERE id=$1;',
+//       [req.query.proposal_id]
+//     );
+//     console.log(query);
+//     console.log(query.title);
+//     console.log(query.rows);
+//     res.send(query.rows[0]);
+//   } catch (error) {
+//     console.log("doesnt work for some reason");
+//     console.log(error.stack);
+//     res.send(null);
+//   }
+// });
+
+app.get('/get_proposal_details', async (req, res) => {
+  console.log("try pleaseeeee");
   try {
+    const proposalId = req.query.proposal_id;
     const query = await db.query(
-      'SELECT title, organization, amount_requested, link, description_text, deadline FROM proposals WHERE id=$1;',
-      [req.query.proposal_id],
+      'SELECT * FROM proposals WHERE id=$1;', [proposalId],
     );
+    console.log(query.rows[0]);
+    console.log(query.rows[0].title);
+    console.log(query.rows[0]);
     res.send(query.rows[0]);
   } catch (error) {
     console.log(error.stack);
-    res.send(null);
   }
 });
+
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);

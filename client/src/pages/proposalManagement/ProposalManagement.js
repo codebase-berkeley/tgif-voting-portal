@@ -13,12 +13,7 @@ import exitEditingIcon from '../../assets/xIcon.svg';
 
 
 function ProposalManagement() {
-  /* Contains all proposals. */
-  //const proposalHTML = [];
-
   const [proposals, setProposals] = useState([]);
-  // const [selectedProposals, setSelectedProposals] = useState([]);
-
   async function fetchProposals() {
 		const response = await axios.get('http://localhost:8000/getProposals');
     console.log(response);
@@ -80,13 +75,6 @@ function ProposalManagement() {
 
   function displayDeleteProposalsModal() {
     setDisplayModal(true);
-    // return (
-    // <PopUpModal warning="Are you sure you want to delete these proposals?"
-    //                 secondaryText="cancel"
-    //                 primaryText="delete"
-    //                 primaryFunc={removeProposals}
-    //                 />
-    // );
   }
 
   function showModal() {
@@ -101,8 +89,10 @@ function ProposalManagement() {
     }
   }
     const submitProposal = async () => {
-      if (isNaN(parseInt(textboxValueMoney))){
+      if (textboxValueMoney !== '' && isNaN(parseFloat(textboxValueMoney))){
         console.log("String submited for value");
+        document.getElementById("moneyNewDescription").style.borderColor="#FF0000";
+        document.getElementById("moneyNewDescription").style.backgroundColor="#ffcccb";
       }
       else if (textboxValueTitle !== ''){
         try {
@@ -111,7 +101,7 @@ function ProposalManagement() {
             url: 'http://localhost:8000/submitProposal',
             data: {
               title: textboxValueTitle,
-              amount_requested: (isNaN(parseInt(textboxValueMoney)) ? 0 : parseInt(textboxValueMoney)),
+              amount_requested: (isNaN(parseFloat(textboxValueMoney)) ? 0 : parseFloat(textboxValueMoney)),
               link: textboxValueLink,
               description_text: textboxValueDescript
             }
@@ -125,13 +115,18 @@ function ProposalManagement() {
       setTextboxValueDescript('');
       setTextboxValueLink('');
       setTextboxValueMoney(''); 
+      document.getElementById("moneyNewDescription").style.borderColor= '#757575';
+      document.getElementById("moneyNewDescription").style.backgroundColor="white";
+      document.getElementById("titleNewProposal").style.borderColor="#757575";
+      document.getElementById("titleNewProposal").style.backgroundColor="white";
+    } else {
+      document.getElementById("titleNewProposal").style.borderColor="#FF0000";
+      document.getElementById("titleNewProposal").style.backgroundColor="#ffcccb";
     }
   };
 
   async function removeProposals() {
-    // display the modal, if modal returns a true value for primaryClicked, then do somemthing, 
-    //else prob just exit this function and stop displaying modal
-    /* Go through each checkbox and determine which users should be deleted */
+    /* Go through each checkbox and determine which proposals should be deleted */
     console.log('enter remove proposals');
     const propsIdsToDelete = [];
     proposals.forEach((prop) => {
@@ -170,10 +165,6 @@ function ProposalManagement() {
             <input className='exitDeletingIconContainer proposalsButton' type="image" src={exitEditingIcon} alt='Exit Deleting Mode'
             title='Finish Editing' onClick={exitDeletingMode}/>
           </div>
-          {/* <div className={exitEditingIconClassName}>
-            <input className='exitDeletingIconContainer proposalsButton' type="image" src={exitEditingIcon} alt='Exit Deleting Mode'
-            title='Finish Editing' onClick={exitDeletingMode}/>
-          </div> */}
             <div className="proposalManagement">
             <div className="proposalManagementLeft"> 
                 <div className={deleteIconClassName}>   
@@ -222,10 +213,8 @@ function ProposalManagement() {
             </div>
         </div>
         {showModal()}
-        
       </div>  
     );
 }
 
-    
 export default ProposalManagement;
