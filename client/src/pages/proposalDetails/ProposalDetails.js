@@ -204,7 +204,6 @@ function ProposalDetails() {
                                           { params: 
                                             { proposal_id: PROPOSAL_ID }
                                           });
-      console.log(response.data);
       setProposalTitle(response.data.title);
       setProposalDescription(response.data.description_text);
       setProposalLink(response.data.link);
@@ -286,7 +285,11 @@ function ProposalDetails() {
             <hr className="underline"></hr>
           </div>
           <div className="proposalSponsor">{proposalSponsor}</div>
-          <div className="proposalDescription">{proposalDescription}</div>
+          <div className="proposalDescription">
+            <div className = "textOnly">
+            {proposalDescription}
+            </div>
+          </div>
           <a className="proposalLink" href = {proposalLink}>{proposalTitle}.pdf</a>
           <div className="proposalAmount"> Proposal Amount: {`$${proposalAmount}`}</div>
         </div>

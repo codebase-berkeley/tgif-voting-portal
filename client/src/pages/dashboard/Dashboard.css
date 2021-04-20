@@ -12,6 +12,11 @@
     display: flex;
 }
 
+.textOnly2{
+    overflow-y: scroll;
+    /*overflow-x: none;*/
+}
+
 .left-proposals {
     width: 45%;
     height: 100%;
@@ -68,6 +73,7 @@
     font-size: 1.25rem;
     font-family: "Lexend Deca", sans-serif;
     color: black;
+    overflow-y: scroll;
 }
 
 .dividing-line {

@@ -46,6 +46,7 @@ app.get('/get_comments', async (req, res) => {
     const query = await db.query(
       'SELECT * FROM comments WHERE proposal_id=$1;', [proposalId],
     );
+    console.log(query.rows)
     res.send(query.rows);
   } catch (error) {
     console.log(error.stack);
@@ -139,15 +140,11 @@ app.get('/getAllVotes', async (req, res) => {
 // });
 
 app.get('/get_proposal_details', async (req, res) => {
-  console.log("try pleaseeeee");
   try {
     const proposalId = req.query.proposal_id;
     const query = await db.query(
       'SELECT * FROM proposals WHERE id=$1;', [proposalId],
     );
-    console.log(query.rows[0]);
-    console.log(query.rows[0].title);
-    console.log(query.rows[0]);
     res.send(query.rows[0]);
   } catch (error) {
     console.log(error.stack);

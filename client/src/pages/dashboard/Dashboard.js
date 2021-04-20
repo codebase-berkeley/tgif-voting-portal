@@ -7,6 +7,7 @@ import yesIcon from '../../assets/Checked.svg';
 import SearchBar from '../../components/searchbar/SearchBar';
 import { Link } from "react-router-dom";
 import axios from 'axios';
+import ProposalButton from './../proposalDetails/ProposalButton.js';
 
 
 function Dashboard() {
@@ -19,7 +20,6 @@ function Dashboard() {
 
   async function fetchProposals() {
 		const response = await axios.get('http://localhost:8000/getProposals');
-    console.log(response);
     let proposal_lst = response.data;
     /* Initialize false <checked> attributes for each proposal; used for checkbox tracking
     while in deleting mode */
@@ -65,16 +65,43 @@ function Dashboard() {
           url: 'http://localhost:8000/post_comment',
           data: {
             user_id: 1,
-            proposal_id: {wantedPropID},
+            proposal_id: wantedPropID,
             comment_text: textboxValue
           }
         });
       } catch(error) {
-        console.log(error);
+          console.log(error);
       }
       setTextboxValue('');
     }
   };
+
+  const submitVote = async (voteDecision) => {
+    try {
+      await axios({
+        method: 'post',
+        url: 'http://localhost:8000/submitVote',
+        data: {
+          vote: voteDecision,
+          user_id: 1,
+          proposal_id: wantedPropID
+        }
+      });
+    } catch(error) {
+      console.log("There was an error in submitting your vote in dashboard.");
+      console.log(error.stack);
+    }
+  };
+
+  /* REACT STATES FOR NONADMIN VOTING BUTTONS */
+  const nonAdminPressedYesButtonClassName = 'pressedYesButton dashboardYesButton';
+  const nonAdminUnpressedYesButtonClassName = 'unpressedYesButton dashboardYesButton';
+  const [nonAdminYesButtonClassName, setNonAdminYesButtonClassName] = useState(nonAdminUnpressedYesButtonClassName);
+  
+  const nonAdminPressedNoButtonClassName = 'pressedNoButton dashboardNoButton';
+  const nonAdminUnpressedNoButtonClassName = 'unpressedNoButton dashboardNoButton';
+  const [nonAdminNoButtonClassName, setNonAdminNoButtonClassName] = useState(nonAdminUnpressedNoButtonClassName);
+    
 
   return (
     <div className="dashboard">
@@ -86,10 +113,12 @@ function Dashboard() {
                         <Row changeTitle={(x) => {setProposalTitle(x)}}
                         changeDescription={(x) => {setProposalDescription(x)}}
                         changeWantedPropID={(x) => {setWantedPropID(x)}}
+                        changeTextBoxValue={() => {setTextboxValue("")}}
                         title={proposal.title} 
                         description={proposal.description_text}
                         vote={proposal.voted ? proposal.voted : ""} 
                         id={proposal.id}
+                        
                         />
                     ))}
             
@@ -99,7 +128,11 @@ function Dashboard() {
         <div className="right-proposals">
           <div className="proposal-description">
             <div className="proposal-head-title">{proposalTitle}</div>
-            <div className="proposal-head-description">{proposalDescription}</div>
+            <div className="proposal-head-description">
+              <div className="textOnly2">
+                {proposalDescription}
+              </div>
+            </div>
             <div className="dividing-line"></div>
             <div className="comment-area">
               <textarea value={textboxValue} onChange={(event) => {setTextboxValue(event.target.value)}} id="textbox" name="textbox" className="comment-box" placeholder="Leave a comment" rows="7" cols="53"></textarea>
@@ -111,8 +144,18 @@ function Dashboard() {
             </div>
             </div>
             <div className="voting-buttons">
-                <button className="vote-yes">Vote Yes</button>
-                <button className="vote-no">Vote No</button>
+              <ProposalButton buttonText='Vote Yes' buttonClassName={nonAdminYesButtonClassName}
+                    onClickFunc={() => {setNonAdminYesButtonClassName(nonAdminPressedYesButtonClassName);
+                                  setNonAdminNoButtonClassName(nonAdminUnpressedNoButtonClassName);
+                                  submitVote(true);}}
+                />
+                <ProposalButton buttonText='Vote No' buttonClassName={nonAdminNoButtonClassName}
+                    onClickFunc={() => {setNonAdminYesButtonClassName(nonAdminUnpressedYesButtonClassName);
+                                  setNonAdminNoButtonClassName(nonAdminPressedNoButtonClassName);
+                                  submitVote(false);}}
+                />
+                {/* <button className="vote-yes" onClick={() => submitVote(true) }>Vote Yes</button>
+                <button className="vote-no" onClick={() => submitVote(false)}>Vote No</button> */}
             </div>
           </div>
         </div>

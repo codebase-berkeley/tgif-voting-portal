@@ -95,13 +95,22 @@ a:active {color :var(--buttonGreenOpaque);}
     height: 100%;
     width: 100%;
     font-family: 'Lexend Deca', sans-serif;
-    padding: 10px;
     margin: 20px 0px 20px 0px;
     word-wrap: break-word;
     display: flex;
-    align-items: center;
+    padding-left: 10px;
+    padding-right: 10px;
+    /*align-items: center;
     justify-content: center;
-    text-justify: inter-word;
+    text-justify: inter-word;*/
+    overflow: scroll;
+}
+
+.textOnly{
+    overflow-y: scroll;
+    overflow-x: none;
+    padding-bottom: 15px;
+    padding-top: 15px
 }
 
 .amountVotedLabel {

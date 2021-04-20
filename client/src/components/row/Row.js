@@ -43,7 +43,8 @@ function rowDashboardMode(props) {
             id={props.title}
             onClick={() => {props.changeTitle(props.title);
                             props.changeDescription(props.description);
-                            props.changeWantedPropID(props.id);}
+                            props.changeWantedPropID(props.id);
+                            props.changeTextBoxValue()}
         }>
         
             <div className="proposal-title">{props.title}</div>

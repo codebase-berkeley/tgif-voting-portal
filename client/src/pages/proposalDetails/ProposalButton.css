@@ -28,6 +28,32 @@
     border-width: 0px;
 }
 
+.dashboardYesButton {
+    /* background-color: #A6B82E; */
+    border-radius: 5px;
+    /* border: 2.5px solid #A6B82E; */
+    color: white;
+    margin: 2em 0.5em 1em 0.5em;
+    padding: 0.5em;
+    font-family: 'Lexend Deca', sans-serif;
+    width: 110px;
+    height: 50px;
+    border-width: 0px;
+}
+
+.dashboardNoButton {
+    /* background-color: #353739; */
+    border-radius: 5px;
+    /* border: 2.5px solid #353739; */
+    color: white;
+    margin: 2em 0.5em 1em 0.5em;
+    padding: 0.5em;
+    font-family: 'Lexend Deca', sans-serif;
+    width: 110px;
+    height: 50px;
+    border-width: 0px;
+}
+
 .pressedYesButton {
     background-color: var(--buttonGreen);
 }
