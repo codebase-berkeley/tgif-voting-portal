@@ -22,9 +22,6 @@ function rowDeletionMode(props) {
         <div
             className="proposal-box"
             id={props.title}
-        //     onClick={() => {props.changeTitle(props.title);
-        //                     props.changeDescription(props.description);}
-        // }
         >
             <div className="whole-row">
                 <div className="leftRow">
