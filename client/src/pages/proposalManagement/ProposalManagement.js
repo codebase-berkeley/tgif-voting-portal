@@ -54,6 +54,7 @@ function ProposalManagement() {
   const [exitEditingIconClassName, setExitEditingIconClassName] = useState(exitEditingIconDefault + ' hide');
   const [deleteIconClassName, setDeleteIconClassName] = useState(deleteIconDefault + ' hide');
   const [displayModal, setDisplayModal] = useState(false);
+  const [removeModal, setRemoveModal] = useState(null);
 
   /** Handles clicking the pencil icon to start deleting proposals */
   function enterDeletingMode() {
@@ -77,17 +78,17 @@ function ProposalManagement() {
     setDisplayModal(true);
   }
 
-  function showModal() {
-    if (displayModal) {
-      return (
-        <PopUpModal warning="Are you sure you want to delete these proposals?"
-              secondaryText="cancel"
-              primaryText="delete"
-              primaryFunc={removeProposals}
-              />
-        )
-    }
-  }
+  // function showModal() {
+  //   if (displayModal) {
+  //     return (
+  //       <PopUpModal warning="Are you sure you want to delete these proposals?"
+  //             secondaryText="cancel"
+  //             primaryText="delete"
+  //             primaryFunc={removeProposals}
+  //             />
+  //       )
+  //   }
+  // }
     const submitProposal = async () => {
       if (textboxValueMoney !== '' && isNaN(parseFloat(textboxValueMoney))){
         console.log("String submited for value");
@@ -125,9 +126,8 @@ function ProposalManagement() {
     }
   };
 
-  async function removeProposals() {
+  function handleRemoveProposals() {
     /* Go through each checkbox and determine which proposals should be deleted */
-    console.log('enter remove proposals');
     const propsIdsToDelete = [];
     proposals.forEach((prop) => {
       console.log(prop);
@@ -135,24 +135,41 @@ function ProposalManagement() {
         propsIdsToDelete.push(prop.id);
       }
     })
-    console.log(propsIdsToDelete);
-    /* Make backend DELETE request */
-    if (propsIdsToDelete != null && propsIdsToDelete.length > 0) {
-      try {
-        await axios({
-          method: 'delete',
-          url: 'http://localhost:8000/delete_proposal',
-          data: {
-            listOfIDs: propsIdsToDelete
-          }
-        });
+    const numSelected = propsIdsToDelete.length;
+
+    async function removeProposals() {
+    
+      /* Make backend DELETE request */
+      if (propsIdsToDelete != null && propsIdsToDelete.length > 0) {
+        try {
+          await axios({
+            method: 'delete',
+            url: 'http://localhost:8000/delete_proposal',
+            data: {
+              listOfIDs: propsIdsToDelete
+            }
+          });
+        } catch(error) {
+            console.log(error);
+        }
         fetchProposals();
-      } catch(error) {
-          console.log(error);
       }
-      
+    }
+    if (numSelected > 0) {
+      var pluralOrSingular = (numSelected > 1) ? 'proposals' : 'proposal';
+      setRemoveModal(
+        <PopUpModal
+          warning={`Are you sure you want to delete ${numSelected} ${pluralOrSingular}?`}
+          primaryText='remove'
+          secondaryText='cancel'
+          primaryFunc={() => {removeProposals(); setRemoveModal(null);}}
+          secondaryFunc={() => setRemoveModal(null)}
+        />
+        )
+
     }
   }
+  
 
     return (
         
@@ -169,7 +186,7 @@ function ProposalManagement() {
             <div className="proposalManagementLeft"> 
                 <div className={deleteIconClassName}>   
                     <input className='removeProposalsButton proposalsButton' type="image" src={TrashCan} alt='Delete Selected Proposals'
-                    title='Remove Selected Proposals' onClick={displayDeleteProposalsModal}/>
+                    title='Remove Selected Proposals' onClick={handleRemoveProposals}/>
                 </div>
                 <div className="proposal-list">
                     {proposals.map((proposal) => (
@@ -212,7 +229,7 @@ function ProposalManagement() {
                 </div>
             </div>
         </div>
-        {showModal()}
+        {removeModal}
       </div>  
     );
 }
