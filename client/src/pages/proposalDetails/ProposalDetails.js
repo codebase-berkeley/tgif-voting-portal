@@ -192,15 +192,14 @@ function ProposalDetails() {
   const [proposalTitle, setProposalTitle] = useState('');
   const [proposalDescription, setProposalDescription] = useState('');
   const [proposalSponsor, setProposalSponsor] = useState('');
+  const [proposalLink, setProposalLink] = useState('');
   const [proposalAmount, setProposalAmount] = useState(0);
 
   const [comments, setComments] = React.useState([]);
   const[textboxValue, setTextboxValue] = React.useState('');
 
   async function fetchProposalDetails() { 
-    console.log(PROPOSAL_ID);
     try {
-      console.log("at least it's trying");
       const response = await axios.get('http://localhost:8000/get_proposal_details', 
                                           { params: 
                                             { proposal_id: PROPOSAL_ID }
@@ -208,6 +207,7 @@ function ProposalDetails() {
       console.log(response.data);
       setProposalTitle(response.data.title);
       setProposalDescription(response.data.description_text);
+      setProposalLink(response.data.link);
       setProposalSponsor(response.data.organization);
       setProposalAmount(amountToDollarString(response.data.amount_requested.toFixed(2)));
     } catch (error) {
@@ -287,6 +287,7 @@ function ProposalDetails() {
           </div>
           <div className="proposalSponsor">{proposalSponsor}</div>
           <div className="proposalDescription">{proposalDescription}</div>
+          <a className="proposalLink" href = {proposalLink}>{proposalTitle}.pdf</a>
           <div className="proposalAmount"> Proposal Amount: {`$${proposalAmount}`}</div>
         </div>
         {ProposalConditionalRender(IS_ADMIN)}

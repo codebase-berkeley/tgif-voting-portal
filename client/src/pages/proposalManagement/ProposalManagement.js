@@ -89,7 +89,7 @@ function ProposalManagement() {
     // );
   }
     const submitProposal = async () => {
-      if (textboxValueMoney !== '' && isNaN(parseInt(textboxValueMoney))){
+      if (textboxValueMoney !== '' && isNaN(parseFloat(textboxValueMoney))){
         console.log("String submited for value");
         document.getElementById("moneyNewDescription").style.borderColor="#FF0000";
         document.getElementById("moneyNewDescription").style.backgroundColor="#ffcccb";
@@ -101,7 +101,7 @@ function ProposalManagement() {
             url: 'http://localhost:8000/submitProposal',
             data: {
               title: textboxValueTitle,
-              amount_requested: (isNaN(parseInt(textboxValueMoney)) ? 0 : parseInt(textboxValueMoney)),
+              amount_requested: (isNaN(parseFloat(textboxValueMoney)) ? 0 : parseFloat(textboxValueMoney)),
               link: textboxValueLink,
               description_text: textboxValueDescript
             }
@@ -219,7 +219,7 @@ function ProposalManagement() {
                     secondaryText="cancel"
                     primaryText="delete"
                     /> */}
-        if (displayModal) {
+        {
           <PopUpModal warning="Are you sure you want to delete these proposals?"
           secondaryText="cancel"
           primaryText="delete"
