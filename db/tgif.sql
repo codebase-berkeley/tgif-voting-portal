@@ -69,6 +69,7 @@ VALUES
     ('Admin', 'Jessie McGinley', 'jessiem23@berkeley.edu', 'Program Associate'),
     ('Admin', 'Elizabeth Reyes', 'elizabeth.reyes@berkeley.edu', 'Program Associate'),
     ('Admin', 'Joshua Kay', 'joshua_kay@berkeley.edu', 'Program Associate'),
+    ('Admin', 'Paola Noun', 'paolanoun@berkeley.edu', 'Free Spirit'),
 
     ('Voting Member', 'Moe Sumino', 'moe_sumino@berkeley.edu', 'ASUC Representative'),
     ('Voting Member', 'Youjin Chung', 'youjin.chung@berkeley.edu', 'Faculty Representative'),

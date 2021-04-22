@@ -37,17 +37,19 @@ passport.use(
       query.rows.forEach((email) => {
         // IF PROFILE EMAIL IS CONTAINED RES.SEND TRUE?
         if (email === profile.email) {
-          done(null, profile);
-        } else {
-          done(null, false);
+          return done(null, profile);
         }
       });
+      return done(null, false);
     },
   ),
 );
 
 app.get('/auth/google/callback',
-  passport.authenticate('google', { failureRedirect: 'http://localhost:3000/login-fail' }), (req, res) => res.redirect('http://localhost:3000/dashboard'));
+  passport.authenticate('google', { failureRedirect: '/auth/google/fail' }), (req, res) => res.redirect('http://localhost:3000/dashboard'));
+
+app.get('/auth/google/fail',
+  (req, res) => res.redirect('http://localhost:3000/login-fail'));
 
 /* When user clicks sign in with CalNet (frontend login page) */
 app.get('/auth/google',
