@@ -22,7 +22,7 @@ function rowDeletionMode(props) {
                 </div>
                 <div className="rightRow">
                     <div className="proposal-title">{props.title}</div>
-                    <img src={props.vote} className="vote-status"></img>
+                    <img src={props.vote} alt='Vote Status' className="vote-status"></img>
                 </div>
             </div>
         </div>
@@ -39,7 +39,7 @@ function rowDefaultMode(props) {
         }>
         
             <div className="proposal-title">{props.title}</div>
-            <img src={props.vote} className="vote-status"></img>
+            <img src={props.vote} alt='Vote Status' className="vote-status"></img>
 
         </div>
         

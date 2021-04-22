@@ -5,10 +5,17 @@ const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const db = require('./db-connection');
 require('dotenv').config();
 
+const corsOptions = {
+  origin: 'http://localhost:3000',
+  credentials: true,
+  optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+};
+
 const app = express();
 app.use(express.json());
-app.use(cors());
-app.use(passport.initialize())
+
+app.use(cors(corsOptions));
+app.use(passport.initialize());
 app.use(passport.session());
 const port = 8000;
 
@@ -22,29 +29,29 @@ passport.use(
       clientSecret: GOOGLE_CLIENT_SECRET,
       callbackURL: 'http://localhost:8000/auth/google/callback',
     },
-    (accessToken, refreshToken, profile, done) => {
+    async (accessToken, refreshToken, profile, done) => {
       // QUERY FOR USER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-      User.findOrCreate({ googleId: profile.id }, (err, user) => done(err, user));
-      return false;
-    }
-  )
+      const query = await db.query(
+        'SELECT email FROM users',
+      );
+      query.rows.forEach((email) => {
+        // IF PROFILE EMAIL IS CONTAINED RES.SEND TRUE?
+        if (email === profile.email) {
+          done(null, profile);
+        } else {
+          done(null, false);
+        }
+      });
+    },
+  ),
 );
 
 app.get('/auth/google/callback',
   passport.authenticate('google', { failureRedirect: 'http://localhost:3000/login-fail' }), (req, res) => res.redirect('http://localhost:3000/dashboard'));
 
-//When user clicks sign in with CalNet (frontend login page)
-app.get("/auth/google", passport.authenticate("google", {scope: ["profile", "email"]}));
-
-// app.get('/isAuthenticated', (req, res) => {
-//   console.log(req);
-//   if (req.isAuthenticated()) {
-//     res.send("insert send data");
-//   }
-//   else {
-//     res.send("NOT AUTHENTICATED");
-//   }
-// })
+/* When user clicks sign in with CalNet (frontend login page) */
+app.get('/auth/google',
+  passport.authenticate('google', { scope: ['profile', 'email'] }));
 
 app.post('/post_comment', async (req, res) => {
   try {
