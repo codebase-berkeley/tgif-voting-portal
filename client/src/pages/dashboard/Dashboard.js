@@ -129,9 +129,7 @@ function Dashboard() {
           <div className="proposal-description">
             <div className="proposal-head-title">{proposalTitle}</div>
             <div className="proposal-head-description">
-              <div className="textOnly2">
-                {proposalDescription}
-              </div>
+              {proposalDescription}
             </div>
             <div className="dividing-line"></div>
             <div className="comment-area">
