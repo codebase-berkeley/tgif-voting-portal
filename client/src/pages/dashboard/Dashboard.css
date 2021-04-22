@@ -16,7 +16,7 @@
     width: 45%;
     height: 100%;
     margin-left: 5%;
-    margin-top: 1%;
+    padding-top: 1%;
     display: flex;
     flex-flow: column;
 }
@@ -26,7 +26,7 @@
   }
 
 .proposal-list {
-    margin-top: 2%;
+    padding-top: 2%;
     max-height: 77.5vh;
     overflow-y: auto;
     position: relative;
@@ -34,12 +34,58 @@
 
 .right-proposals {
     width: 50%;
-    height: 85vh;
+    min-width: 700px;
+    height: 89vh;
     display: flex;
     margin-right: 2%;
-    margin-top: 1.5%;
+    padding-top: 1.5%;
+    padding-bottom: 1%;
     justify-content: center;
 }
+
+/* .proposal-description {
+    width: 70%;
+    height: 100%;
+    min-height: 550px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 2.5px solid #CECECE;
+    border-radius: 10px;
+    padding-top: 10px;
+    padding-bottom: 5px;
+} 
+
+.proposal-head-title{
+    height: 20%;
+    width: 100%;
+    min-height: 110px;
+    padding-left: 9%;
+    padding-right: 9%;
+    text-align: left;
+    font-size: 2rem;
+    font-family: 'IBM Plex Sans', sans-serif;
+    color: #96AD00;
+} 
+
+.proposal-head-description {
+    width: 100%;
+    height: 35%;
+    min-height: 200px;
+    text-align: left;
+    padding-top: 2.5%;
+    padding-bottom: 2.5%;
+    padding-left: 9%;
+    padding-right: 9%;
+    margin-bottom: 2%;
+    font-size: 1.25rem;
+    font-family: "Lexend Deca", sans-serif;
+    color: black;
+    overflow-y: auto;
+    overflow-x: hidden;
+} */
+
+
 
 .proposal-description {
     width: 70%;
@@ -55,6 +101,7 @@
     width: 80%;
     text-align: left;
     margin-top: 5%;
+    margin-bottom: 5%;
     font-size: 2rem;
     font-family: 'IBM Plex Sans', sans-serif;
     color: #96AD00;
@@ -65,6 +112,7 @@
     height: 35%;
     text-align: left;
     margin-top: 2.5%;
+    margin-bottom: 5%;
     font-size: 1.25rem;
     font-family: "Lexend Deca", sans-serif;
     color: black;
@@ -75,14 +123,25 @@
 .dividing-line {
     display: flex;
     align-self: center;
-    margin-top: 2.5%;
+    padding-top: 3px;
     width: 75%;
     height: 2px;
     background-color: #A6B82E;
 }
 
+.comment-area {
+    padding-top: 18px;
+    height: 34%;
+    min-height: 170px;
+}
+
+.nonvoting-comment-area {
+    padding-top: 30px;
+    height: 44%;
+    min-height: 170px;
+}
+
 .comment-box {
-    margin-top: 5%;
     border-radius: 15px;
     padding: 10px;
     border: 2.5px solid #CECECE;
@@ -101,24 +160,6 @@
 .comment-boxus:focus {
     outline: none;
     resize: none;
-}
-
-.vote-yes {
-    background-color: #A6B82E;
-    border-radius: 5px;
-    border: 2.5px solid #A6B82E;
-    color: white;
-    margin: 2em 0.5em 1em 0.5em;
-    padding: 0.5em;
-}
-
-.vote-no {
-    background-color: #353739;
-    border-radius: 5px;
-    border: 2.5px solid #353739;
-    color: white;
-    margin: 2em 0.5em 1em 0.5em;
-    padding: 0.5em;
 }
 
 .post-comment {
@@ -141,12 +182,56 @@
     padding: 0.5em;
 }
 
-.voting-buttons {
+.discussion-buttons {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.dashboardVotingButtonsContainer {
+    height: 10%;
+    min-height: 55px;
+    width: 100%;
     display: flex;
     justify-content: center;
 }
 
-.discussion-buttons {
+.votingMemberVotingButton {
+    border-radius: 5px;
+    color: white;
+    font-family: 'Lexend Deca', sans-serif;
+    width: 110px;
+    height: 50px;
+    border-width: 0px;
+}
+
+.dashboardPressedYesButton {
+    background-color: var(--buttonGreen);
+}
+
+.dashboardUnpressedYesButton {
+    background-color: var(--buttonGreenOpaque);
+}
+
+.dashboardPressedNoButton {
+    background-color: var(--black);
+}
+
+.dashboardUnpressedNoButton {
+    background-color: var(--buttonBlackOpaque);
+}
+
+.dashboardButtonContainer {
     display: flex;
-    justify-content: flex-end;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+.leftDashboardButtonContainer {
+    padding-left: 90px;
+}
+
+.rightDashboardButtonContainer {
+    padding-right: 90px;
 }

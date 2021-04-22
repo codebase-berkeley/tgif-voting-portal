@@ -5,10 +5,11 @@ import './Dashboard.css';
 import noIcon from '../../assets/Delete.svg';
 import yesIcon from '../../assets/Checked.svg';
 import SearchBar from '../../components/searchbar/SearchBar';
+import ProposalButton from '../proposalDetails/ProposalButton.js';
 import { Link } from "react-router-dom";
 import axios from 'axios';
-import ProposalButton from './../proposalDetails/ProposalButton.js';
 
+var PRIVILEGES ='Voting Member';
 
 function Dashboard() {
   /* Contains all proposals. */
@@ -38,8 +39,8 @@ function Dashboard() {
   const [input, setInput] = useState("");
   // const [proposalList, setProposalList] = useState(proposalHTML);
 
-  const [proposalTitle, setProposalTitle] = useState("Mapping for Environmental Justice");
-  const [proposalDescription, setProposalDescription] = useState("MEJ is an initiative to create interactive and publicly-accessible maps displaying environmental justice data for individual states.");
+  const [proposalTitle, setProposalTitle] = useState("");
+  const [proposalDescription, setProposalDescription] = useState("");
   const [wantedPropID, setWantedPropID] = useState(1);
 
   /* Updates proposalList state based on SearchBar input. */
@@ -93,15 +94,14 @@ function Dashboard() {
     }
   };
 
-  /* REACT STATES FOR NONADMIN VOTING BUTTONS */
-  const nonAdminPressedYesButtonClassName = 'pressedYesButton dashboardYesButton';
-  const nonAdminUnpressedYesButtonClassName = 'unpressedYesButton dashboardYesButton';
-  const [nonAdminYesButtonClassName, setNonAdminYesButtonClassName] = useState(nonAdminUnpressedYesButtonClassName);
-  
-  const nonAdminPressedNoButtonClassName = 'pressedNoButton dashboardNoButton';
-  const nonAdminUnpressedNoButtonClassName = 'unpressedNoButton dashboardNoButton';
-  const [nonAdminNoButtonClassName, setNonAdminNoButtonClassName] = useState(nonAdminUnpressedNoButtonClassName);
-    
+  /* VOTING BUTTON STATES */
+  const dashboardPressedYesButtonClassName = 'dashboardPressedYesButton votingMemberVotingButton';
+  const dashboardUnpressedYesButtonClassName = 'dashboardUnpressedYesButton votingMemberVotingButton';
+  const [dashboardYesButtonClassName, setDashboardYesButtonClassName] = useState(dashboardUnpressedYesButtonClassName);
+
+  const dashboardPressedNoButtonClassName = 'dashboardPressedNoButton votingMemberVotingButton';
+  const dashboardUnpressedNoButtonClassName = 'dashboardUnpressedNoButton votingMemberVotingButton';
+  const [dashboardNoButtonClassName, setDashboardNoButtonClassName] = useState(dashboardUnpressedNoButtonClassName);
 
   return (
     <div className="dashboard">
@@ -132,8 +132,8 @@ function Dashboard() {
               {proposalDescription}
             </div>
             <div className="dividing-line"></div>
-            <div className="comment-area">
-              <textarea value={textboxValue} onChange={(event) => {setTextboxValue(event.target.value)}} id="textbox" name="textbox" className="comment-box" placeholder="Leave a comment" rows="7" cols="53"></textarea>
+            <div className={PRIVILEGES === 'Voting Member' ? "comment-area" : "comment-area nonvoting-comment-area"}>
+              <textarea className="comment-box" value={textboxValue} onChange={(event) => {setTextboxValue(event.target.value)}} id="textbox" name="textbox" placeholder="Leave a comment" rows="7" cols="53"></textarea>
               <div className="discussion-buttons">
               <button className="post-comment" onClick={handleSubmit}>Post Comment</button>
               <Link to={`/proposal-details/${wantedPropID}`}>
@@ -141,20 +141,24 @@ function Dashboard() {
               </Link>
             </div>
             </div>
-            <div className="voting-buttons">
-              <ProposalButton buttonText='Vote Yes' buttonClassName={nonAdminYesButtonClassName}
-                    onClickFunc={() => {setNonAdminYesButtonClassName(nonAdminPressedYesButtonClassName);
-                                  setNonAdminNoButtonClassName(nonAdminUnpressedNoButtonClassName);
-                                  submitVote(true);}}
-                />
-                <ProposalButton buttonText='Vote No' buttonClassName={nonAdminNoButtonClassName}
-                    onClickFunc={() => {setNonAdminYesButtonClassName(nonAdminUnpressedYesButtonClassName);
-                                  setNonAdminNoButtonClassName(nonAdminPressedNoButtonClassName);
-                                  submitVote(false);}}
-                />
-                {/* <button className="vote-yes" onClick={() => submitVote(true) }>Vote Yes</button>
-                <button className="vote-no" onClick={() => submitVote(false)}>Vote No</button> */}
-            </div>
+            {(PRIVILEGES === 'Voting Member')
+              ? <div className="dashboardVotingButtonsContainer">
+                  <div className='leftDashboardButtonContainer dashboardButtonContainer'>
+                    <ProposalButton buttonText='Vote Yes' buttonClassName={dashboardYesButtonClassName}
+                      onClickFunc={() => {setDashboardYesButtonClassName(dashboardPressedYesButtonClassName);
+                                          setDashboardNoButtonClassName(dashboardUnpressedNoButtonClassName);}}
+                    />
+                  </div>
+
+                  <div className='rightDashboardButtonContainer dashboardButtonContainer'>
+                    <ProposalButton buttonText='Vote No' buttonClassName={dashboardNoButtonClassName}
+                      onClickFunc={() => {setDashboardYesButtonClassName(dashboardUnpressedYesButtonClassName);
+                                          setDashboardNoButtonClassName(dashboardPressedNoButtonClassName);}}
+                    />
+                  </div>
+                </div>
+              : null
+            }
           </div>
         </div>
       </div>

@@ -1,0 +1,14 @@
+.member-row {
+    border: 2px solid #CBC7C7;
+}
+
+.tags {
+    display: flex;
+    justify-content: center;
+    margin: 16px;
+}
+
+.confirmAddMemberButton {
+    width: 30px;
+    height: auto;
+}
