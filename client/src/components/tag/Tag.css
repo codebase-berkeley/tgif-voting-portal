@@ -1,0 +1,22 @@
+.tag {
+    color: white;
+    width: 40%;
+    min-width: fit-content;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.Admin {
+    background-color:#9AAA35;
+}
+
+.Voting {
+    background-color: #196E92;
+}
+
+.Non-Voting {
+    background-color:#f4b415;
+}

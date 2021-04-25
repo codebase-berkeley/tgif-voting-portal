@@ -2,7 +2,7 @@ import './ProposalManagement.css';
 import PopUpModal from '../../components/popupModal/PopUpModal';
 import React, { useState, useEffect } from 'react';
 import Row from '../../components/row/Row';
-import TrashCan from '../../assets/TrashCan.svg';
+import TrashCan from '../../assets/trashCan.svg';
 import xIcon from '../../assets/xIcon.svg';
 import axios from "axios";
 import ProposalButton from '../proposalDetails/ProposalButton';

@@ -1,0 +1,19 @@
+.background {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    z-index: 0;
+}
+
+.row0 {
+    display: flex;
+    justify-content: center;
+}
+
+.row1 {
+    display: flex;
+    justify-content: center;
+    margin-top: 5%;
+}
