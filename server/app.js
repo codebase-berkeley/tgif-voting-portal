@@ -32,11 +32,11 @@ passport.use(
     async (accessToken, refreshToken, profile, done) => {
       // QUERY FOR USER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
       const query = await db.query(
-        'SELECT email FROM users',
+        'SELECT * FROM users',
       );
       for (let i = 0; i < query.rows.length; i += 1) {
         if (query.rows[i].email === profile.emails[0].value) {
-          return done(null, profile);
+          return done(null, query.rows[i]);
         }
       }
       return done(null, false);
@@ -48,8 +48,13 @@ passport.serializeUser((user, done) => {
   done(null, user.id);
 });
 
-passport.deserializeUser((user, done) => {
-  done(null, user.displayName);
+passport.deserializeUser(async (userID, done) => {
+  console.log("User ID is : ", userID);
+  const query = await db.query(
+    'SELECT * FROM users WHERE id=$1;',
+    [userID],
+  );
+  done(null, query.rows);
 });
 
 app.get('/auth/google/callback',
@@ -60,6 +65,17 @@ app.get('/auth/google/fail',
 
 app.get('/auth/google',
   passport.authenticate('google', { scope: ['profile', 'email'] }));
+
+app.get('/isauth', (req, res) => {
+  console.log(req.user);
+  if (req.isAuthenticated()) {
+    console.log("authenticated");
+    res.send(req.user);
+  } else {
+    console.log("not authenticated");
+    res.send({text: "NOT AUTHENTICATED"});
+  }
+});
 
 app.post('/post_comment', async (req, res) => {
   try {
