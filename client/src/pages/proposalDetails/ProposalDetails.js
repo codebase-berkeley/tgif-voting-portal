@@ -105,6 +105,12 @@ function ProposalConditionalRender(privileges) {
                                   setVote('No');}}
             />
           </div>
+          <div className='approveButtonContainer'>
+            <ProposalButton buttonText="Approve Proposal" buttonClassName="unpressedYesButton approveButton" 
+            onClickFunc={() => { 
+            }}
+            />
+          </div>
           <div className='yourVoteLabel'>
             Your Vote: {vote}
           </div>

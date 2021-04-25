@@ -246,6 +246,12 @@ textarea {
     bottom: 1px;
 }
 
+.approveButtonContainer {
+    position: absolute;
+    left: -30px;
+    bottom: 1px;
+}
+
 .genericProposalButton {
     background-color: var(--buttonGreen);
     border-radius: 5px;

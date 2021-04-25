@@ -28,6 +28,15 @@
     border-width: 0px;
 }
 
+.approveButton {
+    border-radius: 5px;
+    color: black;
+    font-family: 'Lexend Deca', sans-serif;
+    width: 150px;
+    height: 40px;
+    border-width: 0px;
+}
+
 .pressedYesButton {
     background-color: var(--buttonGreen);
 }
