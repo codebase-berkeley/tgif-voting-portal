@@ -1,6 +1,6 @@
 import './ProposalManagement.css';
 import PopUpModal from '../../components/popupModal/PopUpModal';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Row from '../../components/row/Row';
 import TrashCan from '../../assets/trashCan.svg';
 import xIcon from '../../assets/xIcon.svg';
@@ -135,7 +135,7 @@ function ProposalManagement() {
 
     const submitProposal = async () => {
       try {
-        const response = await axios.post('http://localhost:8000/submitVote', {
+        await axios.post('http://localhost:8000/submitVote', {
         vote: "yes",
         user_id: "yolo",
         proposal_id: 2
@@ -188,7 +188,7 @@ function ProposalManagement() {
         <div className="proposalManagement">
             <div className="proposalManagementLeft"> 
                 <div className="trashCan">
-                    <img src={TrashCan} className="TrashCanIcon"></img>
+                    <img className="TrashCanIcon" src={TrashCan} alt='Trash Can Icon'></img>
                 </div>
                 <div className="proposal-list">
                     {proposalList}
