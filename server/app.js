@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const passport = require('passport');
+const session = require('express-session');
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const db = require('./db-connection');
 require('dotenv').config();
@@ -15,6 +16,13 @@ const app = express();
 app.use(express.json());
 
 app.use(cors(corsOptions));
+app.use(
+  session({
+    resave: false,
+    saveUninitialized: true,
+    secret: 'keyboard cat',
+  }),
+);
 app.use(passport.initialize());
 app.use(passport.session());
 const port = 8000;
@@ -30,7 +38,6 @@ passport.use(
       callbackURL: 'http://localhost:8000/auth/google/callback',
     },
     async (accessToken, refreshToken, profile, done) => {
-      // QUERY FOR USER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
       const query = await db.query(
         'SELECT * FROM users',
       );
@@ -49,7 +56,6 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser(async (userID, done) => {
-  console.log("User ID is : ", userID);
   const query = await db.query(
     'SELECT * FROM users WHERE id=$1;',
     [userID],
@@ -67,13 +73,10 @@ app.get('/auth/google',
   passport.authenticate('google', { scope: ['profile', 'email'] }));
 
 app.get('/isauth', (req, res) => {
-  console.log(req.user);
   if (req.isAuthenticated()) {
-    console.log("authenticated");
     res.send(req.user);
   } else {
-    console.log("not authenticated");
-    res.send({text: "NOT AUTHENTICATED"});
+    res.send('NOT AUTHENTICATED');
   }
 });
 
