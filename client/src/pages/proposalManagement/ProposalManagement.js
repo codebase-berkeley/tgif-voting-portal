@@ -130,7 +130,7 @@ function ProposalManagement() {
     /* Go through each checkbox and determine which proposals should be deleted */
     const propsIdsToDelete = [];
     proposals.forEach((prop) => {
-      console.log(prop);
+      // console.log(prop);
       if (prop.checked) {
         propsIdsToDelete.push(prop.id);
       }
