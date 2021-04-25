@@ -95,12 +95,8 @@ a:active {color :var(--buttonGreenOpaque);}
     font-family: 'Lexend Deca', sans-serif;
     margin: 20px 0px 20px 0px;
     word-wrap: break-word;
-    /* display: flex; */
     padding-left: 10px;
     padding-right: 10px;
-    /*align-items: center;
-    justify-content: center;
-    text-justify: inter-word;*/
     overflow-y: auto;
 }
 

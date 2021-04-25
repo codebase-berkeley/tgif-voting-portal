@@ -24,7 +24,7 @@ CREATE TABLE proposals
     organization VARCHAR,
     amount_requested FLOAT,
     link VARCHAR,
-    description_text VARCHAR, 
+    description_text VARCHAR
     -- checked BOOLEAN
 );
 

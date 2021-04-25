@@ -12,8 +12,6 @@ import axios from 'axios';
 var PRIVILEGES ='Voting Member';
 
 function Dashboard() {
-  /* Contains all proposals. */
-  // const proposalHTML = []
 
   const [proposals, setProposals] = useState([]);
 
@@ -37,7 +35,6 @@ function Dashboard() {
 
   /* Create states for SearchBar. */
   const [input, setInput] = useState("");
-  // const [proposalList, setProposalList] = useState(proposalHTML);
 
   const [proposalTitle, setProposalTitle] = useState("");
   const [proposalDescription, setProposalDescription] = useState("");

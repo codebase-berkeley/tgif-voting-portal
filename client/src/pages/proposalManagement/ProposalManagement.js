@@ -31,7 +31,6 @@ function ProposalManagement() {
   }, []);
 
   const [proposalListDefault, setProposalListDefault] = useState(proposals);
- //const [proposalList, setProposalList] = useState(proposalHTML);
 
   const [proposalTitle, setProposalTitle] = useState("Mapping for Environmental Justice");
   const [proposalDescription, setProposalDescription] = useState("MEJ is an initiative to create interactive and publicly-accessible maps displaying environmental justice data for individual states.");  
@@ -49,7 +48,6 @@ function ProposalManagement() {
   var enterEditingIconDefault = 'enterDeletingIconContainer';
   var exitEditingIconDefault = 'exitDeletingIconContainer';
   var deleteIconDefault = 'trashCan';
-  // var displayModal = false;
   var IS_MANAGEMENT = true;
 
   const [enterEditingIconClassName, setEnterEditingIconClassName] = useState(enterEditingIconDefault);
@@ -80,17 +78,6 @@ function ProposalManagement() {
     setDisplayModal(true);
   }
 
-  // function showModal() {
-  //   if (displayModal) {
-  //     return (
-  //       <PopUpModal warning="Are you sure you want to delete these proposals?"
-  //             secondaryText="cancel"
-  //             primaryText="delete"
-  //             primaryFunc={removeProposals}
-  //             />
-  //       )
-  //   }
-  // }
     const submitProposal = async () => {
       if (textboxValueMoney !== '' && isNaN(parseFloat(textboxValueMoney))){
         console.log("String submited for value");
@@ -129,14 +116,6 @@ function ProposalManagement() {
   };
 
   function handleRemoveProposals() {
-    /* Go through each checkbox and determine which proposals should be deleted */
-    // const propsIdsToDelete = [];
-    // proposals.forEach((prop) => {
-    //   // console.log(prop);
-    //   if (prop.checked) {
-    //     propsIdsToDelete.push(prop.id);
-    //   }
-    // })
     const numSelected = propsIdsToDelete.length;
 
     async function removeProposals() {
@@ -204,16 +183,6 @@ function ProposalManagement() {
                           isManagement= {IS_MANAGEMENT}
                           vote={proposal.voted ? proposal.voted : ""}
                           proposalCheckboxOnClick = {() => {updateProposalDeleteIDs(proposal);}}
-                          // proposalCheckboxOnClick = {() => {
-                          //   const proposalsCopy = [...proposals];
-                          //   proposalsCopy.forEach((proposalCopy) => {
-                          //     if (proposalCopy.id === proposal.id) {
-                          //       proposalCopy.checked = !proposalCopy.checked;
-                          //     }
-                          //     });
-                          //     setProposals(proposalsCopy);
-                          //     // updateSelectAllCheckbox();
-                          //     }}
                             isChecked={proposal.checked}
                           />
                     ))}
