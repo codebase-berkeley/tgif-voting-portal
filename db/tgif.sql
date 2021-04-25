@@ -25,7 +25,7 @@ CREATE TABLE proposals
     amount_requested FLOAT,
     link VARCHAR,
     description_text VARCHAR, 
-    checked BOOLEAN
+    -- checked BOOLEAN
 );
 
 CREATE TABLE comments

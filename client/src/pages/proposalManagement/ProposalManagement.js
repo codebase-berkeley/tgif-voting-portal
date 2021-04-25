@@ -42,6 +42,8 @@ function ProposalManagement() {
   const[textboxValueMoney, setTextboxValueMoney] = React.useState('');
 
   const [deletingMode, setDeletingMode] = useState(false);
+
+  const [propsIdsToDelete, setPropsIdsToDelete] = useState([]);
     
     /* REACT STATES FOR EDIT BUTTONS */
   var enterEditingIconDefault = 'enterDeletingIconContainer';
@@ -128,13 +130,13 @@ function ProposalManagement() {
 
   function handleRemoveProposals() {
     /* Go through each checkbox and determine which proposals should be deleted */
-    const propsIdsToDelete = [];
-    proposals.forEach((prop) => {
-      // console.log(prop);
-      if (prop.checked) {
-        propsIdsToDelete.push(prop.id);
-      }
-    })
+    // const propsIdsToDelete = [];
+    // proposals.forEach((prop) => {
+    //   // console.log(prop);
+    //   if (prop.checked) {
+    //     propsIdsToDelete.push(prop.id);
+    //   }
+    // })
     const numSelected = propsIdsToDelete.length;
 
     async function removeProposals() {
@@ -166,8 +168,13 @@ function ProposalManagement() {
           secondaryFunc={() => setRemoveModal(null)}
         />
         )
-
     }
+  }
+
+  function updateProposalDeleteIDs(proposal) {
+    const updatedPropsIdsToDelete = [...propsIdsToDelete];
+    updatedPropsIdsToDelete.push(proposal.id);
+    setPropsIdsToDelete(updatedPropsIdsToDelete);
   }
   
 
@@ -196,16 +203,17 @@ function ProposalManagement() {
                           mode={deletingMode}
                           isManagement= {IS_MANAGEMENT}
                           vote={proposal.voted ? proposal.voted : ""}
-                          proposalCheckboxOnClick = {() => {
-                            const proposalsCopy = [...proposals];
-                            proposalsCopy.forEach((proposalCopy) => {
-                              if (proposalCopy.id === proposal.id) {
-                                proposalCopy.checked = !proposalCopy.checked;
-                              }
-                              });
-                              setProposals(proposalsCopy);
-                              // updateSelectAllCheckbox();
-                              }}
+                          proposalCheckboxOnClick = {() => {updateProposalDeleteIDs(proposal);}}
+                          // proposalCheckboxOnClick = {() => {
+                          //   const proposalsCopy = [...proposals];
+                          //   proposalsCopy.forEach((proposalCopy) => {
+                          //     if (proposalCopy.id === proposal.id) {
+                          //       proposalCopy.checked = !proposalCopy.checked;
+                          //     }
+                          //     });
+                          //     setProposals(proposalsCopy);
+                          //     // updateSelectAllCheckbox();
+                          //     }}
                             isChecked={proposal.checked}
                           />
                     ))}
