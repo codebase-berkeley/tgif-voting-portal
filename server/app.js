@@ -34,16 +34,23 @@ passport.use(
       const query = await db.query(
         'SELECT email FROM users',
       );
-      query.rows.forEach((email) => {
-        // IF PROFILE EMAIL IS CONTAINED RES.SEND TRUE?
-        if (email === profile.email) {
+      for (let i = 0; i < query.rows.length; i += 1) {
+        if (query.rows[i].email === profile.emails[0].value) {
           return done(null, profile);
         }
-      });
+      }
       return done(null, false);
     },
   ),
 );
+
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+
+passport.deserializeUser((user, done) => {
+  done(null, user.displayName);
+});
 
 app.get('/auth/google/callback',
   passport.authenticate('google', { failureRedirect: '/auth/google/fail' }), (req, res) => res.redirect('http://localhost:3000/dashboard'));
@@ -51,7 +58,6 @@ app.get('/auth/google/callback',
 app.get('/auth/google/fail',
   (req, res) => res.redirect('http://localhost:3000/login-fail'));
 
-/* When user clicks sign in with CalNet (frontend login page) */
 app.get('/auth/google',
   passport.authenticate('google', { scope: ['profile', 'email'] }));
 
