@@ -28,6 +28,28 @@
     border-width: 0px;
 }
 
+.dashboardYesButton {
+    border-radius: 5px;
+    color: white;
+    margin: 2em 0.5em 1em 0.5em;
+    padding: 0.5em;
+    font-family: 'Lexend Deca', sans-serif;
+    width: 110px;
+    height: 50px;
+    border-width: 0px;
+}
+
+.dashboardNoButton {
+    border-radius: 5px;
+    color: white;
+    margin: 2em 0.5em 1em 0.5em;
+    padding: 0.5em;
+    font-family: 'Lexend Deca', sans-serif;
+    width: 110px;
+    height: 50px;
+    border-width: 0px;
+}
+
 .pressedYesButton {
     background-color: var(--buttonGreen);
 }

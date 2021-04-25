@@ -6,12 +6,9 @@ import ProposalDetails from './pages/proposalDetails/ProposalDetails.js';
 import Members from './pages/members/Members.js';
 import NavBar from './components/navbar/NavBar.js';
 import ProposalManagement from './pages/proposalManagement/ProposalManagement.js';
-import React from "react";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-} from "react-router-dom";
+import { React } from "react";
+import { BrowserRouter as Router, Switch, Route} from "react-router-dom";
+
 
 
 function App() {
@@ -26,8 +23,8 @@ function App() {
           <Route path="/dashboard">
             <Dashboard />
           </Route>
-          <Route path="/proposal-details">
-            <ProposalDetails />
+          <Route path="/proposal-details/:id" children={<ProposalDetails />}>
+    
           </Route>
           <Route path="/members">
             <Members />
@@ -35,6 +32,7 @@ function App() {
           <Route path="/proposal-management">
             <ProposalManagement />
           </Route>
+          <Route path="/proposal-details/:PROPOSAL_ID" children={<ProposalDetails />} />
         </Switch>
       </div>
     </Router>

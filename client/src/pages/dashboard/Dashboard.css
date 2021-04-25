@@ -28,7 +28,7 @@
 .proposal-list {
     padding-top: 2%;
     max-height: 77.5vh;
-    overflow-y: scroll;
+    overflow-y: auto;
     position: relative;
 }
 
@@ -43,7 +43,7 @@
     justify-content: center;
 }
 
-.proposal-description {
+/* .proposal-description {
     width: 70%;
     height: 100%;
     min-height: 550px;
@@ -54,7 +54,7 @@
     border-radius: 10px;
     padding-top: 10px;
     padding-bottom: 5px;
-}
+} 
 
 .proposal-head-title{
     height: 20%;
@@ -66,7 +66,7 @@
     font-size: 2rem;
     font-family: 'IBM Plex Sans', sans-serif;
     color: #96AD00;
-}
+} 
 
 .proposal-head-description {
     width: 100%;
@@ -77,9 +77,47 @@
     padding-bottom: 2.5%;
     padding-left: 9%;
     padding-right: 9%;
+    margin-bottom: 2%;
     font-size: 1.25rem;
     font-family: "Lexend Deca", sans-serif;
     color: black;
+    overflow-y: auto;
+    overflow-x: hidden;
+} */
+
+
+
+.proposal-description {
+    width: 70%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 2.5px solid #CECECE;
+    border-radius: 10px;
+}
+
+.proposal-head-title{
+    width: 80%;
+    text-align: left;
+    margin-top: 5%;
+    margin-bottom: 5%;
+    font-size: 2rem;
+    font-family: 'IBM Plex Sans', sans-serif;
+    color: #96AD00;
+}
+
+.proposal-head-description {
+    width: 80%;
+    height: 35%;
+    text-align: left;
+    margin-top: 2.5%;
+    margin-bottom: 5%;
+    font-size: 1.25rem;
+    font-family: "Lexend Deca", sans-serif;
+    color: black;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .dividing-line {

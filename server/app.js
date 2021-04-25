@@ -1,12 +1,29 @@
 const express = require('express');
 const cors = require('cors');
 const db = require('./db-connection');
+const { Query } = require('pg');
 require('dotenv').config();
 
 const app = express();
 app.use(express.json());
 app.use(cors());
 const port = 8000;
+
+app.post('/submitProposal', async(req,res) =>{
+  try {
+    const title = req.body.title;
+    const organization = req.body.organization;
+    const amount_requested = req.body.amount_requested;
+    const link = req.body.link;
+    const description_text = req.body.description_text;
+    await db.query(
+      'INSERT INTO proposals (title, organization, amount_requested, link, description_text) VALUES ($1, $2, $3, $4, $5);', [title, organization,amount_requested,link,description_text],
+    );
+    res.send('Success')
+  } catch (error) {
+    console.log(error.stack);
+  }
+});
 
 app.post('/post_comment', async (req, res) => {
   try {
@@ -89,7 +106,40 @@ app.get('/get_comments', async (req, res) => {
     const query = await db.query(
       'SELECT * FROM comments WHERE proposal_id=$1;', [proposalId],
     );
+    console.log(query.rows)
     res.send(query.rows);
+  } catch (error) {
+    console.log(error.stack);
+  }
+});
+
+app.get('/getProposals', async (req, res) => {
+  try {
+    const query = await db.query(
+      'SELECT * FROM proposals;'
+    );
+    res.send(query.rows);
+  } catch (error) {
+    console.log(error.stack);
+  }
+});
+
+app.delete('/delete_proposal', async (req, res) => {
+  try {
+    const propsList = req.body.listOfIDs;
+    console.log("propslist:");
+    console.log(propsList);
+    await db.query(
+      `DELETE FROM comments WHERE proposal_id IN (${propsList})`, 
+    );
+    await db.query(
+      `DELETE FROM votes WHERE proposal_id IN (${propsList})`, 
+    );
+    await db.query(
+      `DELETE FROM proposals WHERE id IN (${propsList})`, 
+    );
+    // console.log();
+    res.send('Deleted selected proposals.');
   } catch (error) {
     console.log(error.stack);
   }
@@ -152,19 +202,19 @@ app.get('/getAllVotes', async (req, res) => {
   }
 });
 
-app.get('/getProposalDetails', async (req, res) => {
+app.get('/get_proposal_details', async (req, res) => {
   try {
+    const proposalId = req.query.proposal_id;
     const query = await db.query(
-      'SELECT title, organization, amount_requested, link, description_text FROM proposals WHERE id=$1;',
-      [req.query.proposal_id],
+      'SELECT * FROM proposals WHERE id=$1;', [proposalId],
     );
     res.send(query.rows[0]);
   } catch (error) {
     console.log(error.stack);
-    res.send(null);
   }
 });
 
+
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
-});
+});// // // // // // // // // // // 

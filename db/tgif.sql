@@ -25,6 +25,7 @@ CREATE TABLE proposals
     amount_requested FLOAT,
     link VARCHAR,
     description_text VARCHAR
+    -- checked BOOLEAN
 );
 
 CREATE TABLE comments
@@ -48,6 +49,10 @@ GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO root;
 GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO root;
 
 GRANT ALL PRIVILEGES ON DATABASE tgif TO root;
+
+CREATE TABLE currentPropID (
+    propID SERIAL PRIMARY KEY
+);
 
 
 

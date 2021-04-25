@@ -45,6 +45,18 @@ textarea {
     font-size: 1.5em;
 }
 
+.poposalLink{
+    font-family: 'Lexend Deca', sans-serif;
+    color: var(--black);
+    font-size: 1.5em;
+}
+
+a:link{color: var(--buttonGreenOpaque);}
+
+a:visited {color:var(--buttonGreenOpaque);} 
+a:active {color :var(--buttonGreenOpaque);}
+
+
 .proposalAmount {
     font-family: 'Lexend Deca', sans-serif;
     color: var(--black);
@@ -81,13 +93,16 @@ textarea {
     min-height: 210px;
     width: 100%;
     font-family: 'Lexend Deca', sans-serif;
-    padding: 10px;
     margin: 20px 0px 20px 0px;
     word-wrap: break-word;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-justify: inter-word;
+    padding-left: 10px;
+    padding-right: 10px;
+    overflow-y: auto;
+}
+
+.textOnly{
+    padding-bottom: 15px;
+    padding-top: 15px
 }
 
 .nonVotingProposalDescription {
@@ -127,7 +142,7 @@ textarea {
 .discussionCommentsView {
     background-color: rgb(252, 252, 252); 
     height: 75%;
-    overflow-y: scroll;
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
     padding-top: 0px;
