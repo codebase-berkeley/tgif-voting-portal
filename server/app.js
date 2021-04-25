@@ -4,6 +4,7 @@ const passport = require('passport');
 const session = require('express-session');
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const db = require('./db-connection');
+const { Query } = require('pg');
 require('dotenv').config();
 
 const corsOptions = {
@@ -77,6 +78,22 @@ app.get('/isauth', (req, res) => {
     res.send(req.user);
   } else {
     res.send('NOT AUTHENTICATED');
+  }
+});
+
+app.post('/submitProposal', async (req, res) => {
+  try {
+    const { title } = req.body;
+    const { organization } = req.body;
+    const { amount_requested } = req.body;
+    const { link } = req.body;
+    const { description_text } = req.body;
+    await db.query(
+      'INSERT INTO proposals (title, organization, amount_requested, link, description_text) VALUES ($1, $2, $3, $4, $5);', [title, organization,amount_requested,link,description_text],
+    );
+    res.send('Success');
+  } catch (error) {
+    console.log(error.stack);
   }
 });
 
@@ -161,7 +178,39 @@ app.get('/get_comments', async (req, res) => {
     const query = await db.query(
       'SELECT * FROM comments WHERE proposal_id=$1;', [proposalId],
     );
+    console.log(query.rows)
     res.send(query.rows);
+  } catch (error) {
+    console.log(error.stack);
+  }
+});
+
+app.get('/getProposals', async (req, res) => {
+  try {
+    const query = await db.query(
+      'SELECT * FROM proposals;',
+    );
+    res.send(query.rows);
+  } catch (error) {
+    console.log(error.stack);
+  }
+});
+
+app.delete('/delete_proposal', async (req, res) => {
+  try {
+    const propsList = req.body.listOfIDs;
+    console.log("propslist:");
+    console.log(propsList);
+    await db.query(
+      `DELETE FROM comments WHERE proposal_id IN (${propsList})`, 
+    );
+    await db.query(
+      `DELETE FROM votes WHERE proposal_id IN (${propsList})`, 
+    );
+    await db.query(
+      `DELETE FROM proposals WHERE id IN (${propsList})`, 
+    );
+    res.send('Deleted selected proposals.');
   } catch (error) {
     console.log(error.stack);
   }
@@ -224,16 +273,15 @@ app.get('/getAllVotes', async (req, res) => {
   }
 });
 
-app.get('/getProposalDetails', async (req, res) => {
+app.get('/get_proposal_details', async (req, res) => {
   try {
+    const proposalId = req.query.proposal_id;
     const query = await db.query(
-      'SELECT title, organization, amount_requested, link, description_text FROM proposals WHERE id=$1;',
-      [req.query.proposal_id],
+      'SELECT * FROM proposals WHERE id=$1;', [proposalId],
     );
     res.send(query.rows[0]);
   } catch (error) {
     console.log(error.stack);
-    res.send(null);
   }
 });
 
