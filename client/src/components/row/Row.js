@@ -25,7 +25,7 @@ function rowDeletionMode(props) {
         >
             <div className="whole-row">
                 <div className="leftRow">
-                    <input className='proposalsCheckbox' type="checkbox" checked={props.isChecked} onClick={props.proposalCheckboxOnClick}/>
+                    <input className='proposalsCheckbox' type="checkbox" onClick={props.proposalCheckboxOnClick}/>
                 </div>
                 <div className="rightRow">
                     <div className="proposal-title">{props.title}</div>
