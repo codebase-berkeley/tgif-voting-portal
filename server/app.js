@@ -61,7 +61,7 @@ passport.deserializeUser(async (userID, done) => {
     'SELECT * FROM users WHERE id=$1;',
     [userID],
   );
-  done(null, query.rows);
+  done(null, query.rows[0]);
 });
 
 app.get('/auth/google/callback',
