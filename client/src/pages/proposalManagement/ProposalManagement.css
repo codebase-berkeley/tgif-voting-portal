@@ -1,7 +1,7 @@
 .proposalManagement {
     display: flex;
     background: var(--lightGrey);
-    min-height: 100vh;
+    min-height: 89vh;
     height: 80%;
     align-content: flex-wrap;
 }
@@ -14,7 +14,7 @@
 }
 
 .proposalManagementRight {
-    width: 70%;
+    width: 67%;
     padding: 50px;
     display: flex;
 
@@ -45,21 +45,23 @@
 
 .bottomThree{
     display: flex;
+    justify-content: space-between;
     width:100%;
-    height: 10%;
+    height: 6%;
 }
 
 .linkNewDescription{
     height:100%;
     width: 40%;
     margin-right:3%;
+    padding-left: 1%;
 }
 
 .moneyNewDescription{
     height:100%;
     width: 15%;
-    margin-right: 32%;
-
+    margin-right: 50%;
+    padding-left: 1%;
 }
 
 .whiteBox {
@@ -78,9 +80,6 @@ textarea {
     resize: none;
     padding: 5px;
   }
-
-
-
 
 .createProposalButton {
     background: var(--darkGrey);
@@ -143,4 +142,9 @@ textarea{
 
 textarea:focus {
     outline:none;
+}
+
+.genericProposalButton {
+    background: var(--black);
+    width: 10%;
 }
