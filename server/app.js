@@ -1,25 +1,97 @@
 const express = require('express');
 const cors = require('cors');
+const passport = require('passport');
+const session = require('express-session');
+const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const db = require('./db-connection');
 const { Query } = require('pg');
 require('dotenv').config();
 
+const corsOptions = {
+  origin: 'http://localhost:3000',
+  credentials: true,
+  optionsSuccessStatus: 200,
+};
+
 const app = express();
 app.use(express.json());
-app.use(cors());
+
+app.use(cors(corsOptions));
+app.use(
+  session({
+    resave: false,
+    saveUninitialized: true,
+    secret: 'keyboard cat',
+  }),
+);
+app.use(passport.initialize());
+app.use(passport.session());
 const port = 8000;
 
-app.post('/submitProposal', async(req,res) =>{
+const GOOGLE_CLIENT_ID = process.env.GOOGLECLIENT;
+const GOOGLE_CLIENT_SECRET = process.env.GOOGLESECRET;
+
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID: GOOGLE_CLIENT_ID,
+      clientSecret: GOOGLE_CLIENT_SECRET,
+      callbackURL: 'http://localhost:8000/auth/google/callback',
+    },
+    async (accessToken, refreshToken, profile, done) => {
+      const query = await db.query(
+        'SELECT * FROM users',
+      );
+      for (let i = 0; i < query.rows.length; i += 1) {
+        if (query.rows[i].email === profile.emails[0].value) {
+          return done(null, query.rows[i]);
+        }
+      }
+      return done(null, false);
+    },
+  ),
+);
+
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+
+passport.deserializeUser(async (userID, done) => {
+  const query = await db.query(
+    'SELECT * FROM users WHERE id=$1;',
+    [userID],
+  );
+  done(null, query.rows[0]);
+});
+
+app.get('/auth/google/callback',
+  passport.authenticate('google', { failureRedirect: '/auth/google/fail' }), (req, res) => res.redirect('http://localhost:3000/dashboard'));
+
+app.get('/auth/google/fail',
+  (req, res) => res.redirect('http://localhost:3000/login-fail'));
+
+app.get('/auth/google',
+  passport.authenticate('google', { scope: ['profile', 'email'] }));
+
+app.get('/isauth', (req, res) => {
+  if (req.isAuthenticated()) {
+    res.send(req.user);
+  } else {
+    res.send('NOT AUTHENTICATED');
+  }
+});
+
+app.post('/submitProposal', async (req, res) => {
   try {
-    const title = req.body.title;
-    const organization = req.body.organization;
-    const amount_requested = req.body.amount_requested;
-    const link = req.body.link;
-    const description_text = req.body.description_text;
+    const { title } = req.body;
+    const { organization } = req.body;
+    const { amount_requested } = req.body;
+    const { link } = req.body;
+    const { description_text } = req.body;
     await db.query(
       'INSERT INTO proposals (title, organization, amount_requested, link, description_text) VALUES ($1, $2, $3, $4, $5);', [title, organization,amount_requested,link,description_text],
     );
-    res.send('Success')
+    res.send('Success');
   } catch (error) {
     console.log(error.stack);
   }
@@ -116,7 +188,7 @@ app.get('/get_comments', async (req, res) => {
 app.get('/getProposals', async (req, res) => {
   try {
     const query = await db.query(
-      'SELECT * FROM proposals;'
+      'SELECT * FROM proposals;',
     );
     res.send(query.rows);
   } catch (error) {
@@ -138,7 +210,6 @@ app.delete('/delete_proposal', async (req, res) => {
     await db.query(
       `DELETE FROM proposals WHERE id IN (${propsList})`, 
     );
-    // console.log();
     res.send('Deleted selected proposals.');
   } catch (error) {
     console.log(error.stack);
@@ -214,7 +285,6 @@ app.get('/get_proposal_details', async (req, res) => {
   }
 });
 
-
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
-});// // // // // // // // // // // 
+});

@@ -1,5 +1,5 @@
 import React from 'react';
-import {useEffect, useState} from 'react';
+import { useState, useEffect } from 'react';
 import Row from '../../components/row/Row';
 import './Dashboard.css';
 import noIcon from '../../assets/Delete.svg';
