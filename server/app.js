@@ -81,6 +81,16 @@ app.get('/isauth', (req, res) => {
   }
 });
 
+function verifyAuthenticated(req, res) {
+  if (req.isAuthenticated()) {
+    console.log("user is authenticated!");
+  } else {
+    console.log("User not authenticated; about to throw 403");
+    // res.status(403);
+    // res.render();
+  }
+}
+
 app.post('/submitProposal', async (req, res) => {
   try {
     const { title } = req.body;
@@ -98,6 +108,8 @@ app.post('/submitProposal', async (req, res) => {
 });
 
 app.post('/post_comment', async (req, res) => {
+  verifyAuthenticated(req, res);
+  console.log("Posted comment!");
   try {
     const timePosted = new Date();
     const userId = req.body.user_id;
@@ -172,6 +184,19 @@ app.get('/getUserVotes', async (req, res) => {
   }
 });
 
+app.get('/get_one_vote', async (req, res) => {
+  try {
+    const userID = req.query.user_id;
+    const proposalId = req.query.proposal_id;
+    const query = await db.query(
+      'SELECT * FROM votes WHERE user_id=$1 AND proposal_id=$2;', [userID, proposalId],
+    );
+    res.send(query.rows);
+  } catch (error) {
+    console.log(error.stack);
+  }
+});
+
 app.get('/get_comments', async (req, res) => {
   try {
     const proposalId = req.query.proposal_id;
@@ -213,7 +238,7 @@ app.delete('/delete_proposal', async (req, res) => {
     res.send('Deleted selected proposals.');
   } catch (error) {
     console.log(error.stack);
-  }
+  } 
 });
 
 app.post('/submitVote', async (req, res) => {

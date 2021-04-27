@@ -8,7 +8,7 @@ import axios from "axios";
 
 var PRIVILEGES = 'Voting Member';
 let PROPOSAL_ID;
-var USER_ID = 4
+var USER_ID = 1;
 
 const ANON = 'John Doe';
 
@@ -76,6 +76,7 @@ function ProposalConditionalRender(privileges) {
   /** Returns the proposalConditionalRender for Voting Members,
   * which contains the non-admin voting buttons */
   function VotingMemberProposalConditionalRender() {
+    PROPOSAL_ID = useParams().id;
 
     /* REACT STATES FOR NONADMIN VOTING BUTTONS */
     const nonAdminPressedYesButtonClassName = 'pressedYesButton nonAdminButton';
@@ -87,6 +88,35 @@ function ProposalConditionalRender(privileges) {
     const [nonAdminNoButtonClassName, setNonAdminNoButtonClassName] = useState(nonAdminUnpressedNoButtonClassName);
 
     const [vote, setVote] = useState('Undecided');
+
+    async function fetchUserVote() {
+      try {
+        const res = await axios.get('http://localhost:8000/get_one_vote', {params : {user_id: USER_ID, proposal_id: PROPOSAL_ID}});
+        const vote = (res.data[0].vote);
+        console.log(res);
+        if (vote === true) {
+          setNonAdminYesButtonClassName(nonAdminPressedYesButtonClassName);
+          setNonAdminNoButtonClassName(nonAdminUnpressedNoButtonClassName);
+          submitVote(true)
+          setVote('Yes');
+          console.log("changed vote to yes");
+        } else if (vote === false) {
+          setNonAdminYesButtonClassName(nonAdminUnpressedYesButtonClassName);
+          setNonAdminNoButtonClassName(nonAdminPressedNoButtonClassName);
+          submitVote(false)
+          setVote('No');
+          console.log("changed vote to no");
+        }
+        //setVote(res.data);
+      } catch (error) {
+        console.log("Error in fetching a user's vote.");
+        console.log(error.stack);
+      } 
+    }
+    
+    useEffect(() => {
+      fetchUserVote();
+    }, [])
     
     return (
       <div className='proposalConditional'>

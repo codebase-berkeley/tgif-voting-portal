@@ -85,6 +85,8 @@ function Dashboard() {
           proposal_id: wantedPropID
         }
       });
+      console.log("successfully submitted vote");
+      console.log(voteDecision);
     } catch(error) {
       console.log("There was an error in submitting your vote in dashboard.");
       console.log(error.stack);
@@ -99,6 +101,33 @@ function Dashboard() {
   const dashboardPressedNoButtonClassName = 'dashboardPressedNoButton votingMemberVotingButton';
   const dashboardUnpressedNoButtonClassName = 'dashboardUnpressedNoButton votingMemberVotingButton';
   const [dashboardNoButtonClassName, setDashboardNoButtonClassName] = useState(dashboardUnpressedNoButtonClassName);
+
+  async function fetchUserVote() {
+    try {
+      const res = await axios.get('http://localhost:8000/get_one_vote', {params : {user_id: 1, proposal_id: wantedPropID}});
+      const vote = (res.data[0].vote);
+      console.log(res);
+      if (vote === true) {
+        setDashboardYesButtonClassName(dashboardPressedYesButtonClassName);
+        setDashboardNoButtonClassName(dashboardUnpressedNoButtonClassName);
+        console.log("changed vote to yes");
+      } else if (vote === false) {
+        setDashboardYesButtonClassName(dashboardUnpressedYesButtonClassName);
+        setDashboardNoButtonClassName(dashboardPressedNoButtonClassName);
+        console.log("changed vote to no");
+      } else {
+        setDashboardYesButtonClassName(dashboardUnpressedYesButtonClassName);
+        setDashboardNoButtonClassName(dashboardUnpressedNoButtonClassName);
+      }
+    } catch (error) {
+      console.log("Error in fetching a user's vote.");
+      console.log(error.stack);
+    } 
+  }
+  
+  useEffect(() => {
+    fetchUserVote();
+  }, [])
 
   return (
     <div className="dashboard">
@@ -142,14 +171,16 @@ function Dashboard() {
               ? <div className="dashboardVotingButtonsContainer">
                   <div className='leftDashboardButtonContainer dashboardButtonContainer'>
                     <ProposalButton buttonText='Vote Yes' buttonClassName={dashboardYesButtonClassName}
-                      onClickFunc={() => {setDashboardYesButtonClassName(dashboardPressedYesButtonClassName);
+                      onClickFunc={() => {submitVote(true)
+                                          setDashboardYesButtonClassName(dashboardPressedYesButtonClassName);
                                           setDashboardNoButtonClassName(dashboardUnpressedNoButtonClassName);}}
                     />
                   </div>
 
                   <div className='rightDashboardButtonContainer dashboardButtonContainer'>
                     <ProposalButton buttonText='Vote No' buttonClassName={dashboardNoButtonClassName}
-                      onClickFunc={() => {setDashboardYesButtonClassName(dashboardUnpressedYesButtonClassName);
+                      onClickFunc={() => {submitVote(false)
+                                          setDashboardYesButtonClassName(dashboardUnpressedYesButtonClassName);
                                           setDashboardNoButtonClassName(dashboardPressedNoButtonClassName);}}
                     />
                   </div>
