@@ -5,6 +5,14 @@
     margin-bottom: 20px;
 }
 
+.post-highlighted {
+    width: 100%;
+    border: 1px;
+    text-align: left;
+    margin-bottom: 20px;
+    background: green;
+}
+
 .user {
     font: 0.8em 'Lexend Deca', sans-serif;
     margin: 5px;
@@ -30,6 +38,19 @@
     overflow-wrap: break-word;
     text-justify: inter-word;
     line-height: 1.5;
+}
+
+.text-highlighted {
+    background: var(--mutedGreen);
+    border: 1px solid var(--grey);
+    border-radius: 4px;
+    padding: 0px;
+    font: 0.8em 'Lexend Deca', sans-serif;
+    color: var(--black);
+    height: auto;
+    width: 100%;
+    max-width: 100%;
+    resize: none;
 }
 
 .timestampContainer {
