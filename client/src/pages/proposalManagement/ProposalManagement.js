@@ -79,12 +79,13 @@ function ProposalManagement() {
   }
 
     const submitProposal = async () => {
-      if (textboxValueMoney !== '' && isNaN(parseFloat(textboxValueMoney))){
-        console.log("String submited for value");
-        document.getElementById("moneyNewDescription").style.borderColor="#FF0000";
-        document.getElementById("moneyNewDescription").style.backgroundColor="#ffcccb";
-      }
-      else if (textboxValueTitle !== ''){
+      // if (textboxValueMoney !== '' && isNaN(parseFloat(textboxValueMoney)) && /^[a-zA-Z]/.test(textboxValueMoney)){
+      //   console.log("String submited for value");
+      //   document.getElementById("moneyNewDescription").style.borderColor="#FF0000";
+      //   document.getElementById("moneyNewDescription").style.backgroundColor="#ffcccb";
+      // }
+      // else 
+      if (textboxValueTitle !== '' && /^\d+$/.test(textboxValueMoney)){
         try {
           await axios({
             method: 'post',
@@ -112,6 +113,8 @@ function ProposalManagement() {
     } else {
       document.getElementById("titleNewProposal").style.borderColor="#FF0000";
       document.getElementById("titleNewProposal").style.backgroundColor="#ffcccb";
+      document.getElementById("moneyNewDescription").style.borderColor="#FF0000";
+      document.getElementById("moneyNewDescription").style.backgroundColor="#ffcccb";
     }
   };
 

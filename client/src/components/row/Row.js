@@ -1,4 +1,6 @@
 import './Row.css';
+import noIcon from '../../assets/Delete.svg';
+import yesIcon from '../../assets/Checked.svg';
 import React from "react";
 
 function Row(props) { 
@@ -50,6 +52,7 @@ function rowDashboardMode(props) {
 }
 
 function rowDefaultMode(props) {
+    const boolean = props.voted;
     return (
         <div
             className="proposal-box"
@@ -61,6 +64,14 @@ function rowDefaultMode(props) {
         </div>
         
     );
+}
+
+function votedYesOrNo(props) {
+    if (props) {
+        return <img src={yesIcon} alt='Vote Status' className="vote-status"></img>
+    } else {
+        return <img src={noIcon} alt='Vote Status' className="vote-status"></img>
+    }
 }
 
 

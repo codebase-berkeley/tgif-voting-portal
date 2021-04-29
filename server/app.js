@@ -64,6 +64,12 @@ passport.deserializeUser(async (userID, done) => {
   done(null, query.rows[0]);
 });
 
+// function verifyAuthenticated(req, res, next) {
+//   console.logged("verifyAuthenticated Called: ", "User ", req.user.id, " is authenticated: ", req.isAuthenticated());
+// }
+
+// app.use(verifyAuthenticated);
+
 app.get('/auth/google/callback',
   passport.authenticate('google', { failureRedirect: '/auth/google/fail' }), (req, res) => res.redirect('http://localhost:3000/dashboard'));
 
@@ -81,14 +87,14 @@ app.get('/isauth', (req, res) => {
   }
 });
 
-function verifyAuthenticated(req, res) {
-  if (req.isAuthenticated()) {
-    console.log("user is authenticated!");
-  } else {
-    console.log("User not authenticated; about to throw 403");
-    res.status(403).render();
-  }
-}
+// function verifyAuthenticated(req, res) {
+//   if (req.isAuthenticated()) {
+//     console.log("user is authenticated!");
+//   } else {
+//     console.log("User not authenticated; about to throw 403");
+//     res.status(403).send();
+//   } 
+// }
 
 app.post('/submitProposal', async (req, res) => {
   try {
@@ -108,12 +114,6 @@ app.post('/submitProposal', async (req, res) => {
 
 app.post('/post_comment', async (req, res) => {
   // verifyAuthenticated(req, res);
-  if (req.isAuthenticated()) {
-    console.log("USER IS AUTHENTICATED");
-  } else {
-    console.log("USER NOT AUTHENTICATED; ABOUT TO THROW 403");
-    res.status(403).send('Error: Not authenticated');
-  }
   console.log("Posted comment!");
   try {
     const timePosted = new Date();
@@ -202,6 +202,19 @@ app.get('/get_one_vote', async (req, res) => {
   }
 });
 
+app.get('/get_proposals_and_user_votes', async(req, res) => {
+  try {
+    const query = await db.query(
+      //Know the user thats making request
+      'SELECT * FROM proposals LEFT JOIN votes WHERE votes.user_id=$1', [req.user.id]
+    );
+    console.log(req.user.id);
+    res.send(query.rows);
+  } catch (error) {
+    console.log(error.stack);
+  }
+})
+
 app.get('/get_comments', async (req, res) => {
   try {
     const proposalId = req.query.proposal_id;
@@ -269,7 +282,7 @@ app.get('/getProposalCount', async (req, res) => {
       'SELECT COUNT(*) FROM proposals',
     );
     res.send(proposalCount.rows[0].count);
-  } catch (error) {
+  } catch (errors) {
     console.log(error.stack);
   }
 });
@@ -278,6 +291,11 @@ app.get('/getAllVotes', async (req, res) => {
   try {
     const amountYesQuery = await db.query(
       'SELECT COUNT(*) FROM votes WHERE proposal_id=$1 AND vote=TRUE;',
+      [req.query.proposal_id],
+    );
+
+    const amountNoQuery = await db.query(
+      'SELECT COUNT(*) FROM votes WHERE proposal_id=$1 AND vote=FALSE;',
       [req.query.proposal_id],
     );
 
@@ -290,10 +308,11 @@ app.get('/getAllVotes', async (req, res) => {
     const totalVotingMembersQuery = await db.query(
       'SELECT COUNT(*) FROM users WHERE privileges=$1', [votingMember],
     );
-
+    console.log("amountNo in sql is " + amountNo)
     res.send(
       {
         amountYes: parseInt(amountYesQuery.rows[0].count),
+        amountNo: parseInt(amountNoQuery.rows[0].count),
         totalVotes: parseInt(totalVotesQuery.rows[0].count),
         totalVotingMembers: parseInt(totalVotingMembersQuery.rows[0].count),
       },

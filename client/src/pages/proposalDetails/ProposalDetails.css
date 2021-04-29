@@ -60,8 +60,12 @@ a:active {color :var(--buttonGreenOpaque);}
 .proposalAmount {
     font-family: 'Lexend Deca', sans-serif;
     color: var(--black);
-    margin: 0px 0px 5px 0px;
+    margin: 10px 0px 5px 0px;
     font-size: 1.1em;
+}
+
+.propConditionalRender {
+    margin-top: 75px;
 }
     
 .proposalTitle{

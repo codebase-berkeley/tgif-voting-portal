@@ -6,7 +6,7 @@ import React, { useState, useEffect } from 'react';
 import {useParams} from 'react-router-dom';
 import axios from "axios";
 
-var PRIVILEGES = 'Voting Member';
+var PRIVILEGES = 'Admin';
 let PROPOSAL_ID;
 var USER_ID = 1;
 
@@ -38,15 +38,22 @@ function ProposalConditionalRender(privileges) {
     const [percentYes, setPercentYes] = useState(0);
     const [percentUnvoted, setPercentUnvoted] = useState(0);
 
+
     async function fetchVoteInfo() {
+      console.log("work pls");
       const res = await axios.get('http://localhost:8000/getAllVotes', {params : {proposal_id: PROPOSAL_ID}});
+      console.log("res doesnt even exist");
       const voteYes = res.data.amountYes;
+      const voteNo = res.data.amountNo;
+      console.log("vote no is " + voteNo);
       const votesTotal= res.data.totalVotes;
+      console.log("total votes is " + votesTotal);
       const totalVotingMembers = res.data.totalVotingMembers;
+      console.log("total voting members is " + totalVotingMembers);
       setVotesTotal(votesTotal);
       setTotalMembers(totalVotingMembers);
       setPercentYes(((voteYes / totalVotingMembers) * 100).toFixed(2));
-      setPercentNo((((votesTotal - voteYes) / totalVotingMembers) * 100).toFixed(2));
+      setPercentNo(((voteNo / totalVotingMembers) * 100).toFixed(2));
       setPercentUnvoted((((totalVotingMembers - votesTotal) / totalVotingMembers) * 100).toFixed(2));
     }
     
@@ -268,8 +275,9 @@ function ProposalDetails() {
           <div className={(PRIVILEGES === 'Non-Voting Member') ? ' proposalDescription nonVotingProposalDescription' : "proposalDescription"}>{proposalDescription}</div>
           <a className="proposalLink" href = {proposalLink}>{proposalTitle}.pdf</a>
           <div className="proposalAmount"> Proposal Amount: {`$${proposalAmount}`}</div>
+          {ProposalConditionalRender(PRIVILEGES)}
         </div>
-        {ProposalConditionalRender(PRIVILEGES)}
+        
       </div>
 
       <div className="discussion">

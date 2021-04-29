@@ -2,8 +2,6 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import Row from '../../components/row/Row';
 import './Dashboard.css';
-import noIcon from '../../assets/Delete.svg';
-import yesIcon from '../../assets/Checked.svg';
 import SearchBar from '../../components/searchbar/SearchBar';
 import ProposalButton from '../proposalDetails/ProposalButton.js';
 import { Link } from "react-router-dom";
@@ -18,7 +16,8 @@ function Dashboard() {
   const [filteredProposalsList, setFilteredProposalsList] = useState([]);
 
   async function fetchProposals() {
-		const response = await axios.get('http://localhost:8000/getProposals');
+		const response = await axios.get('http://localhost:8000/getProposals'); 
+    //TODO change this endpoint to be a new endpoint that joins proposals with votes (filtered to just the users votes)
     let proposal_lst = response.data;
     /* Initialize false <checked> attributes for each proposal; used for checkbox tracking
     while in deleting mode */
@@ -102,18 +101,26 @@ function Dashboard() {
   const dashboardUnpressedNoButtonClassName = 'dashboardUnpressedNoButton votingMemberVotingButton';
   const [dashboardNoButtonClassName, setDashboardNoButtonClassName] = useState(dashboardUnpressedNoButtonClassName);
 
+  function changeToYesButton() {
+    setDashboardYesButtonClassName(dashboardPressedYesButtonClassName);
+    setDashboardNoButtonClassName(dashboardUnpressedNoButtonClassName);
+  }
+
+  function changeToNoButton() {
+    setDashboardYesButtonClassName(dashboardUnpressedYesButtonClassName);
+    setDashboardNoButtonClassName(dashboardPressedNoButtonClassName);
+  }
+
   async function fetchUserVote() {
     try {
       const res = await axios.get('http://localhost:8000/get_one_vote', {params : {user_id: 1, proposal_id: wantedPropID}});
       const vote = (res.data[0].vote);
       console.log(res);
       if (vote === true) {
-        setDashboardYesButtonClassName(dashboardPressedYesButtonClassName);
-        setDashboardNoButtonClassName(dashboardUnpressedNoButtonClassName);
+        changeToYesButton();
         console.log("changed vote to yes");
       } else if (vote === false) {
-        setDashboardYesButtonClassName(dashboardUnpressedYesButtonClassName);
-        setDashboardNoButtonClassName(dashboardPressedNoButtonClassName);
+        changeToNoButton();
         console.log("changed vote to no");
       } else {
         setDashboardYesButtonClassName(dashboardUnpressedYesButtonClassName);
@@ -144,10 +151,9 @@ function Dashboard() {
                         description={proposal.description_text}
                         vote={proposal.voted ? proposal.voted : ""} 
                         id={proposal.id}
-                        
+                        vote-status={proposal.vote}
                         />
                     ))}
-            
           </div>
           <div className="shadows" aria-hidden="true"></div>
         </div>
