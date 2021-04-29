@@ -86,8 +86,7 @@ function verifyAuthenticated(req, res) {
     console.log("user is authenticated!");
   } else {
     console.log("User not authenticated; about to throw 403");
-    // res.status(403);
-    // res.render();
+    res.status(403).render();
   }
 }
 
@@ -108,7 +107,13 @@ app.post('/submitProposal', async (req, res) => {
 });
 
 app.post('/post_comment', async (req, res) => {
-  verifyAuthenticated(req, res);
+  // verifyAuthenticated(req, res);
+  if (req.isAuthenticated()) {
+    console.log("USER IS AUTHENTICATED");
+  } else {
+    console.log("USER NOT AUTHENTICATED; ABOUT TO THROW 403");
+    res.status(403).send('Error: Not authenticated');
+  }
   console.log("Posted comment!");
   try {
     const timePosted = new Date();
