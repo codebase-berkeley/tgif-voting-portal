@@ -3,13 +3,14 @@ import PopUpModal from '../../components/popupModal/PopUpModal';
 import React, { useState, useEffect } from 'react';
 import Row from '../../components/row/Row';
 import TrashCan from '../../assets/trashCan.svg';
-import xIcon from '../../assets/xIcon.svg';
+// import xIcon from '../../assets/xIcon.svg';
+
 import axios from "axios";
 import ProposalButton from '../proposalDetails/ProposalButton';
 
 // replace with other team's svgs later
-import enterEditingIcon from '../../assets/Checked.svg';
-import exitEditingIcon from '../../assets/xIcon.svg';
+import enterEditingIcon from '../../assets/edit.svg';
+import exitEditingIcon from '../../assets/checkmark.svg';
 
 
 function ProposalManagement() {
@@ -160,20 +161,23 @@ function ProposalManagement() {
     return (
         
       <div className = "ProposalManagementOuter">
-          <div className={enterEditingIconClassName}>
-            <input className='enterDeletingIconContainer proposalsButton' type="image" src={enterEditingIcon} alt='Enter Deleting Mode'
-            title='Edit Members' onClick={enterDeletingMode}/>
-          </div>
-          <div className={exitEditingIconClassName}>
-            <input className='exitDeletingIconContainer proposalsButton' type="image" src={exitEditingIcon} alt='Exit Deleting Mode'
-            title='Finish Editing' onClick={exitDeletingMode}/>
-          </div>
+        
             <div className="proposalManagement">
             <div className="proposalManagementLeft"> 
-                <div className={deleteIconClassName}>   
-                    <input className='removeProposalsButton proposalsButton' type="image" src={TrashCan} alt='Delete Selected Proposals'
-                    title='Remove Selected Proposals' onClick={handleRemoveProposals}/>
+              <div className="icons">
+                <div className={enterEditingIconClassName}>
+                  <input className='enterDeletingIconContainer proposalsButton' type="image" src={enterEditingIcon} alt='Enter Deleting Mode'
+                  title='Edit Members' onClick={enterDeletingMode}/>
                 </div>
+                <div className={exitEditingIconClassName}>
+                  <input className='exitDeletingIconContainer proposalsButton' type="image" src={exitEditingIcon} alt='Exit Deleting Mode'
+                  title='Finish Editing' onClick={exitDeletingMode}/>
+                </div>
+                <div className={deleteIconClassName}>   
+                          <input className='removeProposalsButton proposalsButton' type="image" src={TrashCan} alt='Delete Selected Proposals'
+                          title='Remove Selected Proposals' onClick={handleRemoveProposals}/>
+                </div>
+              </div>
                 <div className="proposal-list">
                     {proposals.map((proposal) => (
                         <Row 
