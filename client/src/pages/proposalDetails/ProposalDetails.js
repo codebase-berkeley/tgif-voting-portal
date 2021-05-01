@@ -6,7 +6,7 @@ import React, { useState, useEffect } from 'react';
 import {useParams} from 'react-router-dom';
 import axios from "axios";
 
-var PRIVILEGES = 'Admin';
+var PRIVILEGES = 'Voting Member';
 let PROPOSAL_ID;
 var USER_ID = 1;
 
@@ -38,22 +38,15 @@ function ProposalConditionalRender(privileges) {
     const [percentYes, setPercentYes] = useState(0);
     const [percentUnvoted, setPercentUnvoted] = useState(0);
 
-
     async function fetchVoteInfo() {
-      console.log("work pls");
       const res = await axios.get('http://localhost:8000/getAllVotes', {params : {proposal_id: PROPOSAL_ID}});
-      console.log("res doesnt even exist");
       const voteYes = res.data.amountYes;
-      const voteNo = res.data.amountNo;
-      console.log("vote no is " + voteNo);
       const votesTotal= res.data.totalVotes;
-      console.log("total votes is " + votesTotal);
       const totalVotingMembers = res.data.totalVotingMembers;
-      console.log("total voting members is " + totalVotingMembers);
       setVotesTotal(votesTotal);
       setTotalMembers(totalVotingMembers);
       setPercentYes(((voteYes / totalVotingMembers) * 100).toFixed(2));
-      setPercentNo(((voteNo / totalVotingMembers) * 100).toFixed(2));
+      setPercentNo((((votesTotal - voteYes) / totalVotingMembers) * 100).toFixed(2));
       setPercentUnvoted((((totalVotingMembers - votesTotal) / totalVotingMembers) * 100).toFixed(2));
     }
     
@@ -70,7 +63,7 @@ function ProposalConditionalRender(privileges) {
         </ProgressBar>
 
         <ProgressBar className="progressBarPercentVotedUnvoted">
-          <ProgressBar className='progressBarPercentVoted' variant='info' now={percentYes + percentNo} label={`${percentYes + percentNo}% VOTED`} key={1}/>
+          <ProgressBar className='progressBarPercentVoted' variant='info' now={(((votesTotal) / totalMembers) * 100).toFixed(2)} label={`${(((votesTotal) / totalMembers) * 100).toFixed(2)}% VOTED`} key={1}/>
           <ProgressBar className='progressBarPercentUnvoted2' variant='customProgressBarUnvoted' now={percentUnvoted} label={`${percentUnvoted}% UNVOTED`} key={2}/>
         </ProgressBar>
         <div className='amountVotedLabel'>

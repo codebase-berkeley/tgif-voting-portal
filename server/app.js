@@ -294,11 +294,6 @@ app.get('/getAllVotes', async (req, res) => {
       [req.query.proposal_id],
     );
 
-    const amountNoQuery = await db.query(
-      'SELECT COUNT(*) FROM votes WHERE proposal_id=$1 AND vote=FALSE;',
-      [req.query.proposal_id],
-    );
-
     const totalVotesQuery = await db.query(
       'SELECT COUNT(*) FROM votes WHERE proposal_id=$1',
       [req.query.proposal_id],
@@ -308,11 +303,10 @@ app.get('/getAllVotes', async (req, res) => {
     const totalVotingMembersQuery = await db.query(
       'SELECT COUNT(*) FROM users WHERE privileges=$1', [votingMember],
     );
-    console.log("amountNo in sql is " + amountNo)
+
     res.send(
       {
         amountYes: parseInt(amountYesQuery.rows[0].count),
-        amountNo: parseInt(amountNoQuery.rows[0].count),
         totalVotes: parseInt(totalVotesQuery.rows[0].count),
         totalVotingMembers: parseInt(totalVotingMembersQuery.rows[0].count),
       },

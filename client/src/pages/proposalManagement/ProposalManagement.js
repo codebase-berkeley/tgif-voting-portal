@@ -85,7 +85,10 @@ function ProposalManagement() {
       //   document.getElementById("moneyNewDescription").style.backgroundColor="#ffcccb";
       // }
       // else 
-      if (textboxValueTitle !== '' && /^\d+$/.test(textboxValueMoney)){
+      if (/[!@#$%^&*(),?":{}|<>]/g.test(textboxValueMoney) || /^[A-Z]/.test(textboxValueMoney) || /^[a-z]/.test(textboxValueMoney)) {
+        document.getElementById("moneyNewDescription").style.borderColor="#FF0000";
+        document.getElementById("moneyNewDescription").style.backgroundColor="#ffcccb";
+      } else if (textboxValueTitle !== '' && /^[+-]?\d*(?:[.,]\d*)?$/.test(textboxValueMoney)){
         try {
           await axios({
             method: 'post',
@@ -113,8 +116,6 @@ function ProposalManagement() {
     } else {
       document.getElementById("titleNewProposal").style.borderColor="#FF0000";
       document.getElementById("titleNewProposal").style.backgroundColor="#ffcccb";
-      document.getElementById("moneyNewDescription").style.borderColor="#FF0000";
-      document.getElementById("moneyNewDescription").style.backgroundColor="#ffcccb";
     }
   };
 
