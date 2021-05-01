@@ -1,4 +1,4 @@
-import React from 'react';
+ import React from 'react';
 import { useState, useEffect } from 'react';
 import Row from '../../components/row/Row';
 import './Dashboard.css';
@@ -9,12 +9,11 @@ import ProposalButton from '../proposalDetails/ProposalButton.js';
 import { Link } from "react-router-dom";
 import axios from 'axios';
 
-var PRIVILEGES ='Voting Member';
+function Dashboard(props) {
 
-function Dashboard() {
-
+  var PRIVILEGES = props.privileges;
+  
   const [proposals, setProposals] = useState([]);
-
   const [filteredProposalsList, setFilteredProposalsList] = useState([]);
 
   async function fetchProposals() {
@@ -52,7 +51,6 @@ function Dashboard() {
     } 
   }
 
-
   const[textboxValue, setTextboxValue] = React.useState('');
 
   const handleSubmit = async () => {
@@ -75,6 +73,7 @@ function Dashboard() {
   };
 
   const submitVote = async (voteDecision) => {
+    console.log("Voted");
     try {
       await axios({
         method: 'post',
@@ -115,7 +114,6 @@ function Dashboard() {
                         description={proposal.description_text}
                         vote={proposal.voted ? proposal.voted : ""} 
                         id={proposal.id}
-                        
                         />
                     ))}
             
@@ -143,14 +141,16 @@ function Dashboard() {
                   <div className='leftDashboardButtonContainer dashboardButtonContainer'>
                     <ProposalButton buttonText='Vote Yes' buttonClassName={dashboardYesButtonClassName}
                       onClickFunc={() => {setDashboardYesButtonClassName(dashboardPressedYesButtonClassName);
-                                          setDashboardNoButtonClassName(dashboardUnpressedNoButtonClassName);}}
+                                          setDashboardNoButtonClassName(dashboardUnpressedNoButtonClassName);
+                                          submitVote(true);}}
                     />
                   </div>
 
                   <div className='rightDashboardButtonContainer dashboardButtonContainer'>
                     <ProposalButton buttonText='Vote No' buttonClassName={dashboardNoButtonClassName}
                       onClickFunc={() => {setDashboardYesButtonClassName(dashboardUnpressedYesButtonClassName);
-                                          setDashboardNoButtonClassName(dashboardPressedNoButtonClassName);}}
+                                          setDashboardNoButtonClassName(dashboardPressedNoButtonClassName);
+                                          submitVote(false);}}
                     />
                   </div>
                 </div>

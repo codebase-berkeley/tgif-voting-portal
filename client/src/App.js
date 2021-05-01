@@ -7,36 +7,67 @@ import ProposalDetails from './pages/proposalDetails/ProposalDetails.js';
 import Members from './pages/members/Members.js';
 import NavBar from './components/navbar/NavBar.js';
 import ProposalManagement from './pages/proposalManagement/ProposalManagement.js';
-import React from "react";
-import { BrowserRouter as Router, Switch, Route} from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import axios from 'axios';
+import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 
 
 function App() {
+  const [isAuth, setIsAuth] = useState(false);
+  const [doneLoading, setDoneLoading] = useState(false);
+
+  async function checkAuthenticationStatus() {
+    const response = await axios.get('http://localhost:8000/isauth', {withCredentials: true});
+    let authStatus = response.data;
+    if (!authStatus) {
+      setIsAuth(false);
+    } else {
+      setIsAuth(true);
+    }
+    setDoneLoading(true);
+  }
+
+  useEffect(() => {
+    checkAuthenticationStatus();
+    getProfile();
+  }, []);
+
+  const [userID, setUserID] = useState(0);
+  const [privileges, setPrivileges] = useState('Non-Voting Member');
+
+  async function getProfile() {
+    const response = await axios.get('http://localhost:8000/getProfile', {withCredentials: true});
+
+    setUserID(response.data.id);
+    setPrivileges(response.data.privileges);
+  }
+
   return (
     <Router>
       <div className="App">
-        <Switch>
-          <Route path="/login">
-            <Login />
-          </Route>
-          <Route path="/dashboard">
-            <NavBar/>
-            <Dashboard />
-          </Route>
-          <Route path="/proposal-details/:id" children={<React.Fragment> <NavBar/> <ProposalDetails /> </React.Fragment>}></Route>
-          <Route path="/members">
-            <NavBar/>
-            <Members />
-          </Route>
-          <Route path="/proposal-management">
-            <NavBar/>
-            <ProposalManagement />
-          </Route>
-          <Route path="/login-fail">
-            <LoginFail/>
-          </Route>
-          <Route path="/proposal-details/:PROPOSAL_ID" children={<React.Fragment> <NavBar/> <ProposalDetails /> </React.Fragment>} />
-        </Switch>
+          {doneLoading && <Switch>
+            <Route exact path="/">
+                <Login/>
+            </Route>
+            <Route path="/login">
+              <Login />
+            </Route>
+            <Route path="/dashboard">
+              {isAuth ? <> <NavBar privileges={privileges}/> <Dashboard privileges={privileges}/> </> : <Redirect to="/login"/>}
+            </Route>
+            <Route path="/proposal-details/:id" children={isAuth ? <> <NavBar privileges={privileges}/> <ProposalDetails privileges={privileges} userID={userID}/> </> : <Redirect to="/login"/>}/>
+            <Route path="/members">
+              {isAuth ? <> <NavBar privileges={privileges}/> <Members privileges={privileges}/> </> : <Redirect to="/login"/>}
+            </Route>
+            <Route path="/proposal-management">
+              {isAuth ? <> <NavBar privileges={privileges}/> <ProposalManagement privileges={privileges}/> </> : <Redirect to="/login"/>}
+            </Route>
+            <Route path="/proposal-details/:PROPOSAL_ID" children={isAuth ? <> <NavBar privileges={privileges}/> <ProposalDetails privileges={privileges}/> </> : <Redirect to="/login"/>}/>
+            <Route path="/login-fail">
+              <LoginFail/>
+            </Route>
+          </Switch>
+        }
       </div>
     </Router>
   );

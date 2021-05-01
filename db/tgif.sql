@@ -25,7 +25,7 @@ CREATE TABLE proposals
     amount_requested FLOAT,
     link VARCHAR,
     description_text VARCHAR
-    -- checked BOOLEAN
+-- checked BOOLEAN
 );
 
 CREATE TABLE comments
@@ -75,6 +75,8 @@ VALUES
     ('Admin', 'Elizabeth Reyes', 'elizabeth.reyes@berkeley.edu', 'Program Associate'),
     ('Admin', 'Joshua Kay', 'joshua_kay@berkeley.edu', 'Program Associate'),
     ('Admin', 'Paola Noun', 'paolanoun@berkeley.edu', 'Boss Ass Bitch'),
+    ('Admin', 'Kennedy Chung', 'kennedychung@berkeley.edu', 'The Big Cheese'),
+    ('Voting Member', 'Kalea', 'kaleachu@berkeley.edu', 'The Big Cheese'),
 
     ('Voting Member', 'Moe Sumino', 'moe_sumino@berkeley.edu', 'ASUC Representative'),
     ('Voting Member', 'Youjin Chung', 'youjin.chung@berkeley.edu', 'Faculty Representative'),
@@ -83,7 +85,6 @@ VALUES
     ('Voting Member', 'Nanticha Lutt', 'nan_lutt@berkeley.edu', 'GA Representative'),
     ('Voting Member', 'Elias Garcia', 'elias_garcia@berkeley.edu', 'Environmental Justice - At Large Representative'),
     ('Voting Member', 'Sarah Bui', 'sarah.bui123@berkeley.edu', 'Undergraduate At-Large Representative'),
-    ('Voting Member', 'Kennedy Chung', 'kennedychung@berkeley.edu', 'Garbage Cleaner'),
 
     ('Non-Voting Member', 'Sharon Daraphonhdeth', 'sharon@berkeley.edu', 'SERC Director'),
     ('Non-Voting Member', 'Harrisen Min', 'harrisen.min@berkeley.edu', 'Committee on Student Fees Representative'),

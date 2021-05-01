@@ -6,13 +6,12 @@ import React, { useState, useEffect } from 'react';
 import {useParams} from 'react-router-dom';
 import axios from "axios";
 
-var PRIVILEGES = 'Voting Member';
+// var PRIVILEGES = 'Voting Member';
 let PROPOSAL_ID;
-var USER_ID = 4
+// var USER_ID = 4
+const ANON = 'Anonymous';
 
-const ANON = 'John Doe';
-
-function ProposalConditionalRender(privileges) {
+function ProposalConditionalRender(privileges, userID) {
 
   /** Handles pressing the voteYes/voteNo buttons by adding the appropriate vote
    * to the database; works for both admin and nonadmin voting buttons. */
@@ -20,7 +19,7 @@ function ProposalConditionalRender(privileges) {
     try {
       await axios.post('http://localhost:8000/submitVote', {
         vote: voteDecision,
-        user_id: USER_ID,
+        user_id: userID,
         proposal_id: PROPOSAL_ID
       });
     } catch(error) {
@@ -30,7 +29,7 @@ function ProposalConditionalRender(privileges) {
   }
 
 
-  function AdminProposalConditionalRender() {
+  function AdminProposalConditionalRender(userID) {
     /* REACT STATES FOR PROGRESS BARS */ 
     const [votesTotal, setVotesTotal] = useState(0);
     const [totalMembers, setTotalMembers] = useState(1);
@@ -75,7 +74,7 @@ function ProposalConditionalRender(privileges) {
 
   /** Returns the proposalConditionalRender for Voting Members,
   * which contains the non-admin voting buttons */
-  function VotingMemberProposalConditionalRender() {
+  function VotingMemberProposalConditionalRender(userID) {
 
     /* REACT STATES FOR NONADMIN VOTING BUTTONS */
     const nonAdminPressedYesButtonClassName = 'pressedYesButton nonAdminButton';
@@ -95,7 +94,7 @@ function ProposalConditionalRender(privileges) {
             <ProposalButton buttonText='Vote Yes' buttonClassName={nonAdminYesButtonClassName}
               onClickFunc={() => {setNonAdminYesButtonClassName(nonAdminPressedYesButtonClassName);
                                   setNonAdminNoButtonClassName(nonAdminUnpressedNoButtonClassName);
-                                  submitVote(true)
+                                  submitVote(true, userID)
                                   setVote('Yes');}}
             />
           </div>
@@ -103,7 +102,7 @@ function ProposalConditionalRender(privileges) {
             <ProposalButton buttonText='Vote No' buttonClassName={nonAdminNoButtonClassName}
               onClickFunc={() => {setNonAdminYesButtonClassName(nonAdminUnpressedYesButtonClassName);
                                   setNonAdminNoButtonClassName(nonAdminPressedNoButtonClassName);
-                                  submitVote(false)
+                                  submitVote(false, userID)
                                   setVote('No');}}
             />
           </div>
@@ -122,15 +121,19 @@ function ProposalConditionalRender(privileges) {
   - Non-Voting Members: Nothing
   */
   if (privileges === 'Admin') {
-    return AdminProposalConditionalRender();
+    return AdminProposalConditionalRender(userID);
   } else if (privileges === 'Voting Member') {
-      return VotingMemberProposalConditionalRender();
+      return VotingMemberProposalConditionalRender(userID);
   } else {
     return null;
   }
 }
 
-function ProposalDetails() {
+function ProposalDetails(props) {
+  
+  var PRIVILEGES = props.privileges;
+  var USER_ID = props.userID;
+
   PROPOSAL_ID = useParams().id;
   /** Takes in a number and converts it to a dollar amount string w/ commas
   * placed appropriately (every 3 spaces); does not include dollar sign */
@@ -239,7 +242,7 @@ function ProposalDetails() {
           <a className="proposalLink" href = {proposalLink}>{proposalTitle}.pdf</a>
           <div className="proposalAmount"> Proposal Amount: {`$${proposalAmount}`}</div>
         </div>
-        {ProposalConditionalRender(PRIVILEGES)}
+        {ProposalConditionalRender(PRIVILEGES, USER_ID)}
       </div>
 
       <div className="discussion">

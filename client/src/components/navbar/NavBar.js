@@ -2,9 +2,8 @@ import './NavBar.css';
 import {ReactComponent as TGIFIcon} from './../../assets/TGIF.svg'
 import {Link} from 'react-router-dom';
 
-var PRIVILEGES = 'Admin';
-
-function Navbar() {
+function Navbar(props) {
+  const PRIVILEGES = props.privileges;
   return (
     <div className="top-navbar" id='nav'>
         <div className = "navbar-content">

@@ -56,7 +56,7 @@ function rowDefaultMode(props) {
             id={props.title}
         >
             <div className="proposal-title">{props.title}</div>
-            <img src={props.vote} className="vote-status"></img>
+            <img src={props.vote} className="vote-status" alt="vote status"></img>
 
         </div>
         

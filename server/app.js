@@ -75,11 +75,29 @@ app.get('/auth/google',
 
 app.get('/isauth', (req, res) => {
   if (req.isAuthenticated()) {
-    res.send(req.user);
+    res.send(true);
   } else {
-    res.send('NOT AUTHENTICATED');
+    res.send(false);
   }
 });
+
+app.get('/getProfile', async (req, res) => {
+  try {
+    if(req.isAuthenticated()) {
+      res.send(req.user);
+    } else {
+      res.status(403);
+      res.send("you shouldn't be here. ew!!!!");
+    }
+  } catch (error) {
+    console.log(error.stack);
+  }
+})
+
+app.get('/login',);
+
+
+app.get('')
 
 app.post('/submitProposal', async (req, res) => {
   try {
@@ -178,7 +196,6 @@ app.get('/get_comments', async (req, res) => {
     const query = await db.query(
       'SELECT * FROM comments WHERE proposal_id=$1;', [proposalId],
     );
-    console.log(query.rows)
     res.send(query.rows);
   } catch (error) {
     console.log(error.stack);
@@ -199,8 +216,6 @@ app.get('/getProposals', async (req, res) => {
 app.delete('/delete_proposal', async (req, res) => {
   try {
     const propsList = req.body.listOfIDs;
-    console.log("propslist:");
-    console.log(propsList);
     await db.query(
       `DELETE FROM comments WHERE proposal_id IN (${propsList})`, 
     );

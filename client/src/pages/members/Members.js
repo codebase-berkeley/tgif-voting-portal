@@ -8,10 +8,10 @@ import exitEditingIcon from '../../assets/checkmark.svg';
 import PopUpModal from '../../components/popupModal/PopUpModal.js'
 import './Members.css';
 
-//TODO: Replace with appropriate value once login backend is done and user's id + privileges persist throughout entire portal
-var PRIVILEGES = 'Admin';
+function Members(props) {
 
-function Members() {
+  var PRIVILEGES = props.privileges;
+
   const memberNameTextboxRef = useRef();
   const memberEmailTextboxRef = useRef();
   const memberRoleTextboxRef = useRef();
