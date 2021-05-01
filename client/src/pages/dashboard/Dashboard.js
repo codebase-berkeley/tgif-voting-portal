@@ -115,7 +115,6 @@ function Dashboard() {
     try {
       const res = await axios.get('http://localhost:8000/get_one_vote', {params : {user_id: 1, proposal_id: wantedPropID}});
       const vote = (res.data[0].vote);
-      console.log(res);
       if (vote === true) {
         changeToYesButton();
         console.log("changed vote to yes");
