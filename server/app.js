@@ -87,14 +87,14 @@ app.get('/isauth', (req, res) => {
   }
 });
 
-// function verifyAuthenticated(req, res) {
-//   if (req.isAuthenticated()) {
-//     console.log("user is authenticated!");
-//   } else {
-//     console.log("User not authenticated; about to throw 403");
-//     res.status(403).send();
-//   } 
-// }
+function verifyAuthenticated(req, res) {
+  if (req.isAuthenticated()) {
+    console.log("user is authenticated!");
+  } else {
+    console.log("User not authenticated; about to throw 403");
+    res.status(403).send();
+  }
+}
 
 app.post('/submitProposal', async (req, res) => {
   try {
