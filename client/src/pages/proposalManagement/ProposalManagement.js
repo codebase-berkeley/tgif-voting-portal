@@ -15,7 +15,7 @@ import exitEditingIcon from '../../assets/xIcon.svg';
 function ProposalManagement() {
   const [proposals, setProposals] = useState([]);
   async function fetchProposals() {
-		const response = await axios.get('http://localhost:8000/getProposals');
+		const response = await axios.get('http://localhost:8000/getProposals', {withCredentials: true});
     console.log(response);
     let proposal_lst = response.data;
     /* Initialize false <checked> attributes for each proposal; used for checkbox tracking
@@ -91,6 +91,7 @@ function ProposalManagement() {
       } else if (textboxValueTitle !== '' && /^[+-]?\d*(?:[.,]\d*)?$/.test(textboxValueMoney)){
         try {
           await axios({
+            withCredentials: true,
             method: 'post',
             url: 'http://localhost:8000/submitProposal',
             data: {
@@ -128,6 +129,7 @@ function ProposalManagement() {
       if (propsIdsToDelete != null && propsIdsToDelete.length > 0) {
         try {
           await axios({
+            withCredentials: true,
             method: 'delete',
             url: 'http://localhost:8000/delete_proposal',
             data: {

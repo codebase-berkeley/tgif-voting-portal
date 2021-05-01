@@ -74,7 +74,8 @@ VALUES
     ('Admin', 'Jessie McGinley', 'jessiem23@berkeley.edu', 'Program Associate'),
     ('Admin', 'Elizabeth Reyes', 'elizabeth.reyes@berkeley.edu', 'Program Associate'),
     ('Admin', 'Joshua Kay', 'joshua_kay@berkeley.edu', 'Program Associate'),
-    ('Admin', 'Paola Noun', 'paolanoun@berkeley.edu', 'Boss Ass Bitch'),
+    ('Admin', 'Paola Noun', 'paolanoun@berkeley.edu', 'Boss'),
+    ('Admin', 'Jorge Morales', 'jorge.morales@berkeley.edu', 'CEO'),
 
     ('Voting Member', 'Moe Sumino', 'moe_sumino@berkeley.edu', 'ASUC Representative'),
     ('Voting Member', 'Youjin Chung', 'youjin.chung@berkeley.edu', 'Faculty Representative'),
@@ -117,7 +118,8 @@ INSERT INTO votes(vote, user_id, proposal_id)
 VALUES
     (TRUE, 1, 1),
     (FALSE, 2, 2),
-    (FALSE, 3, 1);
+    (FALSE, 3, 1),
+    (TRUE, 2, 4);
 
 INSERT INTO comments(time_posted, comment_text, user_id, proposal_id)
 VALUES

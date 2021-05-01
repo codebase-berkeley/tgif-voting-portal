@@ -16,7 +16,7 @@ function Dashboard() {
   const [filteredProposalsList, setFilteredProposalsList] = useState([]);
 
   async function fetchProposals() {
-		const response = await axios.get('http://localhost:8000/getProposals'); 
+		const response = await axios.get('http://localhost:8000/get_proposals_and_user_votes', { withCredentials: true });
     //TODO change this endpoint to be a new endpoint that joins proposals with votes (filtered to just the users votes)
     let proposal_lst = response.data;
     /* Initialize false <checked> attributes for each proposal; used for checkbox tracking
@@ -51,13 +51,13 @@ function Dashboard() {
     } 
   }
 
-
   const[textboxValue, setTextboxValue] = React.useState('');
 
   const handleSubmit = async () => {
     if (textboxValue !== '') {
       try {
         await axios({
+          withCredentials: true,
           method: 'post',
           url: 'http://localhost:8000/post_comment',
           data: {
@@ -76,6 +76,7 @@ function Dashboard() {
   const submitVote = async (voteDecision) => {
     try {
       await axios({
+        withCredentials: true,
         method: 'post',
         url: 'http://localhost:8000/submitVote',
         data: {
@@ -83,7 +84,7 @@ function Dashboard() {
           user_id: 1,
           proposal_id: wantedPropID
         }
-      });
+      }, );
       console.log("successfully submitted vote");
       console.log(voteDecision);
     } catch(error) {
@@ -113,7 +114,7 @@ function Dashboard() {
 
   async function fetchUserVote() {
     try {
-      const res = await axios.get('http://localhost:8000/get_one_vote', {params : {user_id: 1, proposal_id: wantedPropID}});
+      const res = await axios.get('http://localhost:8000/get_one_vote', { withCredentials: true }, {params : {user_id: 1, proposal_id: wantedPropID}});
       const vote = (res.data[0].vote);
       if (vote === true) {
         changeToYesButton();
@@ -150,7 +151,7 @@ function Dashboard() {
                         description={proposal.description_text}
                         vote={proposal.voted ? proposal.voted : ""} 
                         id={proposal.id}
-                        vote-status={proposal.vote}
+                        voteStatus={proposal.vote}
                         />
                     ))}
           </div>

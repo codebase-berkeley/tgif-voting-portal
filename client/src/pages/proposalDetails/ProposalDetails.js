@@ -19,6 +19,7 @@ function ProposalConditionalRender(privileges) {
   async function submitVote(voteDecision) {
     try {
       await axios.post('http://localhost:8000/submitVote', {
+        withCredentials: true,
         vote: voteDecision,
         user_id: USER_ID,
         proposal_id: PROPOSAL_ID
@@ -39,7 +40,7 @@ function ProposalConditionalRender(privileges) {
     const [percentUnvoted, setPercentUnvoted] = useState(0);
 
     async function fetchVoteInfo() {
-      const res = await axios.get('http://localhost:8000/getAllVotes', {params : {proposal_id: PROPOSAL_ID}});
+      const res = await axios.get('http://localhost:8000/getAllVotes', {withCredentials: true}, {params : {proposal_id: PROPOSAL_ID}});
       const voteYes = res.data.amountYes;
       const votesTotal= res.data.totalVotes;
       const totalVotingMembers = res.data.totalVotingMembers;
@@ -51,7 +52,12 @@ function ProposalConditionalRender(privileges) {
     }
     
     useEffect(() => {
-      fetchVoteInfo();
+      const intervalId = setInterval(() => {  //assign interval to a variable to clear it.
+        fetchVoteInfo();
+      }, 5000)
+    
+      return () => clearInterval(intervalId); //This is important
+     
     }, [])
 
     return (
@@ -91,7 +97,7 @@ function ProposalConditionalRender(privileges) {
 
     async function fetchUserVote() {
       try {
-        const res = await axios.get('http://localhost:8000/get_one_vote', {params : {user_id: USER_ID, proposal_id: PROPOSAL_ID}});
+        const res = await axios.get('http://localhost:8000/get_one_vote', {params : {withCredentials: true, user_id: USER_ID, proposal_id: PROPOSAL_ID}});
         const vote = (res.data[0].vote);
         console.log(res);
         if (vote === true) {
@@ -115,7 +121,12 @@ function ProposalConditionalRender(privileges) {
     }
     
     useEffect(() => {
-      fetchUserVote();
+      const intervalId = setInterval(() => {  //assign interval to a variable to clear it.
+        fetchUserVote();
+      }, 5000)
+    
+      return () => clearInterval(intervalId); //This is important
+     
     }, [])
     
     return (
@@ -181,7 +192,7 @@ function ProposalDetails() {
     try {
       const response = await axios.get('http://localhost:8000/get_proposal_details', 
                                           { params: 
-                                            { proposal_id: PROPOSAL_ID }
+                                            {withCredentials: true, proposal_id: PROPOSAL_ID }
                                           });
       setProposalTitle(response.data.title);
       setProposalDescription(response.data.description_text);
@@ -196,7 +207,7 @@ function ProposalDetails() {
   
   async function fetchCommentData() {
     try {
-      const response = await axios.get("http://localhost:8000/get_comments", 
+      const response = await axios.get("http://localhost:8000/get_comments", {withCredentials: true}, 
                                           { params: 
                                             { proposal_id: PROPOSAL_ID }
                                           });      
@@ -210,6 +221,7 @@ function ProposalDetails() {
     if (textboxValue !== '') {
       try {
         await axios({
+          withCredentials: true,
           method: 'post',
           url: 'http://localhost:8000/post_comment',
           data: {
@@ -228,9 +240,14 @@ function ProposalDetails() {
   };
 
   useEffect(() => {
-    fetchCommentData();
-    fetchProposalDetails();
-  }, []);
+    const intervalId = setInterval(() => {  //assign interval to a variable to clear it.
+      fetchCommentData();
+      fetchProposalDetails();
+    }, 5000)
+  
+    return () => clearInterval(intervalId); //This is important
+   
+  }, [])
 
   /** Takes in an ISO timestamp string (as received from the database) and converts it
    * to a readable and meaningful string in the format 'MM/DD/YY HH:MM AM/PM' */

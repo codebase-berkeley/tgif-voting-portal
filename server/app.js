@@ -64,11 +64,20 @@ passport.deserializeUser(async (userID, done) => {
   done(null, query.rows[0]);
 });
 
-// function verifyAuthenticated(req, res, next) {
-//   console.logged("verifyAuthenticated Called: ", "User ", req.user.id, " is authenticated: ", req.isAuthenticated());
-// }
+function verifyAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+    console.log("AUTHENTICATED - ACCESSING ENDPOINT", req.path);
+    next();
+  } else if (req.path.startsWith('/auth')) {
+    console.log("NOT AUTHENTICATED BUT ACCESSING AUTH ENDPOINT - PROCEEDING TO ENDPOINT", req.path);
+    next();
+  } else {
+    console.log("ERROR 404: NOT AUTHENTICATED - CANNOT ACCESS ENDPOINT", req.path);
+    res.status(404).send();
+  }
+}
 
-// app.use(verifyAuthenticated);
+app.use(verifyAuthenticated);
 
 app.get('/auth/google/callback',
   passport.authenticate('google', { failureRedirect: '/auth/google/fail' }), (req, res) => res.redirect('http://localhost:3000/dashboard'));
@@ -78,23 +87,6 @@ app.get('/auth/google/fail',
 
 app.get('/auth/google',
   passport.authenticate('google', { scope: ['profile', 'email'] }));
-
-app.get('/isauth', (req, res) => {
-  if (req.isAuthenticated()) {
-    res.send(req.user);
-  } else {
-    res.send('NOT AUTHENTICATED');
-  }
-});
-
-function verifyAuthenticated(req, res) {
-  if (req.isAuthenticated()) {
-    console.log("user is authenticated!");
-  } else {
-    console.log("User not authenticated; about to throw 403");
-    res.status(403).send();
-  }
-}
 
 app.post('/submitProposal', async (req, res) => {
   try {
@@ -202,18 +194,16 @@ app.get('/get_one_vote', async (req, res) => {
   }
 });
 
-app.get('/get_proposals_and_user_votes', async(req, res) => {
+app.get('/get_proposals_and_user_votes', async (req, res) => {
   try {
     const query = await db.query(
-      //Know the user thats making request
-      'SELECT * FROM proposals LEFT JOIN votes WHERE votes.user_id=$1', [req.user.id]
+      'SELECT * FROM proposals LEFT JOIN (SELECT * FROM votes WHERE votes.user_id=$1) as votes_subset ON votes_subset.proposal_id = proposals.id', [1],
     );
-    console.log(req.user.id);
     res.send(query.rows);
   } catch (error) {
     console.log(error.stack);
   }
-})
+});
 
 app.get('/get_comments', async (req, res) => {
   try {
@@ -221,7 +211,7 @@ app.get('/get_comments', async (req, res) => {
     const query = await db.query(
       'SELECT * FROM comments WHERE proposal_id=$1;', [proposalId],
     );
-    console.log(query.rows)
+    console.log(query.rows);
     res.send(query.rows);
   } catch (error) {
     console.log(error.stack);
@@ -256,7 +246,7 @@ app.delete('/delete_proposal', async (req, res) => {
     res.send('Deleted selected proposals.');
   } catch (error) {
     console.log(error.stack);
-  } 
+  }
 });
 
 app.post('/submitVote', async (req, res) => {
@@ -282,7 +272,7 @@ app.get('/getProposalCount', async (req, res) => {
       'SELECT COUNT(*) FROM proposals',
     );
     res.send(proposalCount.rows[0].count);
-  } catch (errors) {
+  } catch (error) {
     console.log(error.stack);
   }
 });

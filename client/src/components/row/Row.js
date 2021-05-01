@@ -25,7 +25,7 @@ function rowDeletionMode(props) {
                 </div>
                 <div className="rightRow">
                     <div className="proposal-title">{props.title}</div>
-                    <img src={props.vote} alt='Vote Status' className="vote-status"></img>
+                    <img src={yesIcon} alt='Vote Status' className="vote-status"></img>
                 </div>
             </div>
         </div>
@@ -33,47 +33,56 @@ function rowDeletionMode(props) {
 }
 
 function rowDashboardMode(props) {
-    return (
-        <div
-            className="proposal-box"
-            id={props.title}
-            onClick={() => {props.changeTitle(props.title);
-                            props.changeDescription(props.description);
-                            props.changeWantedPropID(props.id);
-                            props.changeTextBoxValue()}
-        }>
-        
-            <div className="proposal-title">{props.title}</div>
-            <img src={props.vote} alt='Vote Status' className="vote-status"></img>
-
-        </div>
-        
-    );
+    const boolean = props.voteStatus;
+    if (boolean) {
+        return (
+            <div
+                className="proposal-box"
+                id={props.title}
+                onClick={() => {props.changeTitle(props.title);
+                                props.changeDescription(props.description);
+                                props.changeWantedPropID(props.id);
+                                props.changeTextBoxValue()}
+            }>
+            
+                <div className="proposal-title">{props.title}</div>
+                <img src={yesIcon} alt='Vote Status' className="vote-status"></img>
+    
+            </div>
+            
+        );
+    } else {
+        return (
+            <div
+                className="proposal-box"
+                id={props.title}
+                onClick={() => {props.changeTitle(props.title);
+                                props.changeDescription(props.description);
+                                props.changeWantedPropID(props.id);
+                                props.changeTextBoxValue()}
+            }>
+            
+                <div className="proposal-title">{props.title}</div>
+                <img src={noIcon} alt='Vote Status' className="vote-status"></img>
+    
+            </div>
+            
+        );
+    }
 }
 
 function rowDefaultMode(props) {
-    const boolean = props.voted;
     return (
         <div
             className="proposal-box"
             id={props.title}
         >
             <div className="proposal-title">{props.title}</div>
-            <img src={props.vote} className="vote-status"></img>
 
         </div>
         
     );
 }
-
-function votedYesOrNo(props) {
-    if (props) {
-        return <img src={yesIcon} alt='Vote Status' className="vote-status"></img>
-    } else {
-        return <img src={noIcon} alt='Vote Status' className="vote-status"></img>
-    }
-}
-
 
 
 export default Row;
