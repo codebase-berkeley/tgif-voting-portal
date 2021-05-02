@@ -83,8 +83,6 @@ function Dashboard() {
           proposal_id: wantedPropID
         }
       }, );
-      console.log("successfully submitted vote");
-      console.log(voteDecision);
     } catch(error) {
       console.log("There was an error in submitting your vote in dashboard.");
       console.log(error.stack);
@@ -117,10 +115,8 @@ function Dashboard() {
       const vote = (res.data[0].vote);
       if (vote === true) {
         changeToYesButton();
-        console.log("changed vote to yes");
       } else if (vote === false) {
         changeToNoButton();
-        console.log("changed vote to no");
       } else {
         setDashboardYesButtonClassName(dashboardUnpressedYesButtonClassName);
         setDashboardNoButtonClassName(dashboardUnpressedNoButtonClassName);

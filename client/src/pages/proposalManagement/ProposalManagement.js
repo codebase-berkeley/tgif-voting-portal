@@ -16,7 +16,6 @@ function ProposalManagement() {
   const [proposals, setProposals] = useState([]);
   async function fetchProposals() {
 		const response = await axios.get('http://localhost:8000/getProposals');
-    console.log(response);
     let proposal_lst = response.data;
     /* Initialize false <checked> attributes for each proposal; used for checkbox tracking
     while in deleting mode */
@@ -62,7 +61,6 @@ function ProposalManagement() {
     setExitEditingIconClassName(exitEditingIconDefault);
     setDeleteIconClassName(deleteIconDefault);
     setDeletingMode(true);
-    // console.log(deletingMode);
   }
 
   /** Handles clicking the checkmark icon to exit proposal deleting mode */
@@ -71,7 +69,6 @@ function ProposalManagement() {
     setExitEditingIconClassName(exitEditingIconDefault + ' hide');
     setDeleteIconClassName(deleteIconDefault + ' hide');
     setDeletingMode(false);
-    // console.log(deletingMode);
   }
 
   function displayDeleteProposalsModal() {
@@ -79,12 +76,6 @@ function ProposalManagement() {
   }
 
     const submitProposal = async () => {
-      // if (textboxValueMoney !== '' && isNaN(parseFloat(textboxValueMoney)) && /^[a-zA-Z]/.test(textboxValueMoney)){
-      //   console.log("String submited for value");
-      //   document.getElementById("moneyNewDescription").style.borderColor="#FF0000";
-      //   document.getElementById("moneyNewDescription").style.backgroundColor="#ffcccb";
-      // }
-      // else 
       if (/[!@#$%^&*(),?":{}|<>]/g.test(textboxValueMoney) || /^[A-Z]/.test(textboxValueMoney) || /^[a-z]/.test(textboxValueMoney)) {
         document.getElementById("moneyNewDescription").style.borderColor="#FF0000";
         document.getElementById("moneyNewDescription").style.backgroundColor="#ffcccb";

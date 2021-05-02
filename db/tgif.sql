@@ -85,6 +85,7 @@ VALUES
     ('Voting Member', 'Elias Garcia', 'elias_garcia@berkeley.edu', 'Environmental Justice - At Large Representative'),
     ('Voting Member', 'Sarah Bui', 'sarah.bui123@berkeley.edu', 'Undergraduate At-Large Representative'),
     ('Voting Member', 'Kennedy Chung', 'kennedychung@berkeley.edu', 'Garbage Cleaner'),
+    ('Voting Member', 'Anh Pham', 'anhvpham@berkeley.edu', 'rubiks cube master 9000'),
 
     ('Non-Voting Member', 'Sharon Daraphonhdeth', 'sharon@berkeley.edu', 'SERC Director'),
     ('Non-Voting Member', 'Harrisen Min', 'harrisen.min@berkeley.edu', 'Committee on Student Fees Representative'),

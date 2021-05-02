@@ -72,7 +72,7 @@ function verifyAuthenticated(req, res, next) {
     console.log("NOT AUTHENTICATED BUT ACCESSING AUTH ENDPOINT - PROCEEDING TO ENDPOINT", req.path);
     next();
   } else {
-    console.log("ERROR 404: NOT AUTHENTICATED - CANNOT ACCESS ENDPOINT", req.path);
+    console.log("ERROR 403: NOT AUTHENTICATED - CANNOT ACCESS ENDPOINT", req.path);
     res.status(403).send();
   }
 }
@@ -209,8 +209,6 @@ app.get('/get_comments', async (req, res) => {
     const query = await db.query(
       'SELECT * FROM comments WHERE proposal_id=$1;', [proposalId],
     );
-    console.log(query.rows);
-    res.send(query.rows);
   } catch (error) {
     console.log(error.stack);
   }
@@ -230,8 +228,6 @@ app.get('/getProposals', async (req, res) => {
 app.delete('/delete_proposal', async (req, res) => {
   try {
     const propsList = req.body.listOfIDs;
-    console.log("propslist:");
-    console.log(propsList);
     await db.query(
       `DELETE FROM comments WHERE proposal_id IN (${propsList})`, 
     );
@@ -320,7 +316,6 @@ app.get('/logout', async (req, res) => {
   try {
     req.logout();
     res.send();
-    console.log("logged out from back end");
   } catch (error) {
     console.log(error.stack);
   }
