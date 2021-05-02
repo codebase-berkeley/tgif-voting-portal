@@ -124,5 +124,9 @@ VALUES
 
 INSERT INTO comments(time_posted, comment_text, user_id, proposal_id)
 VALUES
-    ('2021-04-05T10:27:41.886Z', 'I really like the mission of this proposal. It will add a lot of value to the community. I think we should approve it!', 2, 1),
-    ('2021-04-06T13:45:41.886Z', 'I don''t quite see the value in funding this proposal. Let''s not approve it', 3, 1);
+    ('2021-04-05T10:27:41.886Z', 'I really want to be highlighted', 2, 1),
+    ('2021-04-06T13:45:41.886Z', 'I really want to be highlighted', 2, 1),
+    ('2021-04-06T13:45:41.886Z', 'I really want to be highlighted', 2, 1),
+    ('2021-04-06T13:45:41.886Z', 'I don''t quite see the value in being highlighted', 3, 1),
+    ('2021-04-06T13:45:41.886Z', 'I don''t quite see the value in being highlighted', 3, 1),
+    ('2021-04-06T13:45:41.886Z', 'I don''t quite see the value in being highlighted', 3, 1);

@@ -229,13 +229,13 @@ app.delete('/delete_proposal', async (req, res) => {
   try {
     const propsList = req.body.listOfIDs;
     await db.query(
-      `DELETE FROM comments WHERE proposal_id IN (${propsList})`, 
+      `DELETE FROM comments WHERE proposal_id IN (${propsList})`,
     );
     await db.query(
-      `DELETE FROM votes WHERE proposal_id IN (${propsList})`, 
+      `DELETE FROM votes WHERE proposal_id IN (${propsList})`,
     );
     await db.query(
-      `DELETE FROM proposals WHERE id IN (${propsList})`, 
+      `DELETE FROM proposals WHERE id IN (${propsList})`,
     );
     res.send('Deleted selected proposals.');
   } catch (error) {
