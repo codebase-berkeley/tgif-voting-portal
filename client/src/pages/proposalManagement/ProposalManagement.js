@@ -72,6 +72,7 @@ function ProposalManagement() {
     setExitEditingIconClassName(exitEditingIconDefault + ' hide');
     setDeleteIconClassName(deleteIconDefault + ' hide');
     setDeletingMode(false);
+    setPropsIdsToDelete([]);
     // console.log(deletingMode);
   }
 
@@ -153,7 +154,13 @@ function ProposalManagement() {
 
   function updateProposalDeleteIDs(proposal) {
     const updatedPropsIdsToDelete = [...propsIdsToDelete];
-    updatedPropsIdsToDelete.push(proposal.id);
+    if (proposal.checked) {
+      updatedPropsIdsToDelete.pop(proposal.id);
+    } 
+    else {
+      updatedPropsIdsToDelete.push(proposal.id);
+    }
+    proposal.checked =  !proposal.checked;
     setPropsIdsToDelete(updatedPropsIdsToDelete);
   }
   
@@ -187,7 +194,7 @@ function ProposalManagement() {
                           isManagement= {IS_MANAGEMENT}
                           vote={proposal.voted ? proposal.voted : ""}
                           proposalCheckboxOnClick = {() => {updateProposalDeleteIDs(proposal);}}
-                            isChecked={proposal.checked}
+                          isChecked={proposal.checked}
                           />
                     ))}
                 </div>

@@ -8,7 +8,7 @@ import axios from "axios";
 
 var PRIVILEGES = 'Voting Member';
 let PROPOSAL_ID;
-var USER_ID = 4
+var USER_ID = 4;
 
 const ANON = 'John Doe';
 
@@ -168,8 +168,8 @@ function ProposalDetails() {
     try {
       const response = await axios.get("http://localhost:8000/get_comments", 
                                           { params: 
-                                            { proposal_id: PROPOSAL_ID }
-                                          });      
+                                            { proposal_id: PROPOSAL_ID,}
+                                          });     
       setComments(response.data);
     } catch (error) {
         console.error(error);
@@ -189,7 +189,6 @@ function ProposalDetails() {
           }
         });
       } catch(error) {
-
           console.log(error);
       }
       setTextboxValue('');
@@ -250,7 +249,7 @@ function ProposalDetails() {
         <div className='discussionCommentsView'>
         {comments.map((comment) => (
           // tgif.sql for comments on IS_ADMIN in comments db
-          <DiscussionPost isAdmin={PRIVILEGES==='Admin'} userName={ANON} text={comment.comment_text} time={timestampToReadableDate(comment.time_posted)}/>
+          <DiscussionPost isAdmin={PRIVILEGES==='Admin'} userName={ANON} id={comment.user_id} text={comment.comment_text} time={timestampToReadableDate(comment.time_posted)}/>
         ))}
         </div>
         <div className='discussionPostCommentFrame'>
