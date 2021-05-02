@@ -9,12 +9,12 @@ import ProposalButton from '../proposalDetails/ProposalButton.js';
 import { Link } from "react-router-dom";
 import axios from 'axios';
 
-var PRIVILEGES ='Voting Member';
+function Dashboard(props) {
 
-function Dashboard() {
-
+  const PRIVILEGES = props.privileges;
+  const USER_ID = props.userID;
+  
   const [proposals, setProposals] = useState([]);
-
   const [filteredProposalsList, setFilteredProposalsList] = useState([]);
 
   async function fetchProposals() {
@@ -65,8 +65,7 @@ function Dashboard() {
     } 
   }
 
-
-  const[textboxValue, setTextboxValue] = React.useState('');
+  const[textboxValue, setTextboxValue] = useState('');
 
   const handleSubmit = async () => {
     if (textboxValue !== '') {
@@ -75,7 +74,7 @@ function Dashboard() {
           method: 'post',
           url: 'http://localhost:8000/post_comment',
           data: {
-            user_id: 1,
+            user_id: USER_ID,
             proposal_id: wantedPropID,
             comment_text: textboxValue
           }
@@ -88,13 +87,14 @@ function Dashboard() {
   };
 
   const submitVote = async (voteDecision) => {
+    console.log("Voted");
     try {
       await axios({
         method: 'post',
         url: 'http://localhost:8000/submitVote',
         data: {
           vote: voteDecision,
-          user_id: 1,
+          user_id: USER_ID,
           proposal_id: wantedPropID
         }
       });
@@ -114,6 +114,7 @@ function Dashboard() {
   const [dashboardNoButtonClassName, setDashboardNoButtonClassName] = useState(dashboardUnpressedNoButtonClassName);
 
   return (
+    PRIVILEGES !== null && 
     <div className="dashboard">
       <div className="dashboard-screen">
         <div className="left-proposals">
@@ -128,7 +129,6 @@ function Dashboard() {
                         description={proposal.description_text}
                         vote={proposal.voted ? proposal.voted : ""} 
                         id={proposal.id}
-                        
                         />
                     ))}
             
@@ -156,14 +156,16 @@ function Dashboard() {
                   <div className='leftDashboardButtonContainer dashboardButtonContainer'>
                     <ProposalButton buttonText='Vote Yes' buttonClassName={dashboardYesButtonClassName}
                       onClickFunc={() => {setDashboardYesButtonClassName(dashboardPressedYesButtonClassName);
-                                          setDashboardNoButtonClassName(dashboardUnpressedNoButtonClassName);}}
+                                          setDashboardNoButtonClassName(dashboardUnpressedNoButtonClassName);
+                                          submitVote(true);}}
                     />
                   </div>
 
                   <div className='rightDashboardButtonContainer dashboardButtonContainer'>
                     <ProposalButton buttonText='Vote No' buttonClassName={dashboardNoButtonClassName}
                       onClickFunc={() => {setDashboardYesButtonClassName(dashboardUnpressedYesButtonClassName);
-                                          setDashboardNoButtonClassName(dashboardPressedNoButtonClassName);}}
+                                          setDashboardNoButtonClassName(dashboardPressedNoButtonClassName);
+                                          submitVote(false);}}
                     />
                   </div>
                 </div>
