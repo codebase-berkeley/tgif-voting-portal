@@ -34,7 +34,6 @@ function App() {
       response = await axios.get('http://localhost:8000/getProfile', {withCredentials: true});
   
       setUserID(response.data.id);
-      console.log(response.data.privileges);
       setPrivileges(response.data.privileges);
     } catch (error) {
       console.log(error);

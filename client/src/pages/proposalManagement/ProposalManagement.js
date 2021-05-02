@@ -65,6 +65,7 @@ function ProposalManagement(props) {
     setExitEditingIconClassName(exitEditingIconDefault + ' hide');
     setDeleteIconClassName(deleteIconDefault + ' hide');
     setDeletingMode(false);
+    setPropsIdsToDelete([]);
   }
 
   function displayDeleteProposalsModal() {
@@ -146,7 +147,13 @@ function ProposalManagement(props) {
 
   function updateProposalDeleteIDs(proposal) {
     const updatedPropsIdsToDelete = [...propsIdsToDelete];
-    updatedPropsIdsToDelete.push(proposal.id);
+    if (proposal.checked) {
+      updatedPropsIdsToDelete.pop(proposal.id);
+    } 
+    else {
+      updatedPropsIdsToDelete.push(proposal.id);
+    }
+    proposal.checked =  !proposal.checked;
     setPropsIdsToDelete(updatedPropsIdsToDelete);
   }
   
@@ -183,31 +190,43 @@ function ProposalManagement(props) {
                       ))}
                   </div>
               </div>
-          
-              <div className="proposalManagementRight">
-                  <div className = "whiteBox">
-                      <div className = "proposalManagementHead">
-                          <h3>Create a Proposal</h3>
-                      </div>
-                      <div className = "PMtextboxes">
-                          <textarea value={textboxValueTitle} onChange={(event) => {setTextboxValueTitle(event.target.value)}} className= 'titleNewProposal' id='titleNewProposal' type='textarea' placeholder='Title'/>
-                      </div>
-                      <textarea value={textboxValueDescript} onChange={(event) => {setTextboxValueDescript(event.target.value)}} className= 'descriptionNewProposal' id='descriptionNewProposal' type='textarea' placeholder='Project description'/>
-                      <div className = "bottomThree">
-                          <textarea value={textboxValueLink} onChange={(event) => {setTextboxValueLink(event.target.value)}} className= 'linkNewDescription' id='linkNewDescription' type='textarea' placeholder='Link'/>
-                          <textarea value={textboxValueMoney} onChange={(event) => {setTextboxValueMoney(event.target.value)}} className= 'moneyNewDescription' id='moneyNewDescription' type='textarea' placeholder='$00.00'/>
-                          <ProposalButton buttonClassName='genericProposalButton' buttonText='Create' onClickFunc={submitProposal}/>
-                      </div>   
-                  </div>
-              </div>
-          </div>
-          {removeModal}
-        </div>  
-      );
+                <div className="proposal-list">
+                    {proposals.map((proposal) => (
+                        <Row 
+                          title={proposal.title} 
+                          description={proposal.description}
+                          mode={deletingMode}
+                          isManagement= {IS_MANAGEMENT}
+                          vote={proposal.voted ? proposal.voted : ""}
+                          proposalCheckboxOnClick = {() => {updateProposalDeleteIDs(proposal);}}
+                          isChecked={proposal.checked}
+                          />
+                    ))}
+                </div>
+            </div>
+        
+            <div className="proposalManagementRight">
+                <div className = "whiteBox">
+                    <div className = "proposalManagementHead">
+                        <h3>Create a Proposal</h3>
+                    </div>
+                    <div className = "PMtextboxes">
+                        <textarea value={textboxValueTitle} onChange={(event) => {setTextboxValueTitle(event.target.value)}} className= 'titleNewProposal' id='titleNewProposal' type='textarea' placeholder='Title'/>
+                    </div>
+                    <textarea value={textboxValueDescript} onChange={(event) => {setTextboxValueDescript(event.target.value)}} className= 'descriptionNewProposal' id='descriptionNewProposal' type='textarea' placeholder='Project description'/>
+                    <div className = "bottomThree">
+                        <textarea value={textboxValueLink} onChange={(event) => {setTextboxValueLink(event.target.value)}} className= 'linkNewDescription' id='linkNewDescription' type='textarea' placeholder='Link'/>
+                        <textarea value={textboxValueMoney} onChange={(event) => {setTextboxValueMoney(event.target.value)}} className= 'moneyNewDescription' id='moneyNewDescription' type='textarea' placeholder='$00.00'/>
+                        <ProposalButton buttonClassName='genericProposalButton' buttonText='Create' onClickFunc={submitProposal}/>
+                    </div>   
+                </div>
+            </div>
+        </div>
+      )
     } else {
       return (
         <div>
-        You do not have permission to view this page. Contact a portal admin if you believe this is a mistake.
+          You do not have permission to view this page. Contact a portal admin if you believe this is a mistake.
         </div>
       )
     }

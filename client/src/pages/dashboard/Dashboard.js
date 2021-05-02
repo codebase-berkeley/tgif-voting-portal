@@ -22,11 +22,13 @@ function Dashboard(props) {
     let proposal_lst = response.data;
     /* Initialize false <checked> attributes for each proposal; used for checkbox tracking
     while in deleting mode */
+    console.log("proposals fetched " + proposal_lst)
     proposal_lst.forEach(proposal => {
       proposal_lst.checked = false;
     })
 		setProposals(proposal_lst);
     setFilteredProposalsList(proposal_lst);
+    firstProposal(proposal_lst);
   }
 
   useEffect(() => {
@@ -38,6 +40,18 @@ function Dashboard(props) {
   const [proposalTitle, setProposalTitle] = useState("");
   const [proposalDescription, setProposalDescription] = useState("");
   const [wantedPropID, setWantedPropID] = useState(1);
+
+   function firstProposal(proposal_lst) {
+    try {
+      const title = proposal_lst[0].title;
+      const description = proposal_lst[0].description_text;
+      setProposalTitle(title);
+      setProposalDescription(description); 
+    }
+    catch (error) {
+      console.log(error);
+    }
+  }
 
   /* Updates proposalList state based on SearchBar input. */
   const updateInput = (input) => {
