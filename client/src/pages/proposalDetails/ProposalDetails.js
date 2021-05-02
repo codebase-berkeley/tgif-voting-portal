@@ -53,7 +53,7 @@ function ProposalConditionalRender(privileges) {
     useEffect(() => {
       const intervalId = setInterval(() => {  //assign interval to a variable to clear it.
         fetchVoteInfo();
-      }, 5000)
+      }, 100)
     
       return () => clearInterval(intervalId); //This is important
      
@@ -122,7 +122,7 @@ function ProposalConditionalRender(privileges) {
     useEffect(() => {
       const intervalId = setInterval(() => {  //assign interval to a variable to clear it.
         fetchUserVote();
-      }, 5000)
+      }, 100)
     
       return () => clearInterval(intervalId); //This is important
      
@@ -237,7 +237,7 @@ function ProposalDetails() {
     const intervalId = setInterval(() => {  //assign interval to a variable to clear it.
       fetchCommentData();
       fetchProposalDetails();
-    }, 5000)
+    }, 100)
   
     return () => clearInterval(intervalId); //This is important
    
