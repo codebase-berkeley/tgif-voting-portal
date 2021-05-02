@@ -6,7 +6,7 @@ import React, { useState, useEffect } from 'react';
 import {useParams} from 'react-router-dom';
 import axios from "axios";
 
-var PRIVILEGES = 'Voting Member';
+var PRIVILEGES = 'Admin';
 let PROPOSAL_ID;
 var USER_ID = 1;
 

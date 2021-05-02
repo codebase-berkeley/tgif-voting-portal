@@ -73,7 +73,7 @@ function verifyAuthenticated(req, res, next) {
     next();
   } else {
     console.log("ERROR 404: NOT AUTHENTICATED - CANNOT ACCESS ENDPOINT", req.path);
-    res.status(404).send();
+    res.status(403).send();
   }
 }
 
