@@ -1,4 +1,4 @@
- import React from 'react';
+import React from 'react';
 import { useState, useEffect } from 'react';
 import Row from '../../components/row/Row';
 import './Dashboard.css';
