@@ -37,9 +37,9 @@ function Members() {
   const [exitEditingIconClassName, setExitEditingIconClassName] = useState(exitEditingIconDefault + ' hide');
 
   async function fetchMembers() {
-		const response = await axios.get('http://localhost:8000/getMembers', {withCredentials: true});
-		const userCounts = await axios.get('http://localhost:8000/getUserVotes', {withCredentials: true});
-		const totalProposals = await axios.get('http://localhost:8000/getProposalCount', {withCredentials: true});
+		const response = await axios.get('http://localhost:8000/getMembers');
+		const userCounts = await axios.get('http://localhost:8000/getUserVotes');
+		const totalProposals = await axios.get('http://localhost:8000/getProposalCount');
 		let users = response.data;
     /* Add a <count> attribute to each user that reflects the # of
     proposals they have voted on */
@@ -99,7 +99,6 @@ function Members() {
         && PRIVILEGES === 'Admin') {
       try {
         await axios({
-          withCredentials: true,
           method: 'post',
           url: 'http://localhost:8000/addUser',
           data: {
@@ -133,7 +132,6 @@ function Members() {
       if (PRIVILEGES === 'Admin') {
         try {
           await axios({
-            withCredentials: true,
             method: 'delete',
             url: 'http://localhost:8000/deleteUsers',
             data: {
@@ -141,7 +139,7 @@ function Members() {
             }
           });
         } catch(error) {
-            console.log(error);
+          console.log(error);
         }
         fetchMembers();
       }

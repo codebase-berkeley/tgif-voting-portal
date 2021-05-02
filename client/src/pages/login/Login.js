@@ -4,7 +4,6 @@ import Logo from '../../assets/TGIF_vertical_color.png';
 import axios from 'axios';
 
 function Login() {
-
   return (
     <div className="login">
       <Background />

@@ -19,7 +19,6 @@ function ProposalConditionalRender(privileges) {
   async function submitVote(voteDecision) {
     try {
       await axios.post('http://localhost:8000/submitVote', {
-        withCredentials: true,
         vote: voteDecision,
         user_id: USER_ID,
         proposal_id: PROPOSAL_ID
@@ -40,7 +39,7 @@ function ProposalConditionalRender(privileges) {
     const [percentUnvoted, setPercentUnvoted] = useState(0);
 
     async function fetchVoteInfo() {
-      const res = await axios.get('http://localhost:8000/getAllVotes', {withCredentials: true}, {params : {proposal_id: PROPOSAL_ID}});
+      const res = await axios.get('http://localhost:8000/getAllVotes', {params : {proposal_id: PROPOSAL_ID}});
       const voteYes = res.data.amountYes;
       const votesTotal= res.data.totalVotes;
       const totalVotingMembers = res.data.totalVotingMembers;
@@ -97,7 +96,7 @@ function ProposalConditionalRender(privileges) {
 
     async function fetchUserVote() {
       try {
-        const res = await axios.get('http://localhost:8000/get_one_vote', {params : {withCredentials: true, user_id: USER_ID, proposal_id: PROPOSAL_ID}});
+        const res = await axios.get('http://localhost:8000/get_one_vote', {params : {user_id: USER_ID, proposal_id: PROPOSAL_ID}});
         const vote = (res.data[0].vote);
         console.log(res);
         if (vote === true) {
@@ -191,9 +190,7 @@ function ProposalDetails() {
   async function fetchProposalDetails() { 
     try {
       const response = await axios.get('http://localhost:8000/get_proposal_details', 
-                                          { params: 
-                                            {withCredentials: true, proposal_id: PROPOSAL_ID }
-                                          });
+                                          { params: { proposal_id: PROPOSAL_ID }});
       setProposalTitle(response.data.title);
       setProposalDescription(response.data.description_text);
       setProposalLink(response.data.link);
@@ -207,10 +204,8 @@ function ProposalDetails() {
   
   async function fetchCommentData() {
     try {
-      const response = await axios.get("http://localhost:8000/get_comments", {withCredentials: true}, 
-                                          { params: 
-                                            { proposal_id: PROPOSAL_ID }
-                                          });      
+      const response = await axios.get("http://localhost:8000/get_comments", 
+                                          {params: { proposal_id: PROPOSAL_ID }});
       setComments(response.data);
     } catch (error) {
         console.error(error);
@@ -221,7 +216,6 @@ function ProposalDetails() {
     if (textboxValue !== '') {
       try {
         await axios({
-          withCredentials: true,
           method: 'post',
           url: 'http://localhost:8000/post_comment',
           data: {

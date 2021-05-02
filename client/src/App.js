@@ -8,8 +8,10 @@ import Members from './pages/members/Members.js';
 import NavBar from './components/navbar/NavBar.js';
 import ProposalManagement from './pages/proposalManagement/ProposalManagement.js';
 import React from "react";
-import { BrowserRouter as Router, Switch, Route} from "react-router-dom";
+import axios from "axios";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
+axios.defaults.withCredentials = true;
 
 function App() {
   return (

@@ -105,8 +105,6 @@ app.post('/submitProposal', async (req, res) => {
 });
 
 app.post('/post_comment', async (req, res) => {
-  // verifyAuthenticated(req, res);
-  console.log("Posted comment!");
   try {
     const timePosted = new Date();
     const userId = req.body.user_id;
@@ -313,6 +311,16 @@ app.get('/get_proposal_details', async (req, res) => {
       'SELECT * FROM proposals WHERE id=$1;', [proposalId],
     );
     res.send(query.rows[0]);
+  } catch (error) {
+    console.log(error.stack);
+  }
+});
+
+app.get('/logout', async (req, res) => {
+  try {
+    req.logout();
+    res.send();
+    console.log("logged out from back end");
   } catch (error) {
     console.log(error.stack);
   }

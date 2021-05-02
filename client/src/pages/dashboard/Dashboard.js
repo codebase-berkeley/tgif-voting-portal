@@ -16,7 +16,7 @@ function Dashboard() {
   const [filteredProposalsList, setFilteredProposalsList] = useState([]);
 
   async function fetchProposals() {
-		const response = await axios.get('http://localhost:8000/get_proposals_and_user_votes', { withCredentials: true });
+		const response = await axios.get('http://localhost:8000/get_proposals_and_user_votes');
     //TODO change this endpoint to be a new endpoint that joins proposals with votes (filtered to just the users votes)
     let proposal_lst = response.data;
     /* Initialize false <checked> attributes for each proposal; used for checkbox tracking
@@ -57,7 +57,6 @@ function Dashboard() {
     if (textboxValue !== '') {
       try {
         await axios({
-          withCredentials: true,
           method: 'post',
           url: 'http://localhost:8000/post_comment',
           data: {
@@ -76,7 +75,6 @@ function Dashboard() {
   const submitVote = async (voteDecision) => {
     try {
       await axios({
-        withCredentials: true,
         method: 'post',
         url: 'http://localhost:8000/submitVote',
         data: {
@@ -113,8 +111,9 @@ function Dashboard() {
   }
 
   async function fetchUserVote() {
+    //TODO: replace user_id in params of axios request w/ actual deserialized id from cookie (instead of hardcoded 1)
     try {
-      const res = await axios.get('http://localhost:8000/get_one_vote', { withCredentials: true }, {params : {user_id: 1, proposal_id: wantedPropID}});
+      const res = await axios.get('http://localhost:8000/get_one_vote', {params : {user_id: 1, proposal_id: wantedPropID}});
       const vote = (res.data[0].vote);
       if (vote === true) {
         changeToYesButton();
