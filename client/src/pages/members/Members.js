@@ -10,7 +10,7 @@ import './Members.css';
 
 function Members(props) {
 
-  var PRIVILEGES = props.privileges;
+  const PRIVILEGES = props.privileges;
 
   const memberNameTextboxRef = useRef();
   const memberEmailTextboxRef = useRef();
@@ -26,10 +26,10 @@ function Members(props) {
 
 
   /* REACT STATES FOR EDIT/ADD/REMOVE BUTTONS */
-  var addIconDefault = 'addMemberIconContainer';
-  var removeIconDefault = 'removeMembersIconContainer';
-  var enterEditingIconDefault = 'enterEditingIconContainer';
-  var exitEditingIconDefault = 'exitEditingIconContainer';
+  const addIconDefault = 'addMemberIconContainer';
+  const removeIconDefault = 'removeMembersIconContainer';
+  const enterEditingIconDefault = 'enterEditingIconContainer';
+  const exitEditingIconDefault = 'exitEditingIconContainer';
 
   const [addIconClassName, setAddIconClassName] = useState(addIconDefault + ' hide');
   const [removeIconClassName, setRemoveIconClassName] = useState(removeIconDefault + ' hide');
@@ -146,7 +146,7 @@ function Members(props) {
     }
 
     if (numSelected > 0) {
-      var pluralOrSingular = (numSelected > 1) ? 'members' : 'member';
+      let pluralOrSingular = (numSelected > 1) ? 'members' : 'member';
       setRemoveModal(
         <PopUpModal
           warning={`Are you sure you want to remove ${numSelected} ${pluralOrSingular}?`}

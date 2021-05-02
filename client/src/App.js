@@ -15,32 +15,36 @@ import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-d
 function App() {
   const [isAuth, setIsAuth] = useState(false);
   const [doneLoading, setDoneLoading] = useState(false);
+  const [userID, setUserID] = useState(0);
+  const [privileges, setPrivileges] = useState(null);
 
-  async function checkAuthenticationStatus() {
-    const response = await axios.get('http://localhost:8000/isauth', {withCredentials: true});
-    let authStatus = response.data;
-    if (!authStatus) {
-      setIsAuth(false);
-    } else {
-      setIsAuth(true);
+  async function getAuthenticatedUserProfile() {
+    // check auth status
+    try {
+      let response = await axios.get('http://localhost:8000/isauth', {withCredentials: true});
+      let authStatus = response.data;
+      if (!authStatus) {
+        setIsAuth(false);
+      } else {
+        setIsAuth(true);
+      }
+      setDoneLoading(true);
+  
+      // get user profile
+      response = await axios.get('http://localhost:8000/getProfile', {withCredentials: true});
+  
+      setUserID(response.data.id);
+      console.log(response.data.privileges);
+      setPrivileges(response.data.privileges);
+    } catch (error) {
+      console.log(error);
     }
-    setDoneLoading(true);
+    
   }
 
   useEffect(() => {
-    checkAuthenticationStatus();
-    getProfile();
+    getAuthenticatedUserProfile();
   }, []);
-
-  const [userID, setUserID] = useState(0);
-  const [privileges, setPrivileges] = useState('Non-Voting Member');
-
-  async function getProfile() {
-    const response = await axios.get('http://localhost:8000/getProfile', {withCredentials: true});
-
-    setUserID(response.data.id);
-    setPrivileges(response.data.privileges);
-  }
 
   return (
     <Router>
@@ -53,7 +57,8 @@ function App() {
               <Login />
             </Route>
             <Route path="/dashboard">
-              {isAuth ? <> <NavBar privileges={privileges}/> <Dashboard privileges={privileges}/> </> : <Redirect to="/login"/>}
+              
+              {isAuth ? <> <NavBar privileges={privileges}/> <Dashboard userID={userID} privileges={privileges}/> </> : <Redirect to="/login"/>}
             </Route>
             <Route path="/proposal-details/:id" children={isAuth ? <> <NavBar privileges={privileges}/> <ProposalDetails privileges={privileges} userID={userID}/> </> : <Redirect to="/login"/>}/>
             <Route path="/members">

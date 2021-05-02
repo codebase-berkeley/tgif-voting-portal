@@ -94,11 +94,6 @@ app.get('/getProfile', async (req, res) => {
   }
 })
 
-app.get('/login',);
-
-
-app.get('')
-
 app.post('/submitProposal', async (req, res) => {
   try {
     const { title } = req.body;

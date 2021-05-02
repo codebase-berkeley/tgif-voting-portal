@@ -11,7 +11,8 @@ import axios from 'axios';
 
 function Dashboard(props) {
 
-  var PRIVILEGES = props.privileges;
+  const PRIVILEGES = props.privileges;
+  const USER_ID = props.userID;
   
   const [proposals, setProposals] = useState([]);
   const [filteredProposalsList, setFilteredProposalsList] = useState([]);
@@ -34,7 +35,6 @@ function Dashboard(props) {
 
   /* Create states for SearchBar. */
   const [input, setInput] = useState("");
-
   const [proposalTitle, setProposalTitle] = useState("");
   const [proposalDescription, setProposalDescription] = useState("");
   const [wantedPropID, setWantedPropID] = useState(1);
@@ -51,7 +51,7 @@ function Dashboard(props) {
     } 
   }
 
-  const[textboxValue, setTextboxValue] = React.useState('');
+  const[textboxValue, setTextboxValue] = useState('');
 
   const handleSubmit = async () => {
     if (textboxValue !== '') {
@@ -60,7 +60,7 @@ function Dashboard(props) {
           method: 'post',
           url: 'http://localhost:8000/post_comment',
           data: {
-            user_id: 1,
+            user_id: USER_ID,
             proposal_id: wantedPropID,
             comment_text: textboxValue
           }
@@ -80,7 +80,7 @@ function Dashboard(props) {
         url: 'http://localhost:8000/submitVote',
         data: {
           vote: voteDecision,
-          user_id: 1,
+          user_id: USER_ID,
           proposal_id: wantedPropID
         }
       });
@@ -100,6 +100,7 @@ function Dashboard(props) {
   const [dashboardNoButtonClassName, setDashboardNoButtonClassName] = useState(dashboardUnpressedNoButtonClassName);
 
   return (
+    PRIVILEGES !== null && 
     <div className="dashboard">
       <div className="dashboard-screen">
         <div className="left-proposals">

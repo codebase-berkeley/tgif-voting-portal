@@ -6,12 +6,28 @@ import React, { useState, useEffect } from 'react';
 import {useParams} from 'react-router-dom';
 import axios from "axios";
 
-// var PRIVILEGES = 'Voting Member';
 let PROPOSAL_ID;
-// var USER_ID = 4
 const ANON = 'Anonymous';
 
 function ProposalConditionalRender(privileges, userID) {
+
+  /* REACT STATES FOR PROGRESS BARS */ 
+  const [votesTotal, setVotesTotal] = useState(0);
+  const [totalMembers, setTotalMembers] = useState(1);
+  const [percentNo, setPercentNo] = useState(0);
+  const [percentYes, setPercentYes] = useState(0);
+  const [percentUnvoted, setPercentUnvoted] = useState(0);
+
+  /* REACT STATES FOR NONADMIN VOTING BUTTONS */
+  const nonAdminPressedYesButtonClassName = 'pressedYesButton nonAdminButton';
+  const nonAdminUnpressedYesButtonClassName = 'unpressedYesButton nonAdminButton';
+  const [nonAdminYesButtonClassName, setNonAdminYesButtonClassName] = useState(nonAdminUnpressedYesButtonClassName);
+
+  const nonAdminPressedNoButtonClassName = 'pressedNoButton nonAdminButton';
+  const nonAdminUnpressedNoButtonClassName = 'unpressedNoButton nonAdminButton';
+  const [nonAdminNoButtonClassName, setNonAdminNoButtonClassName] = useState(nonAdminUnpressedNoButtonClassName);
+
+  const [vote, setVote] = useState('Undecided');
 
   /** Handles pressing the voteYes/voteNo buttons by adding the appropriate vote
    * to the database; works for both admin and nonadmin voting buttons. */
@@ -28,15 +44,7 @@ function ProposalConditionalRender(privileges, userID) {
     }
   }
 
-
   function AdminProposalConditionalRender(userID) {
-    /* REACT STATES FOR PROGRESS BARS */ 
-    const [votesTotal, setVotesTotal] = useState(0);
-    const [totalMembers, setTotalMembers] = useState(1);
-    const [percentNo, setPercentNo] = useState(0);
-    const [percentYes, setPercentYes] = useState(0);
-    const [percentUnvoted, setPercentUnvoted] = useState(0);
-
     async function fetchVoteInfo() {
       const res = await axios.get('http://localhost:8000/getAllVotes', {params : {proposal_id: PROPOSAL_ID}});
       const voteYes = res.data.amountYes;
@@ -75,18 +83,6 @@ function ProposalConditionalRender(privileges, userID) {
   /** Returns the proposalConditionalRender for Voting Members,
   * which contains the non-admin voting buttons */
   function VotingMemberProposalConditionalRender(userID) {
-
-    /* REACT STATES FOR NONADMIN VOTING BUTTONS */
-    const nonAdminPressedYesButtonClassName = 'pressedYesButton nonAdminButton';
-    const nonAdminUnpressedYesButtonClassName = 'unpressedYesButton nonAdminButton';
-    const [nonAdminYesButtonClassName, setNonAdminYesButtonClassName] = useState(nonAdminUnpressedYesButtonClassName);
-
-    const nonAdminPressedNoButtonClassName = 'pressedNoButton nonAdminButton';
-    const nonAdminUnpressedNoButtonClassName = 'unpressedNoButton nonAdminButton';
-    const [nonAdminNoButtonClassName, setNonAdminNoButtonClassName] = useState(nonAdminUnpressedNoButtonClassName);
-
-    const [vote, setVote] = useState('Undecided');
-    
     return (
       <div className='proposalConditional'>
         <div className='NonVotingMemberConditionalContainer'>
@@ -131,8 +127,8 @@ function ProposalConditionalRender(privileges, userID) {
 
 function ProposalDetails(props) {
   
-  var PRIVILEGES = props.privileges;
-  var USER_ID = props.userID;
+  const PRIVILEGES = props.privileges;
+  const USER_ID = props.userID;
 
   PROPOSAL_ID = useParams().id;
   /** Takes in a number and converts it to a dollar amount string w/ commas
@@ -208,7 +204,7 @@ function ProposalDetails(props) {
   /** Takes in an ISO timestamp string (as received from the database) and converts it
    * to a readable and meaningful string in the format 'MM/DD/YY HH:MM AM/PM' */
   function timestampToReadableDate(timestamp) {
-    var militaryToTwelveHrTime = (hour) => {
+    const militaryToTwelveHrTime = (hour) => {
       if (hour === 0) {
         return 12;
       } else if (hour <= 12) {
@@ -217,15 +213,15 @@ function ProposalDetails(props) {
         return hour - 12;
       }
     }
-    var twoDigitMins = (mins) => mins < 10 ? `0${mins}` : `${mins}`;
-    var dateObject = new Date(timestamp);
-    var rawHour = dateObject.getHours();
-    var month = dateObject.getMonth() + 1;
-    var day = dateObject.getDate();
-    var year = dateObject.getFullYear().toString().substr(-2);
-    var hour = militaryToTwelveHrTime(rawHour);
-    var minutes = twoDigitMins(dateObject.getMinutes());
-    var amOrPm = ((hour) => hour < 12 ? 'am' : 'pm')(rawHour);
+    const twoDigitMins = (mins) => mins < 10 ? `0${mins}` : `${mins}`;
+    const dateObject = new Date(timestamp);
+    const rawHour = dateObject.getHours();
+    const month = dateObject.getMonth() + 1;
+    const day = dateObject.getDate();
+    const year = dateObject.getFullYear().toString().substr(-2);
+    const hour = militaryToTwelveHrTime(rawHour);
+    const minutes = twoDigitMins(dateObject.getMinutes());
+    const amOrPm = ((hour) => hour < 12 ? 'am' : 'pm')(rawHour);
     return `${month}/${day}/${year} ${hour}:${minutes}${amOrPm}`;
   }
 

@@ -40,10 +40,10 @@ function ProposalManagement(props) {
   const [propsIdsToDelete, setPropsIdsToDelete] = useState([]);
     
     /* REACT STATES FOR EDIT BUTTONS */
-  var enterEditingIconDefault = 'enterDeletingIconContainer';
-  var exitEditingIconDefault = 'exitDeletingIconContainer';
-  var deleteIconDefault = 'trashCan';
-  var IS_MANAGEMENT = true;
+  const enterEditingIconDefault = 'enterDeletingIconContainer';
+  const exitEditingIconDefault = 'exitDeletingIconContainer';
+  const deleteIconDefault = 'trashCan';
+  const IS_MANAGEMENT = true;
 
   const [enterEditingIconClassName, setEnterEditingIconClassName] = useState(enterEditingIconDefault);
   const [exitEditingIconClassName, setExitEditingIconClassName] = useState(exitEditingIconDefault + ' hide');
@@ -131,7 +131,7 @@ function ProposalManagement(props) {
       }
     }
     if (numSelected > 0) {
-      var pluralOrSingular = (numSelected > 1) ? 'proposals' : 'proposal';
+      let pluralOrSingular = (numSelected > 1) ? 'proposals' : 'proposal';
       setRemoveModal(
         <PopUpModal
           warning={`Are you sure you want to delete ${numSelected} ${pluralOrSingular}?`}
