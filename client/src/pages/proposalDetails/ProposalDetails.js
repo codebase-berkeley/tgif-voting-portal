@@ -45,9 +45,9 @@ function ProposalConditionalRender(privileges) {
       const totalVotingMembers = res.data.totalVotingMembers;
       setVotesTotal(votesTotal);
       setTotalMembers(totalVotingMembers);
-      setPercentYes(((voteYes / totalVotingMembers) * 100).toFixed(2));
-      setPercentNo((((votesTotal - voteYes) / totalVotingMembers) * 100).toFixed(2));
-      setPercentUnvoted((((totalVotingMembers - votesTotal) / totalVotingMembers) * 100).toFixed(2));
+      setPercentYes(voteYes);
+      setPercentNo(votesTotal - voteYes);
+      setPercentUnvoted(totalVotingMembers - votesTotal);
     }
     
     useEffect(() => {
@@ -63,14 +63,9 @@ function ProposalConditionalRender(privileges) {
     return (
       <div className='progressFrame'>
         <ProgressBar className='progressBarYesNoUnvoted'>
-          <ProgressBar className='progressBarPercentYes' variant='success' now={percentYes} label={`${percentYes}% YES`} key={1}/>
-          <ProgressBar className='progressBarPercentNo' variant='danger' now={percentNo} label={`${percentNo}% NO`} key={2}/>
-          <ProgressBar className='progressBarPercentUnvoted' variant='customProgressBarUnvoted' now={percentUnvoted} label={`${percentUnvoted}% UNVOTED`} key={3}/>
-        </ProgressBar>
-
-        <ProgressBar className="progressBarPercentVotedUnvoted">
-          <ProgressBar className='progressBarPercentVoted' variant='info' now={(((votesTotal) / totalMembers) * 100).toFixed(2)} label={`${(((votesTotal) / totalMembers) * 100).toFixed(2)}% VOTED`} key={1}/>
-          <ProgressBar className='progressBarPercentUnvoted2' variant='customProgressBarUnvoted' now={percentUnvoted} label={`${percentUnvoted}% UNVOTED`} key={2}/>
+          <ProgressBar className='progressBarPercentYes' variant='success' now={percentYes * 100} label={`${percentYes} YES`} key={1}/>
+          <ProgressBar className='progressBarPercentNo' variant='danger' now={percentNo * 100} label={`${percentNo} NO`} key={2}/>
+          <ProgressBar className='progressBarPercentUnvoted' variant='customProgressBarUnvoted' now={percentUnvoted * 100} label={`${percentUnvoted} UNVOTED`} key={3}/>
         </ProgressBar>
         <div className='amountVotedLabel'>
           {`${votesTotal}/${totalMembers} Voted`}
@@ -99,21 +94,18 @@ function ProposalConditionalRender(privileges) {
       try {
         const res = await axios.get('http://localhost:8000/get_one_vote', {params : {user_id: USER_ID, proposal_id: PROPOSAL_ID}});
         const vote = (res.data[0].vote);
-        console.log(res);
         if (vote === true) {
           setNonAdminYesButtonClassName(nonAdminPressedYesButtonClassName);
           setNonAdminNoButtonClassName(nonAdminUnpressedNoButtonClassName);
           submitVote(true)
           setVote('Yes');
-          console.log("changed vote to yes");
         } else if (vote === false) {
           setNonAdminYesButtonClassName(nonAdminUnpressedYesButtonClassName);
           setNonAdminNoButtonClassName(nonAdminPressedNoButtonClassName);
           submitVote(false)
           setVote('No');
-          console.log("changed vote to no");
         }
-        //setVote(res.data);
+        // setVote(res.data);
       } catch (error) {
         console.log("Error in fetching a user's vote.");
         console.log(error.stack);
@@ -217,6 +209,7 @@ function ProposalDetails() {
   const handleSubmitComment = async () => {
     if (textboxValue !== '') {
       try {
+        console.log("at least she's trying");
         await axios({
           method: 'post',
           url: 'http://localhost:8000/post_comment',

@@ -4,7 +4,7 @@ const passport = require('passport');
 const session = require('express-session');
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const db = require('./db-connection');
-const { Query } = require('pg');
+const { query } = require('pg');
 require('dotenv').config();
 
 const corsOptions = {
@@ -100,7 +100,7 @@ app.post('/submitProposal', async (req, res) => {
     );
     res.send('Success');
   } catch (error) {
-    console.log(error.stack);
+    console.log(error.stack); 
   }
 });
 
