@@ -7,12 +7,15 @@ import ProposalButton from '../proposalDetails/ProposalButton.js';
 import { Link } from "react-router-dom";
 import axios from 'axios';
 
-function Dashboard(props) {
+let PROPOSAL_ID;
 
+function Dashboard(props) {
+  
   const PRIVILEGES = props.privileges;
   const USER_ID = props.userID;
   
   const [proposals, setProposals] = useState([]);
+  const [vote, setVote] = useState(null);
   const [filteredProposalsList, setFilteredProposalsList] = useState([]);
 
   async function fetchProposals() {
@@ -31,14 +34,18 @@ function Dashboard(props) {
   }
 
   useEffect(() => {
-    fetchProposals();
-  }, []);
+    if (props.userID !== null && props.userID != 0) {
+      fetchProposals();
+    }
+
+  }, [props.userID, vote]);
 
   /* Create states for SearchBar. */
   const [input, setInput] = useState("");
   const [proposalTitle, setProposalTitle] = useState("");
   const [proposalDescription, setProposalDescription] = useState("");
   const [wantedPropID, setWantedPropID] = useState(1);
+
 
    function firstProposal(proposal_lst) {
     try {
@@ -85,65 +92,113 @@ function Dashboard(props) {
     }
   };
 
-  const submitVote = async (voteDecision) => {
-    console.log("Voted");
+  async function submitVote(voteDecision) {
     try {
-      await axios({
-        method: 'post',
-        url: 'http://localhost:8000/submitVote',
-        data: {
-          vote: voteDecision,
-          user_id: USER_ID,
-          proposal_id: wantedPropID
-        }
-      }, );
+      await axios.post('http://localhost:8000/submitVote', {
+        vote: voteDecision,
+        user_id: USER_ID,
+        proposal_id: PROPOSAL_ID
+      });
+      setVote(voteDecision);
     } catch(error) {
-      console.log("There was an error in submitting your vote in dashboard.");
-      console.log(error.stack);
+        console.log("There was an error in submitting your vote.");
+        console.log(error.stack);
     }
   };
 
-  /* VOTING BUTTON STATES */
-  const dashboardPressedYesButtonClassName = 'dashboardPressedYesButton votingMemberVotingButton';
-  const dashboardUnpressedYesButtonClassName = 'dashboardUnpressedYesButton votingMemberVotingButton';
-  const [dashboardYesButtonClassName, setDashboardYesButtonClassName] = useState(dashboardUnpressedYesButtonClassName);
+  /* REACT STATES FOR NONADMIN VOTING BUTTONS */
+  const nonAdminPressedYesButtonClassName = 'pressedYesButton nonAdminButton';
+  const nonAdminUnpressedYesButtonClassName = 'unpressedYesButton nonAdminButton';
+  const [nonAdminYesButtonClassName, setNonAdminYesButtonClassName] = useState(nonAdminUnpressedYesButtonClassName);
 
-  const dashboardPressedNoButtonClassName = 'dashboardPressedNoButton votingMemberVotingButton';
-  const dashboardUnpressedNoButtonClassName = 'dashboardUnpressedNoButton votingMemberVotingButton';
-  const [dashboardNoButtonClassName, setDashboardNoButtonClassName] = useState(dashboardUnpressedNoButtonClassName);
+  const nonAdminPressedNoButtonClassName = 'pressedNoButton nonAdminButton';
+  const nonAdminUnpressedNoButtonClassName = 'unpressedNoButton nonAdminButton';
+  const [nonAdminNoButtonClassName, setNonAdminNoButtonClassName] = useState(nonAdminUnpressedNoButtonClassName);
 
-  function changeToYesButton() {
-    setDashboardYesButtonClassName(dashboardPressedYesButtonClassName);
-    setDashboardNoButtonClassName(dashboardUnpressedNoButtonClassName);
-  }
+  // function changeToYesButton() {
+  //   setDashboardYesButtonClassName(dashboardPressedYesButtonClassName);
+  //   setDashboardNoButtonClassName(dashboardUnpressedNoButtonClassName);
+  // }
 
-  function changeToNoButton() {
-    setDashboardYesButtonClassName(dashboardUnpressedYesButtonClassName);
-    setDashboardNoButtonClassName(dashboardPressedNoButtonClassName);
-  }
+  // function changeToNoButton() {
+  //   setDashboardYesButtonClassName(dashboardUnpressedYesButtonClassName);
+  //   setDashboardNoButtonClassName(dashboardPressedNoButtonClassName);
+  // }
+
+  // async function fetchUserVote() {
+  //   try {
+  //     const res = await axios.get('http://localhost:8000/get_one_vote', {params : {user_id: USER_ID, proposal_id: wantedPropID}});
+  //     console.log(res);
+  //     const vote = (res.data);
+  //     if (vote === true) {
+  //       changeToYesButton();
+  //     } else if (vote === false) {
+  //       changeToNoButton();
+  //     } else {
+  //       setDashboardYesButtonClassName(dashboardUnpressedYesButtonClassName);
+  //       setDashboardNoButtonClassName(dashboardUnpressedNoButtonClassName);
+  //     }
+  //   } catch (error) {
+  //     console.log("Error in fetching a user's vote.");
+  //     console.log(error.stack);
+  //   } 
+  // }
+  
+  // useEffect(() => {
+  //   fetchUserVote();
+  // }, [])
 
   async function fetchUserVote() {
     try {
-      const res = await axios.get('http://localhost:8000/get_one_vote', {params : {user_id: USER_ID, proposal_id: wantedPropID}});
-      console.log(res);
-      const vote = (res.data);
+      const res = await axios.get('http://localhost:8000/get_one_vote', {params : {user_id: USER_ID, proposal_id: PROPOSAL_ID}});
+      const vote = (res.data[0].vote);
       if (vote === true) {
-        changeToYesButton();
+        setNonAdminYesButtonClassName(nonAdminPressedYesButtonClassName);
+        setNonAdminNoButtonClassName(nonAdminUnpressedNoButtonClassName);
+        submitVote(true)
+        setVote('Yes');
       } else if (vote === false) {
-        changeToNoButton();
-      } else {
-        setDashboardYesButtonClassName(dashboardUnpressedYesButtonClassName);
-        setDashboardNoButtonClassName(dashboardUnpressedNoButtonClassName);
+        setNonAdminYesButtonClassName(nonAdminUnpressedYesButtonClassName);
+        setNonAdminNoButtonClassName(nonAdminPressedNoButtonClassName);
+        submitVote(false)
+        setVote('No');
       }
     } catch (error) {
       console.log("Error in fetching a user's vote.");
       console.log(error.stack);
     } 
+  };
+
+  async function setVoteButtons() {
+    try {
+      let proposalID = wantedPropID;
+      proposals.forEach(proposal => {
+        if (proposal.id === proposalID) {
+          setVote(proposal.vote);
+          console.log(vote);
+        }
+      }); 
+
+      if (vote === true) {
+        setNonAdminYesButtonClassName(nonAdminPressedYesButtonClassName);
+        setNonAdminNoButtonClassName(nonAdminUnpressedNoButtonClassName);
+        submitVote(true)
+        setVote('Yes');
+      } else if (vote === false) {
+        setNonAdminYesButtonClassName(nonAdminUnpressedYesButtonClassName);
+        setNonAdminNoButtonClassName(nonAdminPressedNoButtonClassName);
+        submitVote(false)
+        setVote('No');
+      } else {
+        setNonAdminYesButtonClassName(nonAdminUnpressedYesButtonClassName);
+        setNonAdminNoButtonClassName(nonAdminUnpressedNoButtonClassName);
+        setVote('Undecided');
+      }
+    } catch (error) {
+      console.log("Error in fetching a user's vote.");
+      console.log(error.stack);
+    }
   }
-  
-  useEffect(() => {
-    fetchUserVote();
-  }, [])
 
   return (
     PRIVILEGES !== null && 
@@ -157,6 +212,7 @@ function Dashboard(props) {
                         changeDescription={(x) => {setProposalDescription(x)}}
                         changeWantedPropID={(x) => {setWantedPropID(x)}}
                         changeTextBoxValue={() => {setTextboxValue("")}}
+                        changeVoteButton={() => {setVoteButtons()}}
                         title={proposal.title} 
                         description={proposal.description_text}
                         vote={proposal.voted ? proposal.voted : ""} 
@@ -185,22 +241,21 @@ function Dashboard(props) {
             </div>
             {(PRIVILEGES === 'Voting Member')
               ? <div className="dashboardVotingButtonsContainer">
-                  <div className='leftDashboardButtonContainer dashboardButtonContainer'>
-                    <ProposalButton buttonText='Vote Yes' buttonClassName={dashboardYesButtonClassName}
-                      onClickFunc={() => {submitVote(true);
-                                          fetchProposals();
-                                          setDashboardYesButtonClassName(dashboardPressedYesButtonClassName);
-                                          setDashboardNoButtonClassName(dashboardUnpressedNoButtonClassName);}}
+                  <div className='leftButtonContainer buttonContainer'>
+                    <ProposalButton buttonText='Vote Yes' buttonClassName={nonAdminYesButtonClassName}
+                      onClickFunc={() => {setNonAdminYesButtonClassName(nonAdminPressedYesButtonClassName);
+                                          setNonAdminNoButtonClassName(nonAdminUnpressedNoButtonClassName);
+                                          submitVote(true, USER_ID)
+                                          setVote('Yes');}}
                     />
                   </div>
-
-                  <div className='rightDashboardButtonContainer dashboardButtonContainer'>
-                    <ProposalButton buttonText='Vote No' buttonClassName={dashboardNoButtonClassName}
-                      onClickFunc={() => {submitVote(false);
-                                          fetchProposals();
-                                          setDashboardYesButtonClassName(dashboardUnpressedYesButtonClassName);
-                                          setDashboardNoButtonClassName(dashboardPressedNoButtonClassName);}}
-                    />
+                <div className='rightButtonContainer buttonContainer'>
+                  <ProposalButton buttonText='Vote No' buttonClassName={nonAdminNoButtonClassName}
+                    onClickFunc={() => {setNonAdminYesButtonClassName(nonAdminUnpressedYesButtonClassName);
+                                        setNonAdminNoButtonClassName(nonAdminPressedNoButtonClassName);
+                                        submitVote(false, USER_ID)
+                                        setVote('No');}}
+                  />
                   </div>
                 </div>
               : null

@@ -41,11 +41,29 @@ function rowDashboardMode(props) {
                 onClick={() => {props.changeTitle(props.title);
                                 props.changeDescription(props.description);
                                 props.changeWantedPropID(props.id);
-                                props.changeTextBoxValue()}
+                                props.changeTextBoxValue();
+                                props.changeVoteButton();}
             }>
             
                 <div className="proposal-title">{props.title}</div>
                 <img src={yesIcon} alt='Vote Status' className="vote-status"></img>
+    
+            </div>
+            
+        );
+    } else if (boolean == null) {
+        return (
+            <div
+                className="proposal-box"
+                id={props.title}
+                onClick={() => {props.changeTitle(props.title);
+                                props.changeDescription(props.description);
+                                props.changeWantedPropID(props.id);
+                                props.changeTextBoxValue();
+                                props.changeVoteButton()}
+            }>
+            
+                <div className="proposal-title">{props.title}</div>
     
             </div>
             
@@ -65,7 +83,6 @@ function rowDashboardMode(props) {
                 <img src={noIcon} alt='Vote Status' className="vote-status"></img>
     
             </div>
-            
         );
     }
 }

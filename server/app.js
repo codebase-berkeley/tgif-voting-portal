@@ -66,13 +66,10 @@ passport.deserializeUser(async (userID, done) => {
 
 function verifyAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
-    console.log("AUTHENTICATED - ACCESSING ENDPOINT", req.path);
     next();
   } else if (req.path.startsWith('/auth')) {
-    console.log("NOT AUTHENTICATED BUT ACCESSING AUTH ENDPOINT - PROCEEDING TO ENDPOINT", req.path);
     next();
   } else {
-    console.log("ERROR 403: NOT AUTHENTICATED - CANNOT ACCESS ENDPOINT", req.path);
     res.status(403).send();
   }
 }
@@ -221,6 +218,10 @@ app.get('/get_proposals_and_user_votes', async (req, res) => {
       'SELECT * FROM proposals LEFT JOIN (SELECT * FROM votes WHERE votes.user_id=$1) as votes_subset ON votes_subset.proposal_id = proposals.id', 
       [userID],
     );
+    query.rows.forEach(proposal => {
+      proposal.user_id = userID;
+    });
+    console.log(query.rows);
     res.send(query.rows);
   } catch (error) {
     console.log(error.stack);
