@@ -278,7 +278,7 @@ function ProposalDetails(props) {
           </div>
           <div className="proposalSponsor">Sponsor: {proposalSponsor}</div>
           <div className={(PRIVILEGES === 'Non-Voting Member') ? ' proposalDescription nonVotingProposalDescription' : "proposalDescription"}>{proposalDescription}</div>
-          <a className="proposalLink" href = {proposalLink}>{proposalTitle}.pdf</a>
+          <a className="proposalLink" href={proposalLink} target='_blank' rel='noreferrer'>Link to Full Proposal 🔗</a>
           <div className="proposalAmount"> Proposal Amount: {`$${proposalAmount}`}</div>
           {ProposalConditionalRender(PRIVILEGES, USER_ID)}
         </div>

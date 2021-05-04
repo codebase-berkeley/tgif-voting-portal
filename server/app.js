@@ -98,7 +98,7 @@ app.get('/auth/isauth', (req, res) => {
 
 app.get('/getProfile', async (req, res) => {
   try {
-    if(req.isAuthenticated()) {
+    if (req.isAuthenticated()) {
       res.send(req.user);
     } else {
       res.status(403);
