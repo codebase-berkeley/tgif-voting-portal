@@ -3,17 +3,17 @@ import PopUpModal from '../../components/popupModal/PopUpModal';
 import React, { useState, useEffect } from 'react';
 import Row from '../../components/row/Row';
 import TrashCan from '../../assets/trashCan.svg';
-// import xIcon from '../../assets/xIcon.svg';
 
 import axios from "axios";
 import ProposalButton from '../proposalDetails/ProposalButton';
 
-// replace with other team's svgs later
 import enterEditingIcon from '../../assets/edit.svg';
 import exitEditingIcon from '../../assets/checkmark.svg';
 
 
-function ProposalManagement() {
+function ProposalManagement(props) {
+  let PRIVILEGES = props.privileges;
+
   const [proposals, setProposals] = useState([]);
   async function fetchProposals() {
 		const response = await axios.get('http://localhost:8000/getProposals');
@@ -30,11 +30,6 @@ function ProposalManagement() {
     fetchProposals();
   }, []);
 
-  const [proposalListDefault, setProposalListDefault] = useState(proposals);
-
-  const [proposalTitle, setProposalTitle] = useState("Mapping for Environmental Justice");
-  const [proposalDescription, setProposalDescription] = useState("MEJ is an initiative to create interactive and publicly-accessible maps displaying environmental justice data for individual states.");  
-
   const[textboxValueTitle, setTextboxValueTitle] = React.useState('');
   const[textboxValueDescript, setTextboxValueDescript] = React.useState('');
   const[textboxValueLink, setTextboxValueLink] = React.useState('');
@@ -45,10 +40,10 @@ function ProposalManagement() {
   const [propsIdsToDelete, setPropsIdsToDelete] = useState([]);
     
     /* REACT STATES FOR EDIT BUTTONS */
-  var enterEditingIconDefault = 'enterDeletingIconContainer';
-  var exitEditingIconDefault = 'exitDeletingIconContainer';
-  var deleteIconDefault = 'trashCan';
-  var IS_MANAGEMENT = true;
+  const enterEditingIconDefault = 'enterDeletingIconContainer';
+  const exitEditingIconDefault = 'exitDeletingIconContainer';
+  const deleteIconDefault = 'trashCan';
+  const IS_MANAGEMENT = true;
 
   const [enterEditingIconClassName, setEnterEditingIconClassName] = useState(enterEditingIconDefault);
   const [exitEditingIconClassName, setExitEditingIconClassName] = useState(exitEditingIconDefault + ' hide');
@@ -134,7 +129,7 @@ function ProposalManagement() {
       }
     }
     if (numSelected > 0) {
-      var pluralOrSingular = (numSelected > 1) ? 'proposals' : 'proposal';
+      let pluralOrSingular = (numSelected > 1) ? 'proposals' : 'proposal';
       setRemoveModal(
         <PopUpModal
           warning={`Are you sure you want to delete ${numSelected} ${pluralOrSingular}?`}
@@ -159,26 +154,38 @@ function ProposalManagement() {
     setPropsIdsToDelete(updatedPropsIdsToDelete);
   }
   
-
-    return (
-        
-      <div className = "ProposalManagementOuter">
-        
-            <div className="proposalManagement">
-            <div className="proposalManagementLeft"> 
-              <div className="icons">
-                <div className={enterEditingIconClassName}>
-                  <input className='enterDeletingIconContainer proposalsButton' type="image" src={enterEditingIcon} alt='Enter Deleting Mode'
-                  title='Edit Members' onClick={enterDeletingMode}/>
+    if (PRIVILEGES === 'Admin') {
+      return (
+        <div className = "ProposalManagementOuter">
+              <div className="proposalManagement">
+              <div className="proposalManagementLeft"> 
+                <div className="icons">
+                  <div className={enterEditingIconClassName}>
+                    <input className='enterDeletingIconContainer proposalsButton' type="image" src={enterEditingIcon} alt='Enter Deleting Mode'
+                    title='Edit Members' onClick={enterDeletingMode}/>
+                  </div>
+                  <div className={exitEditingIconClassName}>
+                    <input className='exitDeletingIconContainer proposalsButton' type="image" src={exitEditingIcon} alt='Exit Deleting Mode'
+                    title='Finish Editing' onClick={exitDeletingMode}/>
+                  </div>
+                  <div className={deleteIconClassName}>   
+                            <input className='removeProposalsButton proposalsButton' type="image" src={TrashCan} alt='Delete Selected Proposals'
+                            title='Remove Selected Proposals' onClick={handleRemoveProposals}/>
+                  </div>
                 </div>
-                <div className={exitEditingIconClassName}>
-                  <input className='exitDeletingIconContainer proposalsButton' type="image" src={exitEditingIcon} alt='Exit Deleting Mode'
-                  title='Finish Editing' onClick={exitDeletingMode}/>
-                </div>
-                <div className={deleteIconClassName}>   
-                          <input className='removeProposalsButton proposalsButton' type="image" src={TrashCan} alt='Delete Selected Proposals'
-                          title='Remove Selected Proposals' onClick={handleRemoveProposals}/>
-                </div>
+                  <div className="proposal-list">
+                      {proposals.map((proposal) => (
+                          <Row 
+                            title={proposal.title} 
+                            description={proposal.description}
+                            mode={deletingMode}
+                            isManagement= {IS_MANAGEMENT}
+                            vote={proposal.voted ? proposal.voted : ""}
+                            proposalCheckboxOnClick = {() => {updateProposalDeleteIDs(proposal);}}
+                              isChecked={proposal.checked}
+                            />
+                      ))}
+                  </div>
               </div>
                 <div className="proposal-list">
                     {proposals.map((proposal) => (
@@ -212,9 +219,14 @@ function ProposalManagement() {
                 </div>
             </div>
         </div>
-        {removeModal}
-      </div>  
-    );
+      )
+    } else {
+      return (
+        <div>
+          You do not have permission to view this page. Contact a portal admin if you believe this is a mistake.
+        </div>
+      )
+    }
 }
 
 export default ProposalManagement;

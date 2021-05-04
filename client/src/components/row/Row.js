@@ -25,7 +25,6 @@ function rowDeletionMode(props) {
                 </div>
                 <div className="rightRow">
                     <div className="proposal-title">{props.title}</div>
-                    <img src={yesIcon} alt='Vote Status' className="vote-status"></img>
                 </div>
             </div>
         </div>
@@ -78,7 +77,6 @@ function rowDefaultMode(props) {
             id={props.title}
         >
             <div className="proposal-title">{props.title}</div>
-
         </div>
         
     );

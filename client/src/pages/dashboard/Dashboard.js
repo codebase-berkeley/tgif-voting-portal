@@ -7,16 +7,16 @@ import ProposalButton from '../proposalDetails/ProposalButton.js';
 import { Link } from "react-router-dom";
 import axios from 'axios';
 
-var PRIVILEGES ='Voting Member';
+function Dashboard(props) {
 
-function Dashboard() {
-
+  const PRIVILEGES = props.privileges;
+  const USER_ID = props.userID;
+  
   const [proposals, setProposals] = useState([]);
-
   const [filteredProposalsList, setFilteredProposalsList] = useState([]);
 
   async function fetchProposals() {
-		const response = await axios.get('http://localhost:8000/get_proposals_and_user_votes');
+		const response = await axios.get('http://localhost:8000/get_proposals_and_user_votes', {params : {user_id: USER_ID}});
     //TODO change this endpoint to be a new endpoint that joins proposals with votes (filtered to just the users votes)
     let proposal_lst = response.data;
     /* Initialize false <checked> attributes for each proposal; used for checkbox tracking
@@ -64,7 +64,7 @@ function Dashboard() {
     } 
   }
 
-  const[textboxValue, setTextboxValue] = React.useState('');
+  const[textboxValue, setTextboxValue] = useState('');
 
   const handleSubmit = async () => {
     if (textboxValue !== '') {
@@ -73,7 +73,7 @@ function Dashboard() {
           method: 'post',
           url: 'http://localhost:8000/post_comment',
           data: {
-            user_id: 2,
+            user_id: USER_ID,
             proposal_id: wantedPropID,
             comment_text: textboxValue
           }
@@ -86,13 +86,14 @@ function Dashboard() {
   };
 
   const submitVote = async (voteDecision) => {
+    console.log("Voted");
     try {
       await axios({
         method: 'post',
         url: 'http://localhost:8000/submitVote',
         data: {
           vote: voteDecision,
-          user_id: 2,
+          user_id: USER_ID,
           proposal_id: wantedPropID
         }
       }, );
@@ -122,9 +123,8 @@ function Dashboard() {
   }
 
   async function fetchUserVote() {
-    //TODO: replace user_id in params of axios request w/ actual deserialized id from cookie (instead of hardcoded 1)
     try {
-      const res = await axios.get('http://localhost:8000/get_one_vote', {params : {user_id: 2, proposal_id: wantedPropID}});
+      const res = await axios.get('http://localhost:8000/get_one_vote', {params : {user_id: USER_ID, proposal_id: wantedPropID}});
       const vote = (res.data);
       if (vote === true) {
         changeToYesButton();
@@ -145,6 +145,7 @@ function Dashboard() {
   }, [])
 
   return (
+    PRIVILEGES !== null && 
     <div className="dashboard">
       <div className="dashboard-screen">
         <div className="left-proposals">
@@ -185,7 +186,7 @@ function Dashboard() {
               ? <div className="dashboardVotingButtonsContainer">
                   <div className='leftDashboardButtonContainer dashboardButtonContainer'>
                     <ProposalButton buttonText='Vote Yes' buttonClassName={dashboardYesButtonClassName}
-                      onClickFunc={() => {submitVote(true)
+                      onClickFunc={() => {submitVote(true);
                                           setDashboardYesButtonClassName(dashboardPressedYesButtonClassName);
                                           setDashboardNoButtonClassName(dashboardUnpressedNoButtonClassName);}}
                     />
@@ -193,7 +194,7 @@ function Dashboard() {
 
                   <div className='rightDashboardButtonContainer dashboardButtonContainer'>
                     <ProposalButton buttonText='Vote No' buttonClassName={dashboardNoButtonClassName}
-                      onClickFunc={() => {submitVote(false)
+                      onClickFunc={() => {submitVote(false);
                                           setDashboardYesButtonClassName(dashboardUnpressedYesButtonClassName);
                                           setDashboardNoButtonClassName(dashboardPressedNoButtonClassName);}}
                     />

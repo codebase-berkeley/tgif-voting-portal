@@ -8,10 +8,10 @@ import exitEditingIcon from '../../assets/checkmark.svg';
 import PopUpModal from '../../components/popupModal/PopUpModal.js'
 import './Members.css';
 
-//TODO: Replace with appropriate value once login backend is done and user's id + privileges persist throughout entire portal
-var PRIVILEGES = 'Admin';
+function Members(props) {
 
-function Members() {
+  const PRIVILEGES = props.privileges;
+
   const memberNameTextboxRef = useRef();
   const memberEmailTextboxRef = useRef();
   const memberRoleTextboxRef = useRef();
@@ -26,10 +26,10 @@ function Members() {
 
 
   /* REACT STATES FOR EDIT/ADD/REMOVE BUTTONS */
-  var addIconDefault = 'addMemberIconContainer';
-  var removeIconDefault = 'removeMembersIconContainer';
-  var enterEditingIconDefault = 'enterEditingIconContainer';
-  var exitEditingIconDefault = 'exitEditingIconContainer';
+  const addIconDefault = 'addMemberIconContainer';
+  const removeIconDefault = 'removeMembersIconContainer';
+  const enterEditingIconDefault = 'enterEditingIconContainer';
+  const exitEditingIconDefault = 'exitEditingIconContainer';
 
   const [addIconClassName, setAddIconClassName] = useState(addIconDefault + ' hide');
   const [removeIconClassName, setRemoveIconClassName] = useState(removeIconDefault + ' hide');
@@ -146,7 +146,7 @@ function Members() {
     }
 
     if (numSelected > 0) {
-      var pluralOrSingular = (numSelected > 1) ? 'members' : 'member';
+      let pluralOrSingular = (numSelected > 1) ? 'members' : 'member';
       setRemoveModal(
         <PopUpModal
           warning={`Are you sure you want to remove ${numSelected} ${pluralOrSingular}?`}

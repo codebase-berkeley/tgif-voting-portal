@@ -88,6 +88,27 @@ app.get('/auth/google/fail',
 app.get('/auth/google',
   passport.authenticate('google', { scope: ['profile', 'email'] }));
 
+app.get('/isauth', (req, res) => {
+  if (req.isAuthenticated()) {
+    res.send(true);
+  } else {
+    res.send(false);
+  }
+});
+
+app.get('/getProfile', async (req, res) => {
+  try {
+    if(req.isAuthenticated()) {
+      res.send(req.user);
+    } else {
+      res.status(403);
+      res.send("you shouldn't be here. ew!!!!");
+    }
+  } catch (error) {
+    console.log(error.stack);
+  }
+})
+
 app.post('/submitProposal', async (req, res) => {
   try {
     const { title } = req.body;
@@ -194,9 +215,11 @@ app.get('/get_one_vote', async (req, res) => {
 });
 
 app.get('/get_proposals_and_user_votes', async (req, res) => {
+  const userID = req.query.user_id;
   try {
     const query = await db.query(
-      'SELECT * FROM proposals LEFT JOIN (SELECT * FROM votes WHERE votes.user_id=$1) as votes_subset ON votes_subset.proposal_id = proposals.id', [1],
+      'SELECT * FROM proposals LEFT JOIN (SELECT * FROM votes WHERE votes.user_id=$1) as votes_subset ON votes_subset.proposal_id = proposals.id', 
+      [userID],
     );
     res.send(query.rows);
   } catch (error) {

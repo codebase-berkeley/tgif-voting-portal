@@ -3,9 +3,8 @@ import {ReactComponent as TGIFIcon} from './../../assets/TGIF.svg'
 import {Link} from 'react-router-dom';
 import axios from 'axios';
 
-var PRIVILEGES = 'Admin';
-
-function Navbar() {
+function Navbar(props) {
+  const PRIVILEGES = props.privileges;
   async function logout() {
     try {
       const res = await axios.get('http://localhost:8000/logout');

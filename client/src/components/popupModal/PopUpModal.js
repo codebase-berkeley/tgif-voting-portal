@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 
 
 function PopUpModal(props) { 
-  var displayModalDefault = 'page';
+  const displayModalDefault = 'page';
   const [displayModalClassName, setDisplayModalClassName] = useState(displayModalDefault);
 
   function closeModal() {
