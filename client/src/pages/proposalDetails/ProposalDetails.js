@@ -8,7 +8,7 @@ import axios from "axios";
 
 var PRIVILEGES = 'Admin';
 let PROPOSAL_ID;
-var USER_ID = 1;
+var USER_ID = 2;
 
 const ANON = 'John Doe';
 
@@ -224,6 +224,7 @@ function ProposalDetails() {
       } catch(error) {
           console.log(error);
       }
+      console.log("submitted comment in propsDetails!!");
       setTextboxValue('');
       fetchCommentData();
     }
@@ -304,7 +305,7 @@ function ProposalDetails() {
           </div>
           <div className='postCommentBottomContainer postCommentContainer'>
             <div className='postCommentButtonContainer'>
-              <ProposalButton buttonClassName='genericProposalButton' buttonText='Post' onClickFunc={handleSubmitComment}/>
+              <ProposalButton buttonClassName='genericProposalButtonDets' buttonText='Post' onClickFunc={handleSubmitComment}/>
             </div>
           </div>
         </div>

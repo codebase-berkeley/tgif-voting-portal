@@ -73,7 +73,7 @@ function Dashboard() {
           method: 'post',
           url: 'http://localhost:8000/post_comment',
           data: {
-            user_id: 1,
+            user_id: 2,
             proposal_id: wantedPropID,
             comment_text: textboxValue
           }
@@ -92,7 +92,7 @@ function Dashboard() {
         url: 'http://localhost:8000/submitVote',
         data: {
           vote: voteDecision,
-          user_id: 1,
+          user_id: 2,
           proposal_id: wantedPropID
         }
       }, );
@@ -124,8 +124,8 @@ function Dashboard() {
   async function fetchUserVote() {
     //TODO: replace user_id in params of axios request w/ actual deserialized id from cookie (instead of hardcoded 1)
     try {
-      const res = await axios.get('http://localhost:8000/get_one_vote', {params : {user_id: 1, proposal_id: wantedPropID}});
-      const vote = (res.data[0].vote);
+      const res = await axios.get('http://localhost:8000/get_one_vote', {params : {user_id: 2, proposal_id: wantedPropID}});
+      const vote = (res.data);
       if (vote === true) {
         changeToYesButton();
       } else if (vote === false) {
@@ -150,7 +150,7 @@ function Dashboard() {
         <div className="left-proposals">
           <SearchBar keyword={input} setKeyword={updateInput}/>
           <div className="proposal-list">
-            {filteredProposalsList.map((proposal) => (
+              {filteredProposalsList.map((proposal) => (
                         <Row changeTitle={(x) => {setProposalTitle(x)}}
                         changeDescription={(x) => {setProposalDescription(x)}}
                         changeWantedPropID={(x) => {setWantedPropID(x)}}
@@ -161,7 +161,7 @@ function Dashboard() {
                         id={proposal.id}
                         voteStatus={proposal.vote}
                         />
-                    ))}
+                ))}
           </div>
           <div className="shadows" aria-hidden="true"></div>
         </div>

@@ -265,7 +265,7 @@ a:active {color :var(--buttonGreenOpaque);}
     bottom: 1px;
 }
 
-.genericProposalButton {
+.genericProposalButtonDets {
     background-color: var(--buttonGreen);
     border-radius: 5px;
     color: white;
@@ -273,7 +273,7 @@ a:active {color :var(--buttonGreenOpaque);}
     border-width: 0px;
 }
 
-.genericProposalButton:active {
+.genericProposalButtonDets:active {
     background-color: var(--buttonGreenOpaque);
 }
 

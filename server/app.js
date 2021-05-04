@@ -4,7 +4,7 @@ const passport = require('passport');
 const session = require('express-session');
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const db = require('./db-connection');
-const { query } = require('pg');
+const { Query } = require('pg');
 require('dotenv').config();
 
 const corsOptions = {
@@ -113,6 +113,7 @@ app.post('/post_comment', async (req, res) => {
     await db.query(
       'INSERT INTO comments (time_posted, user_id, comment_text, proposal_id) VALUES ($1, $2, $3, $4);', [timePosted, userId, commentText, proposalId],
     );
+    console.log("comment posted!!");
     res.send('Success');
   } catch (error) {
     console.log(error.stack);
@@ -209,6 +210,7 @@ app.get('/get_comments', async (req, res) => {
     const query = await db.query(
       'SELECT * FROM comments WHERE proposal_id=$1;', [proposalId],
     );
+    res.send(query.rows);
   } catch (error) {
     console.log(error.stack);
   }
