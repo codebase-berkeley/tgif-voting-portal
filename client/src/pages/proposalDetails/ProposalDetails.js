@@ -6,13 +6,17 @@ import React, { useState, useEffect } from 'react';
 import {useParams} from 'react-router-dom';
 import axios from "axios";
 
-var PRIVILEGES = 'Voting Member';
 let PROPOSAL_ID;
-var USER_ID = 1;
+const ANON = 'Anonymous';
 
-const ANON = 'John Doe';
+function ProposalConditionalRender(privileges, userID) {
 
-function ProposalConditionalRender(privileges) {
+  /* REACT STATES FOR PROGRESS BARS */ 
+  const [votesTotal, setVotesTotal] = useState(0);
+  const [totalMembers, setTotalMembers] = useState(1);
+  const [percentNo, setPercentNo] = useState(0);
+  const [percentYes, setPercentYes] = useState(0);
+  const [percentUnvoted, setPercentUnvoted] = useState(0);
 
   /** Handles pressing the voteYes/voteNo buttons by adding the appropriate vote
    * to the database; works for both admin and nonadmin voting buttons. */
@@ -20,7 +24,7 @@ function ProposalConditionalRender(privileges) {
     try {
       await axios.post('http://localhost:8000/submitVote', {
         vote: voteDecision,
-        user_id: USER_ID,
+        user_id: userID,
         proposal_id: PROPOSAL_ID
       });
     } catch(error) {
@@ -29,15 +33,7 @@ function ProposalConditionalRender(privileges) {
     }
   }
 
-
-  function AdminProposalConditionalRender() {
-    /* REACT STATES FOR PROGRESS BARS */ 
-    const [votesTotal, setVotesTotal] = useState(0);
-    const [totalMembers, setTotalMembers] = useState(1);
-    const [percentNo, setPercentNo] = useState(0);
-    const [percentYes, setPercentYes] = useState(0);
-    const [percentUnvoted, setPercentUnvoted] = useState(0);
-
+  function AdminProposalConditionalRender(userID) {
     async function fetchVoteInfo() {
       const res = await axios.get('http://localhost:8000/getAllVotes', {params : {proposal_id: PROPOSAL_ID}});
       const voteYes = res.data.amountYes;
@@ -45,26 +41,27 @@ function ProposalConditionalRender(privileges) {
       const totalVotingMembers = res.data.totalVotingMembers;
       setVotesTotal(votesTotal);
       setTotalMembers(totalVotingMembers);
-      setPercentYes(((voteYes / totalVotingMembers) * 100).toFixed(2));
-      setPercentNo((((votesTotal - voteYes) / totalVotingMembers) * 100).toFixed(2));
-      setPercentUnvoted((((totalVotingMembers - votesTotal) / totalVotingMembers) * 100).toFixed(2));
+      setPercentYes(voteYes);
+      setPercentNo(votesTotal - voteYes);
+      setPercentUnvoted(totalVotingMembers - votesTotal);
     }
     
     useEffect(() => {
       fetchVoteInfo();
+      const intervalId = setInterval(() => {  //assign interval to a variable to clear it.
+        fetchVoteInfo();
+      }, 3000)
+    
+      return () => clearInterval(intervalId); 
+     
     }, [])
 
     return (
       <div className='progressFrame'>
         <ProgressBar className='progressBarYesNoUnvoted'>
-          <ProgressBar className='progressBarPercentYes' variant='success' now={percentYes} label={`${percentYes}% YES`} key={1}/>
-          <ProgressBar className='progressBarPercentNo' variant='danger' now={percentNo} label={`${percentNo}% NO`} key={2}/>
-          <ProgressBar className='progressBarPercentUnvoted' variant='customProgressBarUnvoted' now={percentUnvoted} label={`${percentUnvoted}% UNVOTED`} key={3}/>
-        </ProgressBar>
-
-        <ProgressBar className="progressBarPercentVotedUnvoted">
-          <ProgressBar className='progressBarPercentVoted' variant='info' now={percentYes + percentNo} label={`${percentYes + percentNo}% VOTED`} key={1}/>
-          <ProgressBar className='progressBarPercentUnvoted2' variant='customProgressBarUnvoted' now={percentUnvoted} label={`${percentUnvoted}% UNVOTED`} key={2}/>
+          <ProgressBar className='progressBarPercentYes' variant='success' now={percentYes * 100} label={`${percentYes} YES`} key={1}/>
+          <ProgressBar className='progressBarPercentNo' variant='danger' now={percentNo * 100} label={`${percentNo} NO`} key={2}/>
+          <ProgressBar className='progressBarPercentUnvoted' variant='customProgressBarUnvoted' now={percentUnvoted * 100} label={`${percentUnvoted} UNVOTED`} key={3}/>
         </ProgressBar>
         <div className='amountVotedLabel'>
           {`${votesTotal}/${totalMembers} Voted`}
@@ -75,7 +72,7 @@ function ProposalConditionalRender(privileges) {
 
   /** Returns the proposalConditionalRender for Voting Members,
   * which contains the non-admin voting buttons */
-  function VotingMemberProposalConditionalRender() {
+  function VotingMemberProposalConditionalRender(userID) {
     PROPOSAL_ID = useParams().id;
 
     /* REACT STATES FOR NONADMIN VOTING BUTTONS */
@@ -91,23 +88,20 @@ function ProposalConditionalRender(privileges) {
 
     async function fetchUserVote() {
       try {
-        const res = await axios.get('http://localhost:8000/get_one_vote', {params : {user_id: USER_ID, proposal_id: PROPOSAL_ID}});
+        const res = await axios.get('http://localhost:8000/get_one_vote', {params : {user_id: userID, proposal_id: PROPOSAL_ID}});
         const vote = (res.data[0].vote);
-        console.log(res);
         if (vote === true) {
           setNonAdminYesButtonClassName(nonAdminPressedYesButtonClassName);
           setNonAdminNoButtonClassName(nonAdminUnpressedNoButtonClassName);
           submitVote(true)
           setVote('Yes');
-          console.log("changed vote to yes");
         } else if (vote === false) {
           setNonAdminYesButtonClassName(nonAdminUnpressedYesButtonClassName);
           setNonAdminNoButtonClassName(nonAdminPressedNoButtonClassName);
           submitVote(false)
           setVote('No');
-          console.log("changed vote to no");
         }
-        //setVote(res.data);
+        // setVote(res.data);
       } catch (error) {
         console.log("Error in fetching a user's vote.");
         console.log(error.stack);
@@ -116,26 +110,34 @@ function ProposalConditionalRender(privileges) {
     
     useEffect(() => {
       fetchUserVote();
+      const intervalId = setInterval(() => {  //assign interval to a variable to clear it.
+        fetchUserVote();
+      }, 3000)
+    
+      return () => clearInterval(intervalId);
+     
     }, [])
     
     return (
       <div className='proposalConditional'>
         <div className='NonVotingMemberConditionalContainer'>
-          <div className='leftButtonContainer buttonContainer'>
-            <ProposalButton buttonText='Vote Yes' buttonClassName={nonAdminYesButtonClassName}
-              onClickFunc={() => {setNonAdminYesButtonClassName(nonAdminPressedYesButtonClassName);
-                                  setNonAdminNoButtonClassName(nonAdminUnpressedNoButtonClassName);
-                                  submitVote(true)
-                                  setVote('Yes');}}
-            />
-          </div>
-          <div className='rightButtonContainer buttonContainer'>
-            <ProposalButton buttonText='Vote No' buttonClassName={nonAdminNoButtonClassName}
-              onClickFunc={() => {setNonAdminYesButtonClassName(nonAdminUnpressedYesButtonClassName);
-                                  setNonAdminNoButtonClassName(nonAdminPressedNoButtonClassName);
-                                  submitVote(false)
-                                  setVote('No');}}
-            />
+          <div className='VoteButtonsWrapperDetails'>
+            <div className='leftButtonContainer buttonContainer'>
+              <ProposalButton buttonText='Vote Yes' buttonClassName={nonAdminYesButtonClassName}
+                onClickFunc={() => {setNonAdminYesButtonClassName(nonAdminPressedYesButtonClassName);
+                                    setNonAdminNoButtonClassName(nonAdminUnpressedNoButtonClassName);
+                                    submitVote(true, userID)
+                                    setVote('Yes');}}
+              />
+            </div>
+            <div className='rightButtonContainer buttonContainer'>
+              <ProposalButton buttonText='Vote No' buttonClassName={nonAdminNoButtonClassName}
+                onClickFunc={() => {setNonAdminYesButtonClassName(nonAdminUnpressedYesButtonClassName);
+                                    setNonAdminNoButtonClassName(nonAdminPressedNoButtonClassName);
+                                    submitVote(false, userID)
+                                    setVote('No');}}
+              />
+            </div>
           </div>
           <div className='yourVoteLabel'>
             Your Vote: {vote}
@@ -152,15 +154,19 @@ function ProposalConditionalRender(privileges) {
   - Non-Voting Members: Nothing
   */
   if (privileges === 'Admin') {
-    return AdminProposalConditionalRender();
+    return AdminProposalConditionalRender(userID);
   } else if (privileges === 'Voting Member') {
-      return VotingMemberProposalConditionalRender();
+      return VotingMemberProposalConditionalRender(userID);
   } else {
     return null;
   }
 }
 
-function ProposalDetails() {
+function ProposalDetails(props) {
+  
+  const PRIVILEGES = props.privileges;
+  const USER_ID = props.userID;
+
   PROPOSAL_ID = useParams().id;
   /** Takes in a number and converts it to a dollar amount string w/ commas
   * placed appropriately (every 3 spaces); does not include dollar sign */
@@ -180,9 +186,7 @@ function ProposalDetails() {
   async function fetchProposalDetails() { 
     try {
       const response = await axios.get('http://localhost:8000/get_proposal_details', 
-                                          { params: 
-                                            { proposal_id: PROPOSAL_ID }
-                                          });
+                                          { params: { proposal_id: PROPOSAL_ID }});
       setProposalTitle(response.data.title);
       setProposalDescription(response.data.description_text);
       setProposalLink(response.data.link);
@@ -198,8 +202,8 @@ function ProposalDetails() {
     try {
       const response = await axios.get("http://localhost:8000/get_comments", 
                                           { params: 
-                                            { proposal_id: PROPOSAL_ID }
-                                          });      
+                                            { proposal_id: PROPOSAL_ID,}
+                                          });     
       setComments(response.data);
     } catch (error) {
         console.error(error);
@@ -209,6 +213,7 @@ function ProposalDetails() {
   const handleSubmitComment = async () => {
     if (textboxValue !== '') {
       try {
+        console.log("at least she's trying");
         await axios({
           method: 'post',
           url: 'http://localhost:8000/post_comment',
@@ -219,9 +224,9 @@ function ProposalDetails() {
           }
         });
       } catch(error) {
-
           console.log(error);
       }
+      console.log("submitted comment in propsDetails!!");
       setTextboxValue('');
       fetchCommentData();
     }
@@ -230,12 +235,19 @@ function ProposalDetails() {
   useEffect(() => {
     fetchCommentData();
     fetchProposalDetails();
-  }, []);
+    const intervalId = setInterval(() => {  //assign interval to a variable to clear it.
+      fetchCommentData();
+      fetchProposalDetails();
+    }, 3000)
+  
+    return () => clearInterval(intervalId);
+   
+  }, [])
 
   /** Takes in an ISO timestamp string (as received from the database) and converts it
    * to a readable and meaningful string in the format 'MM/DD/YY HH:MM AM/PM' */
   function timestampToReadableDate(timestamp) {
-    var militaryToTwelveHrTime = (hour) => {
+    const militaryToTwelveHrTime = (hour) => {
       if (hour === 0) {
         return 12;
       } else if (hour <= 12) {
@@ -244,15 +256,15 @@ function ProposalDetails() {
         return hour - 12;
       }
     }
-    var twoDigitMins = (mins) => mins < 10 ? `0${mins}` : `${mins}`;
-    var dateObject = new Date(timestamp);
-    var rawHour = dateObject.getHours();
-    var month = dateObject.getMonth() + 1;
-    var day = dateObject.getDate();
-    var year = dateObject.getFullYear().toString().substr(-2);
-    var hour = militaryToTwelveHrTime(rawHour);
-    var minutes = twoDigitMins(dateObject.getMinutes());
-    var amOrPm = ((hour) => hour < 12 ? 'am' : 'pm')(rawHour);
+    const twoDigitMins = (mins) => mins < 10 ? `0${mins}` : `${mins}`;
+    const dateObject = new Date(timestamp);
+    const rawHour = dateObject.getHours();
+    const month = dateObject.getMonth() + 1;
+    const day = dateObject.getDate();
+    const year = dateObject.getFullYear().toString().substr(-2);
+    const hour = militaryToTwelveHrTime(rawHour);
+    const minutes = twoDigitMins(dateObject.getMinutes());
+    const amOrPm = ((hour) => hour < 12 ? 'am' : 'pm')(rawHour);
     return `${month}/${day}/${year} ${hour}:${minutes}${amOrPm}`;
   }
 
@@ -268,8 +280,9 @@ function ProposalDetails() {
           <div className={(PRIVILEGES === 'Non-Voting Member') ? ' proposalDescription nonVotingProposalDescription' : "proposalDescription"}>{proposalDescription}</div>
           <a className="proposalLink" href = {proposalLink}>{proposalTitle}.pdf</a>
           <div className="proposalAmount"> Proposal Amount: {`$${proposalAmount}`}</div>
+          {ProposalConditionalRender(PRIVILEGES, USER_ID)}
         </div>
-        {ProposalConditionalRender(PRIVILEGES)}
+        
       </div>
 
       <div className="discussion">
@@ -280,7 +293,7 @@ function ProposalDetails() {
         <div className='discussionCommentsView'>
         {comments.map((comment) => (
           // tgif.sql for comments on IS_ADMIN in comments db
-          <DiscussionPost isAdmin={PRIVILEGES==='Admin'} userName={ANON} text={comment.comment_text} time={timestampToReadableDate(comment.time_posted)}/>
+          <DiscussionPost isAdmin={PRIVILEGES==='Admin'} userName={ANON} id={comment.user_id} text={comment.comment_text} time={timestampToReadableDate(comment.time_posted)}/>
         ))}
         </div>
         <div className='discussionPostCommentFrame'>
@@ -294,7 +307,7 @@ function ProposalDetails() {
           </div>
           <div className='postCommentBottomContainer postCommentContainer'>
             <div className='postCommentButtonContainer'>
-              <ProposalButton buttonClassName='genericProposalButton' buttonText='Post' onClickFunc={handleSubmitComment}/>
+              <ProposalButton buttonClassName='genericProposalButtonDets' buttonText='Post' onClickFunc={handleSubmitComment}/>
             </div>
           </div>
         </div>

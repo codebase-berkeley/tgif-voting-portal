@@ -6,11 +6,55 @@
     align-content: flex-wrap;
 }
 
+.ProposalManagementOuter {
+    display: absolute;
+}
+
 .proposalManagementLeft{
     margin-left: 2em;
-    margin-top: 2em;
     width: 30%;
     height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+
+.icons {
+    position: relative;
+    width: 100%;
+    height: 3em;
+}
+
+.enterDeletingIconContainer {
+    position: absolute;
+    right: 8px;
+    top: 8px;
+    font-size: 0em;
+    z-index: 2;
+}
+
+.exitDeletingIconContainer {
+    position: absolute;
+    right: 8px;
+    top: 8px;
+    font-size: 0em;
+    z-index: 2;
+}
+
+.trashCan {
+    position: absolute;
+    width: 100%;
+    left: 8px;
+    top: 8px;
+    z-index: 2;
+}
+
+.removeProposalsButton {
+    position: absolute;
+    left: 8px;
+    width: 3em;
+    height: 3em;
+    z-index: 2;
 }
 
 .proposalManagementRight {
@@ -28,7 +72,7 @@
 
 .PMtextboxes{
     width: 100%;
-    height: 10%;
+    height: 7%;
 }
 
 .titleNewProposal{
@@ -47,19 +91,19 @@
     display: flex;
     justify-content: space-between;
     width:100%;
-    height: 6%;
+    height: 7%;
 }
 
 .linkNewDescription{
     height:100%;
-    width: 40%;
+    width: 100%;
     margin-right:3%;
     padding-left: 1%;
 }
 
 .moneyNewDescription{
     height:100%;
-    width: 15%;
+    width: 70%;
     margin-right: 50%;
     padding-left: 1%;
 }
@@ -73,12 +117,13 @@
     flex-direction: column;
     align-items:center;
     padding: 3%;
-    
 }
 
 textarea {
     resize: none;
     padding: 5px;
+    font-size: 1em;
+    font-family: 'IBM Plex Sans', sans-serif;
   }
 
 .createProposalButton {
@@ -99,35 +144,6 @@ textarea {
     resize: none;
 }
 
-.enterDeletingIconContainer {
-    position: absolute;
-    /* right: 50px; */
-    /* bottom: 0px; */
-    width: 20%;
-    right: 5px;
-    top: 45px;
-    font-size: 0em;
-    z-index: 2;
-}
-
-.exitDeletingIconContainer {
-    position: absolute;
-    width: 20%;
-    right: 5px;
-    top: 45px;
-    font-size: 0em;
-    z-index: 2;
-}
-
-.removeProposalsButton {
-    position: absolute;
-    width: 3em;
-    height: 3em;
-    left: 5px;
-    top: 45px;
-    z-index: 2;
-}
-
 .proposalsButton:focus {
     outline: 0;
 }
@@ -146,5 +162,5 @@ textarea:focus {
 
 .genericProposalButton {
     background: var(--black);
-    width: 10%;
+    width: 100%;
 }

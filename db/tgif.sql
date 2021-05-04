@@ -25,7 +25,7 @@ CREATE TABLE proposals
     amount_requested FLOAT,
     link VARCHAR,
     description_text VARCHAR
-    -- checked BOOLEAN
+-- checked BOOLEAN
 );
 
 CREATE TABLE comments
@@ -74,7 +74,10 @@ VALUES
     ('Admin', 'Jessie McGinley', 'jessiem23@berkeley.edu', 'Program Associate'),
     ('Admin', 'Elizabeth Reyes', 'elizabeth.reyes@berkeley.edu', 'Program Associate'),
     ('Admin', 'Joshua Kay', 'joshua_kay@berkeley.edu', 'Program Associate'),
-    ('Admin', 'Paola Noun', 'paolanoun@berkeley.edu', 'Boss Ass Bitch'),
+    ('Admin', 'Paola Noun', 'paolanoun@berkeley.edu', 'Boss'),
+    ('Admin', 'Jorge Morales', 'jorge.morales@berkeley.edu', 'CEO'),
+    ('Admin', 'Kennedy Chung', 'kennedychung@berkeley.edu', 'The Big Cheese'),
+    ('Voting Member', 'Kalea', 'kaleachu@berkeley.edu', 'The Big Cheese'),
 
     ('Voting Member', 'Moe Sumino', 'moe_sumino@berkeley.edu', 'ASUC Representative'),
     ('Voting Member', 'Youjin Chung', 'youjin.chung@berkeley.edu', 'Faculty Representative'),
@@ -83,7 +86,7 @@ VALUES
     ('Voting Member', 'Nanticha Lutt', 'nan_lutt@berkeley.edu', 'GA Representative'),
     ('Voting Member', 'Elias Garcia', 'elias_garcia@berkeley.edu', 'Environmental Justice - At Large Representative'),
     ('Voting Member', 'Sarah Bui', 'sarah.bui123@berkeley.edu', 'Undergraduate At-Large Representative'),
-    ('Voting Member', 'Kennedy Chung', 'kennedychung@berkeley.edu', 'Garbage Cleaner'),
+    ('Voting Member', 'Anh Pham', 'anhvpham@berkeley.edu', 'rubiks cube master 9000'),
 
     ('Non-Voting Member', 'Sharon Daraphonhdeth', 'sharon@berkeley.edu', 'SERC Director'),
     ('Non-Voting Member', 'Harrisen Min', 'harrisen.min@berkeley.edu', 'Committee on Student Fees Representative'),
@@ -117,9 +120,10 @@ INSERT INTO votes(vote, user_id, proposal_id)
 VALUES
     (TRUE, 1, 1),
     (FALSE, 2, 2),
-    (FALSE, 3, 1);
+    (FALSE, 3, 1),
+    (TRUE, 2, 4);
 
 INSERT INTO comments(time_posted, comment_text, user_id, proposal_id)
 VALUES
-    ('2021-04-05T10:27:41.886Z', 'I really like the mission of this proposal. It will add a lot of value to the community. I think we should approve it!', 2, 1),
-    ('2021-04-06T13:45:41.886Z', 'I don''t quite see the value in funding this proposal. Let''s not approve it', 3, 1);
+    ('2021-04-05T10:27:41.886Z', 'I really want to be highlighted', 2, 1),
+    ('2021-04-06T13:45:41.886Z', 'I don''t quite see the value in being highlighted', 3, 1),

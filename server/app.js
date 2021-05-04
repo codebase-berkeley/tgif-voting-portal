@@ -64,6 +64,21 @@ passport.deserializeUser(async (userID, done) => {
   done(null, query.rows[0]);
 });
 
+function verifyAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+    console.log("AUTHENTICATED - ACCESSING ENDPOINT", req.path);
+    next();
+  } else if (req.path.startsWith('/auth')) {
+    console.log("NOT AUTHENTICATED BUT ACCESSING AUTH ENDPOINT - PROCEEDING TO ENDPOINT", req.path);
+    next();
+  } else {
+    console.log("ERROR 403: NOT AUTHENTICATED - CANNOT ACCESS ENDPOINT", req.path);
+    res.status(403).send();
+  }
+}
+
+app.use(verifyAuthenticated);
+
 app.get('/auth/google/callback',
   passport.authenticate('google', { failureRedirect: '/auth/google/fail' }), (req, res) => res.redirect('http://localhost:3000/dashboard'));
 
@@ -73,23 +88,26 @@ app.get('/auth/google/fail',
 app.get('/auth/google',
   passport.authenticate('google', { scope: ['profile', 'email'] }));
 
-app.get('/isauth', (req, res) => {
+app.get('/auth/isauth', (req, res) => {
   if (req.isAuthenticated()) {
-    res.send(req.user);
+    res.send(true);
   } else {
-    res.send('NOT AUTHENTICATED');
+    res.send(false);
   }
 });
 
-function verifyAuthenticated(req, res) {
-  if (req.isAuthenticated()) {
-    console.log("user is authenticated!");
-  } else {
-    console.log("User not authenticated; about to throw 403");
-    // res.status(403);
-    // res.render();
+app.get('/getProfile', async (req, res) => {
+  try {
+    if(req.isAuthenticated()) {
+      res.send(req.user);
+    } else {
+      res.status(403);
+      res.send("you shouldn't be here. ew!!!!");
+    }
+  } catch (error) {
+    console.log(error.stack);
   }
-}
+})
 
 app.post('/submitProposal', async (req, res) => {
   try {
@@ -103,13 +121,11 @@ app.post('/submitProposal', async (req, res) => {
     );
     res.send('Success');
   } catch (error) {
-    console.log(error.stack);
+    console.log(error.stack); 
   }
 });
 
 app.post('/post_comment', async (req, res) => {
-  verifyAuthenticated(req, res);
-  console.log("Posted comment!");
   try {
     const timePosted = new Date();
     const userId = req.body.user_id;
@@ -118,6 +134,7 @@ app.post('/post_comment', async (req, res) => {
     await db.query(
       'INSERT INTO comments (time_posted, user_id, comment_text, proposal_id) VALUES ($1, $2, $3, $4);', [timePosted, userId, commentText, proposalId],
     );
+    console.log("comment posted!!");
     res.send('Success');
   } catch (error) {
     console.log(error.stack);
@@ -197,13 +214,25 @@ app.get('/get_one_vote', async (req, res) => {
   }
 });
 
+app.get('/get_proposals_and_user_votes', async (req, res) => {
+  const userID = req.query.user_id;
+  try {
+    const query = await db.query(
+      'SELECT * FROM proposals LEFT JOIN (SELECT * FROM votes WHERE votes.user_id=$1) as votes_subset ON votes_subset.proposal_id = proposals.id', 
+      [userID],
+    );
+    res.send(query.rows);
+  } catch (error) {
+    console.log(error.stack);
+  }
+});
+
 app.get('/get_comments', async (req, res) => {
   try {
     const proposalId = req.query.proposal_id;
     const query = await db.query(
       'SELECT * FROM comments WHERE proposal_id=$1;', [proposalId],
     );
-    console.log(query.rows)
     res.send(query.rows);
   } catch (error) {
     console.log(error.stack);
@@ -224,21 +253,19 @@ app.get('/getProposals', async (req, res) => {
 app.delete('/delete_proposal', async (req, res) => {
   try {
     const propsList = req.body.listOfIDs;
-    console.log("propslist:");
-    console.log(propsList);
     await db.query(
-      `DELETE FROM comments WHERE proposal_id IN (${propsList})`, 
+      `DELETE FROM comments WHERE proposal_id IN (${propsList})`,
     );
     await db.query(
-      `DELETE FROM votes WHERE proposal_id IN (${propsList})`, 
+      `DELETE FROM votes WHERE proposal_id IN (${propsList})`,
     );
     await db.query(
-      `DELETE FROM proposals WHERE id IN (${propsList})`, 
+      `DELETE FROM proposals WHERE id IN (${propsList})`,
     );
     res.send('Deleted selected proposals.');
   } catch (error) {
     console.log(error.stack);
-  } 
+  }
 });
 
 app.post('/submitVote', async (req, res) => {
@@ -305,6 +332,15 @@ app.get('/get_proposal_details', async (req, res) => {
       'SELECT * FROM proposals WHERE id=$1;', [proposalId],
     );
     res.send(query.rows[0]);
+  } catch (error) {
+    console.log(error.stack);
+  }
+});
+
+app.get('/logout', async (req, res) => {
+  try {
+    req.logout();
+    res.send();
   } catch (error) {
     console.log(error.stack);
   }

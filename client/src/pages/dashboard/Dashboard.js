@@ -2,31 +2,32 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import Row from '../../components/row/Row';
 import './Dashboard.css';
-import noIcon from '../../assets/Delete.svg';
-import yesIcon from '../../assets/Checked.svg';
 import SearchBar from '../../components/searchbar/SearchBar';
 import ProposalButton from '../proposalDetails/ProposalButton.js';
 import { Link } from "react-router-dom";
 import axios from 'axios';
 
-var PRIVILEGES ='Voting Member';
+function Dashboard(props) {
 
-function Dashboard() {
-
+  const PRIVILEGES = props.privileges;
+  const USER_ID = props.userID;
+  
   const [proposals, setProposals] = useState([]);
-
   const [filteredProposalsList, setFilteredProposalsList] = useState([]);
 
   async function fetchProposals() {
-		const response = await axios.get('http://localhost:8000/getProposals');
+		const response = await axios.get('http://localhost:8000/get_proposals_and_user_votes', {params : {user_id: USER_ID}});
+    //TODO change this endpoint to be a new endpoint that joins proposals with votes (filtered to just the users votes)
     let proposal_lst = response.data;
     /* Initialize false <checked> attributes for each proposal; used for checkbox tracking
     while in deleting mode */
+    console.log("proposals fetched " + proposal_lst)
     proposal_lst.forEach(proposal => {
       proposal_lst.checked = false;
     })
 		setProposals(proposal_lst);
     setFilteredProposalsList(proposal_lst);
+    firstProposal(proposal_lst);
   }
 
   useEffect(() => {
@@ -35,10 +36,21 @@ function Dashboard() {
 
   /* Create states for SearchBar. */
   const [input, setInput] = useState("");
-
   const [proposalTitle, setProposalTitle] = useState("");
   const [proposalDescription, setProposalDescription] = useState("");
   const [wantedPropID, setWantedPropID] = useState(1);
+
+   function firstProposal(proposal_lst) {
+    try {
+      const title = proposal_lst[0].title;
+      const description = proposal_lst[0].description_text;
+      setProposalTitle(title);
+      setProposalDescription(description); 
+    }
+    catch (error) {
+      console.log(error);
+    }
+  }
 
   /* Updates proposalList state based on SearchBar input. */
   const updateInput = (input) => {
@@ -52,8 +64,7 @@ function Dashboard() {
     } 
   }
 
-
-  const[textboxValue, setTextboxValue] = React.useState('');
+  const[textboxValue, setTextboxValue] = useState('');
 
   const handleSubmit = async () => {
     if (textboxValue !== '') {
@@ -62,7 +73,7 @@ function Dashboard() {
           method: 'post',
           url: 'http://localhost:8000/post_comment',
           data: {
-            user_id: 1,
+            user_id: USER_ID,
             proposal_id: wantedPropID,
             comment_text: textboxValue
           }
@@ -75,18 +86,17 @@ function Dashboard() {
   };
 
   const submitVote = async (voteDecision) => {
+    console.log("Voted");
     try {
       await axios({
         method: 'post',
         url: 'http://localhost:8000/submitVote',
         data: {
           vote: voteDecision,
-          user_id: 1,
+          user_id: USER_ID,
           proposal_id: wantedPropID
         }
-      });
-      console.log("successfully submitted vote");
-      console.log(voteDecision);
+      }, );
     } catch(error) {
       console.log("There was an error in submitting your vote in dashboard.");
       console.log(error.stack);
@@ -102,19 +112,25 @@ function Dashboard() {
   const dashboardUnpressedNoButtonClassName = 'dashboardUnpressedNoButton votingMemberVotingButton';
   const [dashboardNoButtonClassName, setDashboardNoButtonClassName] = useState(dashboardUnpressedNoButtonClassName);
 
+  function changeToYesButton() {
+    setDashboardYesButtonClassName(dashboardPressedYesButtonClassName);
+    setDashboardNoButtonClassName(dashboardUnpressedNoButtonClassName);
+  }
+
+  function changeToNoButton() {
+    setDashboardYesButtonClassName(dashboardUnpressedYesButtonClassName);
+    setDashboardNoButtonClassName(dashboardPressedNoButtonClassName);
+  }
+
   async function fetchUserVote() {
     try {
-      const res = await axios.get('http://localhost:8000/get_one_vote', {params : {user_id: 1, proposal_id: wantedPropID}});
-      const vote = (res.data[0].vote);
+      const res = await axios.get('http://localhost:8000/get_one_vote', {params : {user_id: USER_ID, proposal_id: wantedPropID}});
       console.log(res);
+      const vote = (res.data);
       if (vote === true) {
-        setDashboardYesButtonClassName(dashboardPressedYesButtonClassName);
-        setDashboardNoButtonClassName(dashboardUnpressedNoButtonClassName);
-        console.log("changed vote to yes");
+        changeToYesButton();
       } else if (vote === false) {
-        setDashboardYesButtonClassName(dashboardUnpressedYesButtonClassName);
-        setDashboardNoButtonClassName(dashboardPressedNoButtonClassName);
-        console.log("changed vote to no");
+        changeToNoButton();
       } else {
         setDashboardYesButtonClassName(dashboardUnpressedYesButtonClassName);
         setDashboardNoButtonClassName(dashboardUnpressedNoButtonClassName);
@@ -130,12 +146,13 @@ function Dashboard() {
   }, [])
 
   return (
+    PRIVILEGES !== null && 
     <div className="dashboard">
       <div className="dashboard-screen">
         <div className="left-proposals">
           <SearchBar keyword={input} setKeyword={updateInput}/>
           <div className="proposal-list">
-            {filteredProposalsList.map((proposal) => (
+              {filteredProposalsList.map((proposal) => (
                         <Row changeTitle={(x) => {setProposalTitle(x)}}
                         changeDescription={(x) => {setProposalDescription(x)}}
                         changeWantedPropID={(x) => {setWantedPropID(x)}}
@@ -144,10 +161,9 @@ function Dashboard() {
                         description={proposal.description_text}
                         vote={proposal.voted ? proposal.voted : ""} 
                         id={proposal.id}
-                        
+                        voteStatus={proposal.vote}
                         />
-                    ))}
-            
+                ))}
           </div>
           <div className="shadows" aria-hidden="true"></div>
         </div>
@@ -171,7 +187,8 @@ function Dashboard() {
               ? <div className="dashboardVotingButtonsContainer">
                   <div className='leftDashboardButtonContainer dashboardButtonContainer'>
                     <ProposalButton buttonText='Vote Yes' buttonClassName={dashboardYesButtonClassName}
-                      onClickFunc={() => {submitVote(true)
+                      onClickFunc={() => {submitVote(true);
+                                          fetchProposals();
                                           setDashboardYesButtonClassName(dashboardPressedYesButtonClassName);
                                           setDashboardNoButtonClassName(dashboardUnpressedNoButtonClassName);}}
                     />
@@ -179,7 +196,8 @@ function Dashboard() {
 
                   <div className='rightDashboardButtonContainer dashboardButtonContainer'>
                     <ProposalButton buttonText='Vote No' buttonClassName={dashboardNoButtonClassName}
-                      onClickFunc={() => {submitVote(false)
+                      onClickFunc={() => {submitVote(false);
+                                          fetchProposals();
                                           setDashboardYesButtonClassName(dashboardUnpressedYesButtonClassName);
                                           setDashboardNoButtonClassName(dashboardPressedNoButtonClassName);}}
                     />

@@ -1,10 +1,18 @@
 import './NavBar.css';
 import {ReactComponent as TGIFIcon} from './../../assets/TGIF.svg'
 import {Link} from 'react-router-dom';
+import axios from 'axios';
 
-var PRIVILEGES = 'Admin';
-
-function Navbar() {
+function Navbar(props) {
+  const PRIVILEGES = props.privileges;
+  async function logout() {
+    try {
+      const res = await axios.get('http://localhost:8000/logout');
+      console.log("Succesfully logged out from FRONTEND")
+    } catch (error) {
+      console.log(error);
+    }
+  }
   return (
     <div className="top-navbar" id='nav'>
         <div className = "navbar-content">
@@ -22,8 +30,8 @@ function Navbar() {
                     </Link>
                     </>
                 : null}
-                    <Link to="/dashboard">
-                        <button className="nav-page" type="submit">Logout</button>
+                    <Link to="/login">
+                        <button className="nav-page" type="submit" onClick={logout}>Logout</button>
                     </Link>
             </div>
         </div>

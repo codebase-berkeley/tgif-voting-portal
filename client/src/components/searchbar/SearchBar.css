@@ -3,7 +3,7 @@
     margin-left: 1rem;
     margin-right: 1rem;
     align-items: center;
-    justify-content: start;
+    justify-content: flex-start;
     height: 5%;
     width: 75%;
     color: #757575;
