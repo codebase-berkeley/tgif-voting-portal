@@ -86,8 +86,13 @@ a:active {color :var(--buttonGreenOpaque);}
     height: 100%;
     width: 100%;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     position: relative;
+}
+
+.VoteButtonsWrapperDetails {
+    display: flex;
+    flex-direction: row;
 }
 
 .proposalDescription {

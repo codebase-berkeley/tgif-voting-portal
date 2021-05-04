@@ -125,6 +125,7 @@ function Dashboard(props) {
   async function fetchUserVote() {
     try {
       const res = await axios.get('http://localhost:8000/get_one_vote', {params : {user_id: USER_ID, proposal_id: wantedPropID}});
+      console.log(res);
       const vote = (res.data);
       if (vote === true) {
         changeToYesButton();
@@ -187,6 +188,7 @@ function Dashboard(props) {
                   <div className='leftDashboardButtonContainer dashboardButtonContainer'>
                     <ProposalButton buttonText='Vote Yes' buttonClassName={dashboardYesButtonClassName}
                       onClickFunc={() => {submitVote(true);
+                                          fetchProposals();
                                           setDashboardYesButtonClassName(dashboardPressedYesButtonClassName);
                                           setDashboardNoButtonClassName(dashboardUnpressedNoButtonClassName);}}
                     />
@@ -195,6 +197,7 @@ function Dashboard(props) {
                   <div className='rightDashboardButtonContainer dashboardButtonContainer'>
                     <ProposalButton buttonText='Vote No' buttonClassName={dashboardNoButtonClassName}
                       onClickFunc={() => {submitVote(false);
+                                          fetchProposals();
                                           setDashboardYesButtonClassName(dashboardUnpressedYesButtonClassName);
                                           setDashboardNoButtonClassName(dashboardPressedNoButtonClassName);}}
                     />

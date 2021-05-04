@@ -22,7 +22,7 @@ function App() {
   async function getAuthenticatedUserProfile() {
     // check auth status
     try {
-      let response = await axios.get('http://localhost:8000/isauth', {withCredentials: true});
+      let response = await axios.get('http://localhost:8000/auth/isauth', {withCredentials: true});
       let authStatus = response.data;
       if (!authStatus) {
         setIsAuth(false);

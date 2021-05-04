@@ -88,7 +88,7 @@ app.get('/auth/google/fail',
 app.get('/auth/google',
   passport.authenticate('google', { scope: ['profile', 'email'] }));
 
-app.get('/isauth', (req, res) => {
+app.get('/auth/isauth', (req, res) => {
   if (req.isAuthenticated()) {
     res.send(true);
   } else {

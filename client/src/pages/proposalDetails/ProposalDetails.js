@@ -121,21 +121,23 @@ function ProposalConditionalRender(privileges, userID) {
     return (
       <div className='proposalConditional'>
         <div className='NonVotingMemberConditionalContainer'>
-          <div className='leftButtonContainer buttonContainer'>
-            <ProposalButton buttonText='Vote Yes' buttonClassName={nonAdminYesButtonClassName}
-              onClickFunc={() => {setNonAdminYesButtonClassName(nonAdminPressedYesButtonClassName);
-                                  setNonAdminNoButtonClassName(nonAdminUnpressedNoButtonClassName);
-                                  submitVote(true, userID)
-                                  setVote('Yes');}}
-            />
-          </div>
-          <div className='rightButtonContainer buttonContainer'>
-            <ProposalButton buttonText='Vote No' buttonClassName={nonAdminNoButtonClassName}
-              onClickFunc={() => {setNonAdminYesButtonClassName(nonAdminUnpressedYesButtonClassName);
-                                  setNonAdminNoButtonClassName(nonAdminPressedNoButtonClassName);
-                                  submitVote(false, userID)
-                                  setVote('No');}}
-            />
+          <div className='VoteButtonsWrapperDetails'>
+            <div className='leftButtonContainer buttonContainer'>
+              <ProposalButton buttonText='Vote Yes' buttonClassName={nonAdminYesButtonClassName}
+                onClickFunc={() => {setNonAdminYesButtonClassName(nonAdminPressedYesButtonClassName);
+                                    setNonAdminNoButtonClassName(nonAdminUnpressedNoButtonClassName);
+                                    submitVote(true, userID)
+                                    setVote('Yes');}}
+              />
+            </div>
+            <div className='rightButtonContainer buttonContainer'>
+              <ProposalButton buttonText='Vote No' buttonClassName={nonAdminNoButtonClassName}
+                onClickFunc={() => {setNonAdminYesButtonClassName(nonAdminUnpressedYesButtonClassName);
+                                    setNonAdminNoButtonClassName(nonAdminPressedNoButtonClassName);
+                                    submitVote(false, userID)
+                                    setVote('No');}}
+              />
+            </div>
           </div>
           <div className='yourVoteLabel'>
             Your Vote: {vote}
