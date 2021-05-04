@@ -60,8 +60,12 @@ a:active {color :var(--buttonGreenOpaque);}
 .proposalAmount {
     font-family: 'Lexend Deca', sans-serif;
     color: var(--black);
-    margin: 0px 0px 5px 0px;
+    margin: 10px 0px 5px 0px;
     font-size: 1.1em;
+}
+
+.propConditionalRender {
+    margin-top: 75px;
 }
     
 .proposalTitle{
@@ -82,8 +86,13 @@ a:active {color :var(--buttonGreenOpaque);}
     height: 100%;
     width: 100%;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     position: relative;
+}
+
+.VoteButtonsWrapperDetails {
+    display: flex;
+    flex-direction: row;
 }
 
 .proposalDescription {
@@ -261,7 +270,7 @@ a:active {color :var(--buttonGreenOpaque);}
     bottom: 1px;
 }
 
-.genericProposalButton {
+.genericProposalButtonDets {
     background-color: var(--buttonGreen);
     border-radius: 5px;
     color: white;
@@ -269,7 +278,7 @@ a:active {color :var(--buttonGreenOpaque);}
     border-width: 0px;
 }
 
-.genericProposalButton:active {
+.genericProposalButtonDets:active {
     background-color: var(--buttonGreenOpaque);
 }
 

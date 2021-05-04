@@ -11,6 +11,7 @@ import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 
+axios.defaults.withCredentials = true;
 
 function App() {
   const [isAuth, setIsAuth] = useState(false);
@@ -21,7 +22,7 @@ function App() {
   async function getAuthenticatedUserProfile() {
     // check auth status
     try {
-      let response = await axios.get('http://localhost:8000/isauth', {withCredentials: true});
+      let response = await axios.get('http://localhost:8000/auth/isauth', {withCredentials: true});
       let authStatus = response.data;
       if (!authStatus) {
         setIsAuth(false);

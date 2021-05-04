@@ -139,7 +139,7 @@ function Members(props) {
             }
           });
         } catch(error) {
-            console.log(error);
+          console.log(error);
         }
         fetchMembers();
       }

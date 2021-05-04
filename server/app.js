@@ -64,6 +64,21 @@ passport.deserializeUser(async (userID, done) => {
   done(null, query.rows[0]);
 });
 
+function verifyAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+    console.log("AUTHENTICATED - ACCESSING ENDPOINT", req.path);
+    next();
+  } else if (req.path.startsWith('/auth')) {
+    console.log("NOT AUTHENTICATED BUT ACCESSING AUTH ENDPOINT - PROCEEDING TO ENDPOINT", req.path);
+    next();
+  } else {
+    console.log("ERROR 403: NOT AUTHENTICATED - CANNOT ACCESS ENDPOINT", req.path);
+    res.status(403).send();
+  }
+}
+
+app.use(verifyAuthenticated);
+
 app.get('/auth/google/callback',
   passport.authenticate('google', { failureRedirect: '/auth/google/fail' }), (req, res) => res.redirect('http://localhost:3000/dashboard'));
 
@@ -73,7 +88,7 @@ app.get('/auth/google/fail',
 app.get('/auth/google',
   passport.authenticate('google', { scope: ['profile', 'email'] }));
 
-app.get('/isauth', (req, res) => {
+app.get('/auth/isauth', (req, res) => {
   if (req.isAuthenticated()) {
     res.send(true);
   } else {
@@ -106,7 +121,7 @@ app.post('/submitProposal', async (req, res) => {
     );
     res.send('Success');
   } catch (error) {
-    console.log(error.stack);
+    console.log(error.stack); 
   }
 });
 
@@ -119,6 +134,7 @@ app.post('/post_comment', async (req, res) => {
     await db.query(
       'INSERT INTO comments (time_posted, user_id, comment_text, proposal_id) VALUES ($1, $2, $3, $4);', [timePosted, userId, commentText, proposalId],
     );
+    console.log("comment posted!!");
     res.send('Success');
   } catch (error) {
     console.log(error.stack);
@@ -178,6 +194,32 @@ app.get('/getUserVotes', async (req, res) => {
   try {
     const query = await db.query(
       'SELECT user_id, COUNT(*) FROM votes GROUP BY user_id;',
+    );
+    res.send(query.rows);
+  } catch (error) {
+    console.log(error.stack);
+  }
+});
+
+app.get('/get_one_vote', async (req, res) => {
+  try {
+    const userID = req.query.user_id;
+    const proposalId = req.query.proposal_id;
+    const query = await db.query(
+      'SELECT * FROM votes WHERE user_id=$1 AND proposal_id=$2;', [userID, proposalId],
+    );
+    res.send(query.rows);
+  } catch (error) {
+    console.log(error.stack);
+  }
+});
+
+app.get('/get_proposals_and_user_votes', async (req, res) => {
+  const userID = req.query.user_id;
+  try {
+    const query = await db.query(
+      'SELECT * FROM proposals LEFT JOIN (SELECT * FROM votes WHERE votes.user_id=$1) as votes_subset ON votes_subset.proposal_id = proposals.id', 
+      [userID],
     );
     res.send(query.rows);
   } catch (error) {
@@ -290,6 +332,15 @@ app.get('/get_proposal_details', async (req, res) => {
       'SELECT * FROM proposals WHERE id=$1;', [proposalId],
     );
     res.send(query.rows[0]);
+  } catch (error) {
+    console.log(error.stack);
+  }
+});
+
+app.get('/logout', async (req, res) => {
+  try {
+    req.logout();
+    res.send();
   } catch (error) {
     console.log(error.stack);
   }

@@ -18,17 +18,6 @@ function ProposalConditionalRender(privileges, userID) {
   const [percentYes, setPercentYes] = useState(0);
   const [percentUnvoted, setPercentUnvoted] = useState(0);
 
-  /* REACT STATES FOR NONADMIN VOTING BUTTONS */
-  const nonAdminPressedYesButtonClassName = 'pressedYesButton nonAdminButton';
-  const nonAdminUnpressedYesButtonClassName = 'unpressedYesButton nonAdminButton';
-  const [nonAdminYesButtonClassName, setNonAdminYesButtonClassName] = useState(nonAdminUnpressedYesButtonClassName);
-
-  const nonAdminPressedNoButtonClassName = 'pressedNoButton nonAdminButton';
-  const nonAdminUnpressedNoButtonClassName = 'unpressedNoButton nonAdminButton';
-  const [nonAdminNoButtonClassName, setNonAdminNoButtonClassName] = useState(nonAdminUnpressedNoButtonClassName);
-
-  const [vote, setVote] = useState('Undecided');
-
   /** Handles pressing the voteYes/voteNo buttons by adding the appropriate vote
    * to the database; works for both admin and nonadmin voting buttons. */
   async function submitVote(voteDecision) {
@@ -52,26 +41,27 @@ function ProposalConditionalRender(privileges, userID) {
       const totalVotingMembers = res.data.totalVotingMembers;
       setVotesTotal(votesTotal);
       setTotalMembers(totalVotingMembers);
-      setPercentYes(((voteYes / totalVotingMembers) * 100).toFixed(2));
-      setPercentNo((((votesTotal - voteYes) / totalVotingMembers) * 100).toFixed(2));
-      setPercentUnvoted((((totalVotingMembers - votesTotal) / totalVotingMembers) * 100).toFixed(2));
+      setPercentYes(voteYes);
+      setPercentNo(votesTotal - voteYes);
+      setPercentUnvoted(totalVotingMembers - votesTotal);
     }
     
     useEffect(() => {
       fetchVoteInfo();
+      const intervalId = setInterval(() => {  //assign interval to a variable to clear it.
+        fetchVoteInfo();
+      }, 3000)
+    
+      return () => clearInterval(intervalId); 
+     
     }, [])
 
     return (
       <div className='progressFrame'>
         <ProgressBar className='progressBarYesNoUnvoted'>
-          <ProgressBar className='progressBarPercentYes' variant='success' now={percentYes} label={`${percentYes}% YES`} key={1}/>
-          <ProgressBar className='progressBarPercentNo' variant='danger' now={percentNo} label={`${percentNo}% NO`} key={2}/>
-          <ProgressBar className='progressBarPercentUnvoted' variant='customProgressBarUnvoted' now={percentUnvoted} label={`${percentUnvoted}% UNVOTED`} key={3}/>
-        </ProgressBar>
-
-        <ProgressBar className="progressBarPercentVotedUnvoted">
-          <ProgressBar className='progressBarPercentVoted' variant='info' now={percentYes + percentNo} label={`${percentYes + percentNo}% VOTED`} key={1}/>
-          <ProgressBar className='progressBarPercentUnvoted2' variant='customProgressBarUnvoted' now={percentUnvoted} label={`${percentUnvoted}% UNVOTED`} key={2}/>
+          <ProgressBar className='progressBarPercentYes' variant='success' now={percentYes * 100} label={`${percentYes} YES`} key={1}/>
+          <ProgressBar className='progressBarPercentNo' variant='danger' now={percentNo * 100} label={`${percentNo} NO`} key={2}/>
+          <ProgressBar className='progressBarPercentUnvoted' variant='customProgressBarUnvoted' now={percentUnvoted * 100} label={`${percentUnvoted} UNVOTED`} key={3}/>
         </ProgressBar>
         <div className='amountVotedLabel'>
           {`${votesTotal}/${totalMembers} Voted`}
@@ -83,24 +73,71 @@ function ProposalConditionalRender(privileges, userID) {
   /** Returns the proposalConditionalRender for Voting Members,
   * which contains the non-admin voting buttons */
   function VotingMemberProposalConditionalRender(userID) {
+    PROPOSAL_ID = useParams().id;
+
+    /* REACT STATES FOR NONADMIN VOTING BUTTONS */
+    const nonAdminPressedYesButtonClassName = 'pressedYesButton nonAdminButton';
+    const nonAdminUnpressedYesButtonClassName = 'unpressedYesButton nonAdminButton';
+    const [nonAdminYesButtonClassName, setNonAdminYesButtonClassName] = useState(nonAdminUnpressedYesButtonClassName);
+
+    const nonAdminPressedNoButtonClassName = 'pressedNoButton nonAdminButton';
+    const nonAdminUnpressedNoButtonClassName = 'unpressedNoButton nonAdminButton';
+    const [nonAdminNoButtonClassName, setNonAdminNoButtonClassName] = useState(nonAdminUnpressedNoButtonClassName);
+
+    const [vote, setVote] = useState('Undecided');
+
+    async function fetchUserVote() {
+      try {
+        const res = await axios.get('http://localhost:8000/get_one_vote', {params : {user_id: userID, proposal_id: PROPOSAL_ID}});
+        const vote = (res.data[0].vote);
+        if (vote === true) {
+          setNonAdminYesButtonClassName(nonAdminPressedYesButtonClassName);
+          setNonAdminNoButtonClassName(nonAdminUnpressedNoButtonClassName);
+          submitVote(true)
+          setVote('Yes');
+        } else if (vote === false) {
+          setNonAdminYesButtonClassName(nonAdminUnpressedYesButtonClassName);
+          setNonAdminNoButtonClassName(nonAdminPressedNoButtonClassName);
+          submitVote(false)
+          setVote('No');
+        }
+        // setVote(res.data);
+      } catch (error) {
+        console.log("Error in fetching a user's vote.");
+        console.log(error.stack);
+      } 
+    }
+    
+    useEffect(() => {
+      fetchUserVote();
+      const intervalId = setInterval(() => {  //assign interval to a variable to clear it.
+        fetchUserVote();
+      }, 3000)
+    
+      return () => clearInterval(intervalId);
+     
+    }, [])
+    
     return (
       <div className='proposalConditional'>
         <div className='NonVotingMemberConditionalContainer'>
-          <div className='leftButtonContainer buttonContainer'>
-            <ProposalButton buttonText='Vote Yes' buttonClassName={nonAdminYesButtonClassName}
-              onClickFunc={() => {setNonAdminYesButtonClassName(nonAdminPressedYesButtonClassName);
-                                  setNonAdminNoButtonClassName(nonAdminUnpressedNoButtonClassName);
-                                  submitVote(true, userID)
-                                  setVote('Yes');}}
-            />
-          </div>
-          <div className='rightButtonContainer buttonContainer'>
-            <ProposalButton buttonText='Vote No' buttonClassName={nonAdminNoButtonClassName}
-              onClickFunc={() => {setNonAdminYesButtonClassName(nonAdminUnpressedYesButtonClassName);
-                                  setNonAdminNoButtonClassName(nonAdminPressedNoButtonClassName);
-                                  submitVote(false, userID)
-                                  setVote('No');}}
-            />
+          <div className='VoteButtonsWrapperDetails'>
+            <div className='leftButtonContainer buttonContainer'>
+              <ProposalButton buttonText='Vote Yes' buttonClassName={nonAdminYesButtonClassName}
+                onClickFunc={() => {setNonAdminYesButtonClassName(nonAdminPressedYesButtonClassName);
+                                    setNonAdminNoButtonClassName(nonAdminUnpressedNoButtonClassName);
+                                    submitVote(true, userID)
+                                    setVote('Yes');}}
+              />
+            </div>
+            <div className='rightButtonContainer buttonContainer'>
+              <ProposalButton buttonText='Vote No' buttonClassName={nonAdminNoButtonClassName}
+                onClickFunc={() => {setNonAdminYesButtonClassName(nonAdminUnpressedYesButtonClassName);
+                                    setNonAdminNoButtonClassName(nonAdminPressedNoButtonClassName);
+                                    submitVote(false, userID)
+                                    setVote('No');}}
+              />
+            </div>
           </div>
           <div className='yourVoteLabel'>
             Your Vote: {vote}
@@ -149,9 +186,7 @@ function ProposalDetails(props) {
   async function fetchProposalDetails() { 
     try {
       const response = await axios.get('http://localhost:8000/get_proposal_details', 
-                                          { params: 
-                                            { proposal_id: PROPOSAL_ID }
-                                          });
+                                          { params: { proposal_id: PROPOSAL_ID }});
       setProposalTitle(response.data.title);
       setProposalDescription(response.data.description_text);
       setProposalLink(response.data.link);
@@ -178,6 +213,7 @@ function ProposalDetails(props) {
   const handleSubmitComment = async () => {
     if (textboxValue !== '') {
       try {
+        console.log("at least she's trying");
         await axios({
           method: 'post',
           url: 'http://localhost:8000/post_comment',
@@ -190,6 +226,7 @@ function ProposalDetails(props) {
       } catch(error) {
           console.log(error);
       }
+      console.log("submitted comment in propsDetails!!");
       setTextboxValue('');
       fetchCommentData();
     }
@@ -198,7 +235,14 @@ function ProposalDetails(props) {
   useEffect(() => {
     fetchCommentData();
     fetchProposalDetails();
-  }, []);
+    const intervalId = setInterval(() => {  //assign interval to a variable to clear it.
+      fetchCommentData();
+      fetchProposalDetails();
+    }, 3000)
+  
+    return () => clearInterval(intervalId);
+   
+  }, [])
 
   /** Takes in an ISO timestamp string (as received from the database) and converts it
    * to a readable and meaningful string in the format 'MM/DD/YY HH:MM AM/PM' */
@@ -236,8 +280,9 @@ function ProposalDetails(props) {
           <div className={(PRIVILEGES === 'Non-Voting Member') ? ' proposalDescription nonVotingProposalDescription' : "proposalDescription"}>{proposalDescription}</div>
           <a className="proposalLink" href = {proposalLink}>{proposalTitle}.pdf</a>
           <div className="proposalAmount"> Proposal Amount: {`$${proposalAmount}`}</div>
+          {ProposalConditionalRender(PRIVILEGES, USER_ID)}
         </div>
-        {ProposalConditionalRender(PRIVILEGES, USER_ID)}
+        
       </div>
 
       <div className="discussion">
@@ -262,7 +307,7 @@ function ProposalDetails(props) {
           </div>
           <div className='postCommentBottomContainer postCommentContainer'>
             <div className='postCommentButtonContainer'>
-              <ProposalButton buttonClassName='genericProposalButton' buttonText='Post' onClickFunc={handleSubmitComment}/>
+              <ProposalButton buttonClassName='genericProposalButtonDets' buttonText='Post' onClickFunc={handleSubmitComment}/>
             </div>
           </div>
         </div>

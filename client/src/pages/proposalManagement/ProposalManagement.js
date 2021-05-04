@@ -72,14 +72,11 @@ function ProposalManagement(props) {
     setDisplayModal(true);
   }
 
-    const submitProposal = async () => { 
-      let containOnlyInt = textboxValueMoney.match(/^[0-9.]*$/);
-      if (textboxValueMoney !== '' && !containOnlyInt){
-        console.log("String submited for value");
+    const submitProposal = async () => {
+      if (/[!@#$%^&*(),?":{}|<>]/g.test(textboxValueMoney) || /^[A-Z]/.test(textboxValueMoney) || /^[a-z]/.test(textboxValueMoney)) {
         document.getElementById("moneyNewDescription").style.borderColor="#FF0000";
         document.getElementById("moneyNewDescription").style.backgroundColor="#ffcccb";
-      }
-      else if (textboxValueTitle !== ''){
+      } else if (textboxValueTitle !== '' && /^[+-]?\d*(?:[.,]\d*)?$/.test(textboxValueMoney)){
         try {
           await axios({
             method: 'post',
