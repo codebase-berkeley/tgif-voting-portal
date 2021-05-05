@@ -76,7 +76,7 @@ VALUES
     ('Admin', 'Joshua Kay', 'joshua_kay@berkeley.edu', 'Program Associate'),
     ('Admin', 'Paola Noun', 'paolanoun@berkeley.edu', 'Boss'),
     ('Admin', 'Jorge Morales', 'jorge.morales@berkeley.edu', 'CEO'),
-    ('Admin', 'Kennedy Chung', 'kennedychung@berkeley.edu', 'The Big Cheese'),
+    ('Voting Member', 'Kennedy Chung', 'kennedychung@berkeley.edu', 'The Big Cheese'),
     ('Voting Member', 'Kalea', 'kaleachu@berkeley.edu', 'The Big Cheese'),
 
     ('Voting Member', 'Moe Sumino', 'moe_sumino@berkeley.edu', 'ASUC Representative'),
@@ -126,4 +126,4 @@ VALUES
 INSERT INTO comments(time_posted, comment_text, user_id, proposal_id)
 VALUES
     ('2021-04-05T10:27:41.886Z', 'I really want to be highlighted', 2, 1),
-    ('2021-04-06T13:45:41.886Z', 'I don''t quite see the value in being highlighted', 3, 1),
+    ('2021-04-06T13:45:41.886Z', 'I don''t quite see the value in being highlighted', 3, 1);

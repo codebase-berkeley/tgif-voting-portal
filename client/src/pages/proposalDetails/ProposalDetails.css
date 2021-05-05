@@ -266,7 +266,7 @@ a:active {color :var(--buttonGreenOpaque);}
     font-family: 'Lexend Deca', sans-serif;
     font-size: 1em;
     position: absolute;
-    right: -30px;
+    right: -0px;
     bottom: 1px;
 }
 
