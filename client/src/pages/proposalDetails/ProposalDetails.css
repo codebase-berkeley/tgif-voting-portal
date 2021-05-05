@@ -45,17 +45,21 @@ textarea {
     font-size: 1.5em;
 }
 
-.poposalLink{
+.proposalLink{
     font-family: 'Lexend Deca', sans-serif;
-    color: var(--black);
-    font-size: 1.5em;
 }
 
-a:link{color: var(--buttonGreenOpaque);}
+a.proposalLink:link{
+    color: gray;
+}
 
-a:visited {color:var(--buttonGreenOpaque);} 
-a:active {color :var(--buttonGreenOpaque);}
+a.proposalLink:visited {
+    color: gray;
+}
 
+a.proposalLink:active {
+    color: gray;
+}
 
 .proposalAmount {
     font-family: 'Lexend Deca', sans-serif;

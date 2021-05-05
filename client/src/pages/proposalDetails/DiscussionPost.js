@@ -1,19 +1,24 @@
 import './DiscussionPost.css';
 
-function ConditionalUserNameRender(isAdmin, userName) {
+function ConditionalUserNameRender(isAdmin, userName, isHighlighted) {
   if (isAdmin) {
     return (
       <div>
         {userName}
       </div>);
+  } else if (isHighlighted) {
+      return (
+        <div>
+          Anon User (You)
+        </div>)
   } else {
     return <div>Anon User</div>;
   }
 }
 
-function ConditionalUserDisplay(userID) {
-  console.log(userID);
-  if (userID === 2) {
+function ConditionalUserDisplay(isHighlighted) {
+  //console.log(userID);
+  if (isHighlighted) {
     return "text-highlighted";
   }
   return "text";
@@ -23,9 +28,9 @@ function DiscussionPost(props) {
   return (
     <div className="post">
       <div className="user">
-        {ConditionalUserNameRender(props.isAdmin, props.userName)}
+        {ConditionalUserNameRender(props.isAdmin, props.userName, props.isHighlighted)}
       </div>
-      <div className={ConditionalUserDisplay(props.id)}>
+      <div className={ConditionalUserDisplay(props.isHighlighted)}>
         <div className="content">
           {props.text}
         </div>

@@ -263,7 +263,7 @@ function ProposalDetails(props) {
           </div>
           <div className="proposalSponsor">Sponsor: {proposalSponsor}</div>
           <div className={(PRIVILEGES === 'Non-Voting Member') ? ' proposalDescription nonVotingProposalDescription' : "proposalDescription"}>{proposalDescription}</div>
-          <a className="proposalLink" href = {proposalLink}>{proposalTitle}.pdf</a>
+          <a className="proposalLink" href={proposalLink} target='_blank' rel='noreferrer'>Link to Full Proposal 🔗</a>
           <div className="proposalAmount"> Proposal Amount: {`$${proposalAmount}`}</div>
           {ProposalConditionalRender()}
         </div>
@@ -278,7 +278,7 @@ function ProposalDetails(props) {
         <div className='discussionCommentsView'>
         {comments.map((comment) => (
           // tgif.sql for comments on IS_ADMIN in comments db
-          <DiscussionPost isAdmin={PRIVILEGES==='Admin'} userName={ANON} id={comment.user_id} text={comment.comment_text} time={timestampToReadableDate(comment.time_posted)}/>
+          <DiscussionPost isAdmin={PRIVILEGES==='Admin'} userName={ANON} isHighlighted={comment.user_id === USER_ID} id={comment.user_id} text={comment.comment_text} time={timestampToReadableDate(comment.time_posted)}/>
         ))}
         </div>
         <div className='discussionPostCommentFrame'>
