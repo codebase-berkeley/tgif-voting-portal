@@ -187,19 +187,6 @@ function ProposalManagement(props) {
                       ))}
                   </div>
               </div>
-                <div className="proposal-list">
-                    {proposals.map((proposal) => (
-                        <Row 
-                          title={proposal.title} 
-                          description={proposal.description}
-                          mode={deletingMode}
-                          isManagement= {IS_MANAGEMENT}
-                          vote={proposal.voted ? proposal.voted : ""}
-                          proposalCheckboxOnClick = {() => {updateProposalDeleteIDs(proposal);}}
-                          isChecked={proposal.checked}
-                          />
-                    ))}
-                </div>
             </div>
         
             <div className="proposalManagementRight">
