@@ -29,19 +29,33 @@
     text-decoration: none;
     background: transparent;
     margin-top: 100px;
-    box-shadow: 0px 8px 20px -7.5px #000000;
     border: 0px solid transparent;
     text-shadow: 0px 0px 0px transparent;
-    width:50%;
+    box-shadow: 0px 8px 20px -7.5px #000000;
+    width: 50%;
     min-width: fit-content;
-    padding-right: 10px;
-    padding-left: 10px;
+    padding-right: 20px;
+    padding-left: 20px;
     height: 12%;
     border-radius: 10px;
     font-size: 20px;
     font-family: 'IBM Plex Sans';
     background-color: #A6B82E;
     color: white;
+}
+
+a.calnet-button:link{
+    text-decoration: none;
+    color: white;
+}
+
+a.calnet-button:visited {
+    text-decoration: none;
+    color: white;
+}
+
+a.calnet-button:active {
+    color: gray;
 }
 
 .failure-message {
