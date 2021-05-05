@@ -17,6 +17,14 @@ function Dashboard(props) {
   const [proposals, setProposals] = useState([]);
   const [vote, setVote] = useState(null);
   const [filteredProposalsList, setFilteredProposalsList] = useState([]);
+  const [needReRender, setNeedReRender] = useState(false);
+
+    /* Create states for SearchBar. */
+    const [input, setInput] = useState("");
+    const [proposalTitle, setProposalTitle] = useState(null);
+    const [proposalDescription, setProposalDescription] = useState("");
+    const [wantedPropID, setWantedPropID] = useState(1);
+
 
   async function fetchProposals() {
 		const response = await axios.get('http://localhost:8000/get_proposals_and_user_votes', {params : {user_id: USER_ID}});
@@ -24,13 +32,14 @@ function Dashboard(props) {
     let proposal_lst = response.data;
     /* Initialize false <checked> attributes for each proposal; used for checkbox tracking
     while in deleting mode */
-    console.log("proposals fetched " + proposal_lst)
     proposal_lst.forEach(proposal => {
       proposal_lst.checked = false;
     })
 		setProposals(proposal_lst);
     setFilteredProposalsList(proposal_lst);
-    firstProposal(proposal_lst);
+    if (proposalTitle === null) {
+      firstProposal(proposal_lst);
+    }
   }
 
   useEffect(() => {
@@ -38,14 +47,7 @@ function Dashboard(props) {
       fetchProposals();
     }
 
-  }, [props.userID, vote]);
-
-  /* Create states for SearchBar. */
-  const [input, setInput] = useState("");
-  const [proposalTitle, setProposalTitle] = useState("");
-  const [proposalDescription, setProposalDescription] = useState("");
-  const [wantedPropID, setWantedPropID] = useState(1);
-
+  }, [props.userID, needReRender]);
 
    function firstProposal(proposal_lst) {
     try {
@@ -97,9 +99,16 @@ function Dashboard(props) {
       await axios.post('http://localhost:8000/submitVote', {
         vote: voteDecision,
         user_id: USER_ID,
-        proposal_id: PROPOSAL_ID
+        proposal_id: wantedPropID
       });
       setVote(voteDecision);
+      proposals.forEach(proposal => {
+        if (proposal.id === wantedPropID) {
+          proposal.vote = voteDecision;
+        }
+      })
+      setNeedReRender(!needReRender);
+      console.log(proposals);
     } catch(error) {
         console.log("There was an error in submitting your vote.");
         console.log(error.stack);
@@ -147,53 +156,27 @@ function Dashboard(props) {
   // useEffect(() => {
   //   fetchUserVote();
   // }, [])
-
-  async function fetchUserVote() {
+  async function setVoteButtons(clickedProposal) {
     try {
-      const res = await axios.get('http://localhost:8000/get_one_vote', {params : {user_id: USER_ID, proposal_id: PROPOSAL_ID}});
-      const vote = (res.data[0].vote);
-      if (vote === true) {
-        setNonAdminYesButtonClassName(nonAdminPressedYesButtonClassName);
-        setNonAdminNoButtonClassName(nonAdminUnpressedNoButtonClassName);
-        submitVote(true)
-        setVote('Yes');
-      } else if (vote === false) {
-        setNonAdminYesButtonClassName(nonAdminUnpressedYesButtonClassName);
-        setNonAdminNoButtonClassName(nonAdminPressedNoButtonClassName);
-        submitVote(false)
-        setVote('No');
-      }
-    } catch (error) {
-      console.log("Error in fetching a user's vote.");
-      console.log(error.stack);
-    } 
-  };
-
-  async function setVoteButtons() {
-    try {
-      let proposalID = wantedPropID;
-      proposals.forEach(proposal => {
-        if (proposal.id === proposalID) {
-          setVote(proposal.vote);
-          console.log(vote);
+      let buttonStatus;
+      for (let i = 0; i < proposals.length; i++) {
+        if (proposals[i].id == clickedProposal) {
+          buttonStatus = proposals[i].vote;
+          break;
         }
-      }); 
+      }
 
-      if (vote === true) {
-        setNonAdminYesButtonClassName(nonAdminPressedYesButtonClassName);
-        setNonAdminNoButtonClassName(nonAdminUnpressedNoButtonClassName);
-        submitVote(true)
-        setVote('Yes');
-      } else if (vote === false) {
+      if (buttonStatus == null) {
         setNonAdminYesButtonClassName(nonAdminUnpressedYesButtonClassName);
-        setNonAdminNoButtonClassName(nonAdminPressedNoButtonClassName);
-        submitVote(false)
-        setVote('No');
+        setNonAdminNoButtonClassName(nonAdminUnpressedNoButtonClassName);
+      } else if (buttonStatus) {
+        setNonAdminYesButtonClassName(nonAdminPressedYesButtonClassName);
+        setNonAdminNoButtonClassName(nonAdminUnpressedNoButtonClassName)
       } else {
         setNonAdminYesButtonClassName(nonAdminUnpressedYesButtonClassName);
-        setNonAdminNoButtonClassName(nonAdminUnpressedNoButtonClassName);
-        setVote('Undecided');
+        setNonAdminNoButtonClassName(nonAdminPressedNoButtonClassName);
       }
+      setNeedReRender(!needReRender);
     } catch (error) {
       console.log("Error in fetching a user's vote.");
       console.log(error.stack);
@@ -212,7 +195,7 @@ function Dashboard(props) {
                         changeDescription={(x) => {setProposalDescription(x)}}
                         changeWantedPropID={(x) => {setWantedPropID(x)}}
                         changeTextBoxValue={() => {setTextboxValue("")}}
-                        changeVoteButton={() => {setVoteButtons()}}
+                        changeVoteButton={(x) => {setVoteButtons(x)}}
                         title={proposal.title} 
                         description={proposal.description_text}
                         vote={proposal.voted ? proposal.voted : ""} 

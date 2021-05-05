@@ -42,7 +42,7 @@ function rowDashboardMode(props) {
                                 props.changeDescription(props.description);
                                 props.changeWantedPropID(props.id);
                                 props.changeTextBoxValue();
-                                props.changeVoteButton();}
+                                props.changeVoteButton(props.id);}
             }>
             
                 <div className="proposal-title">{props.title}</div>
@@ -60,7 +60,7 @@ function rowDashboardMode(props) {
                                 props.changeDescription(props.description);
                                 props.changeWantedPropID(props.id);
                                 props.changeTextBoxValue();
-                                props.changeVoteButton()}
+                                props.changeVoteButton(props.id)}
             }>
             
                 <div className="proposal-title">{props.title}</div>
@@ -76,7 +76,8 @@ function rowDashboardMode(props) {
                 onClick={() => {props.changeTitle(props.title);
                                 props.changeDescription(props.description);
                                 props.changeWantedPropID(props.id);
-                                props.changeTextBoxValue()}
+                                props.changeTextBoxValue();
+                                props.changeVoteButton(props.id);}
             }>
             
                 <div className="proposal-title">{props.title}</div>

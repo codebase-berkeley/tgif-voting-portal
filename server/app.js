@@ -221,7 +221,6 @@ app.get('/get_proposals_and_user_votes', async (req, res) => {
     query.rows.forEach(proposal => {
       proposal.user_id = userID;
     });
-    console.log(query.rows);
     res.send(query.rows);
   } catch (error) {
     console.log(error.stack);
