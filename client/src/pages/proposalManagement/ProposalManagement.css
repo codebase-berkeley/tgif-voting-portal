@@ -6,10 +6,6 @@
     align-content: flex-wrap;
 }
 
-.ProposalManagementOuter {
-    display: absolute;
-}
-
 .proposalManagementLeft{
     margin-left: 2em;
     width: 30%;
@@ -96,14 +92,14 @@
 
 .linkNewDescription{
     height:100%;
-    width: 100%;
+    width: 40%;
     margin-right:3%;
     padding-left: 1%;
 }
 
 .moneyNewDescription{
     height:100%;
-    width: 70%;
+    width: 20%;
     margin-right: 50%;
     padding-left: 1%;
 }
@@ -162,5 +158,5 @@ textarea:focus {
 
 .genericProposalButton {
     background: var(--black);
-    width: 100%;
+    width: 10%;
 }

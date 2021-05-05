@@ -157,7 +157,7 @@ function ProposalManagement(props) {
     if (PRIVILEGES === 'Admin') {
       return (
         <div className = "ProposalManagementOuter">
-              <div className="proposalManagement">
+            <div className="proposalManagement">
               <div className="proposalManagementLeft"> 
                 <div className="icons">
                   <div className={enterEditingIconClassName}>
@@ -173,21 +173,21 @@ function ProposalManagement(props) {
                             title='Remove Selected Proposals' onClick={handleRemoveProposals}/>
                   </div>
                 </div>
-                  <div className="proposal-list">
-                      {proposals.map((proposal) => (
-                          <Row 
-                            title={proposal.title} 
-                            description={proposal.description}
-                            mode={deletingMode}
-                            isManagement= {IS_MANAGEMENT}
-                            vote={proposal.voted ? proposal.voted : ""}
-                            proposalCheckboxOnClick = {() => {updateProposalDeleteIDs(proposal);}}
-                              isChecked={proposal.checked}
-                            />
-                      ))}
-                  </div>
+                <div className="proposal-list">
+                    {proposals.map((proposal) => (
+                        <Row 
+                          title={proposal.title} 
+                          description={proposal.description}
+                          mode={deletingMode}
+                          isManagement= {IS_MANAGEMENT}
+                          vote={proposal.voted ? proposal.voted : ""}
+                          proposalCheckboxOnClick = {() => {updateProposalDeleteIDs(proposal);}}
+                            isChecked={proposal.checked}
+                          />
+                    ))}
+                </div>
               </div>
-            </div>
+            {/* </div> */}
         
             <div className="proposalManagementRight">
                 <div className = "whiteBox">
@@ -205,6 +205,8 @@ function ProposalManagement(props) {
                     </div>   
                 </div>
             </div>
+        </div>
+        {removeModal}
         </div>
       )
     } else {
