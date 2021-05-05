@@ -124,38 +124,6 @@ function Dashboard(props) {
   const nonAdminUnpressedNoButtonClassName = 'unpressedNoButton nonAdminButton';
   const [nonAdminNoButtonClassName, setNonAdminNoButtonClassName] = useState(nonAdminUnpressedNoButtonClassName);
 
-  // function changeToYesButton() {
-  //   setDashboardYesButtonClassName(dashboardPressedYesButtonClassName);
-  //   setDashboardNoButtonClassName(dashboardUnpressedNoButtonClassName);
-  // }
-
-  // function changeToNoButton() {
-  //   setDashboardYesButtonClassName(dashboardUnpressedYesButtonClassName);
-  //   setDashboardNoButtonClassName(dashboardPressedNoButtonClassName);
-  // }
-
-  // async function fetchUserVote() {
-  //   try {
-  //     const res = await axios.get('http://localhost:8000/get_one_vote', {params : {user_id: USER_ID, proposal_id: wantedPropID}});
-  //     console.log(res);
-  //     const vote = (res.data);
-  //     if (vote === true) {
-  //       changeToYesButton();
-  //     } else if (vote === false) {
-  //       changeToNoButton();
-  //     } else {
-  //       setDashboardYesButtonClassName(dashboardUnpressedYesButtonClassName);
-  //       setDashboardNoButtonClassName(dashboardUnpressedNoButtonClassName);
-  //     }
-  //   } catch (error) {
-  //     console.log("Error in fetching a user's vote.");
-  //     console.log(error.stack);
-  //   } 
-  // }
-  
-  // useEffect(() => {
-  //   fetchUserVote();
-  // }, [])
   async function setVoteButtons(clickedProposal) {
     try {
       let buttonStatus;
