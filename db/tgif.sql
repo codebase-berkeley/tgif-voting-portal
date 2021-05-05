@@ -87,6 +87,7 @@ VALUES
     ('Voting Member', 'Elias Garcia', 'elias_garcia@berkeley.edu', 'Environmental Justice - At Large Representative'),
     ('Voting Member', 'Sarah Bui', 'sarah.bui123@berkeley.edu', 'Undergraduate At-Large Representative'),
     ('Voting Member', 'Anh Pham', 'anhvpham@berkeley.edu', 'rubiks cube master 9000'),
+    ('Voting Member', 'Bailey Segall', 'bailey.segall@berkeley.edu', 'MAN'),
 
     ('Non-Voting Member', 'Sharon Daraphonhdeth', 'sharon@berkeley.edu', 'SERC Director'),
     ('Non-Voting Member', 'Harrisen Min', 'harrisen.min@berkeley.edu', 'Committee on Student Fees Representative'),
@@ -126,4 +127,4 @@ VALUES
 INSERT INTO comments(time_posted, comment_text, user_id, proposal_id)
 VALUES
     ('2021-04-05T10:27:41.886Z', 'I really want to be highlighted', 2, 1),
-    ('2021-04-06T13:45:41.886Z', 'I don''t quite see the value in being highlighted', 3, 1),
+    ('2021-04-06T13:45:41.886Z', 'I don''t quite see the value in being highlighted', 3, 1);

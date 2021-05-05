@@ -281,7 +281,7 @@ function ProposalDetails(props) {
           <a className="proposalLink" href = {proposalLink}>{proposalTitle}.pdf</a>
           <div className="proposalAmount"> Proposal Amount: {`$${proposalAmount}`}</div>
           {ProposalConditionalRender(PRIVILEGES, USER_ID)}
-        </div>
+        </div>;
         
       </div>
 
@@ -293,7 +293,7 @@ function ProposalDetails(props) {
         <div className='discussionCommentsView'>
         {comments.map((comment) => (
           // tgif.sql for comments on IS_ADMIN in comments db
-          <DiscussionPost isAdmin={PRIVILEGES==='Admin'} userName={ANON} id={comment.user_id} text={comment.comment_text} time={timestampToReadableDate(comment.time_posted)}/>
+          <DiscussionPost isAdmin={PRIVILEGES==='Admin'} userName={ANON} isHighlighted={comment.user_id === USER_ID} id={comment.user_id} text={comment.comment_text} time={timestampToReadableDate(comment.time_posted)}/>
         ))}
         </div>
         <div className='discussionPostCommentFrame'>
