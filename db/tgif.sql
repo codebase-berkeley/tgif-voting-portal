@@ -77,7 +77,7 @@ VALUES
     ('Admin', 'Paola Noun', 'paolanoun@berkeley.edu', 'Boss'),
     ('Admin', 'Jorge Morales', 'jorge.morales@berkeley.edu', 'CEO'),
     ('Voting Member', 'Kennedy Chung', 'kennedychung@berkeley.edu', 'The Big Cheese'),
-    ('Voting Member', 'Kalea', 'kaleachu@berkeley.edu', 'The Big Cheese'),
+    ('Admin', 'Kalea', 'kaleachu@berkeley.edu', 'The Big Cheese'),
 
     ('Voting Member', 'Moe Sumino', 'moe_sumino@berkeley.edu', 'ASUC Representative'),
     ('Voting Member', 'Youjin Chung', 'youjin.chung@berkeley.edu', 'Faculty Representative'),
