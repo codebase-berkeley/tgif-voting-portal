@@ -101,6 +101,7 @@ a.proposalLink:active {
     display: flex;
     flex-direction: column;
     position: relative;
+    /* background-color: lightseagreen; */
 }
 
 .VoteButtonsWrapperDetails {
@@ -199,7 +200,6 @@ a.proposalLink:active {
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* background-color: lightpink; */
 }
 
 .commentBoxHeader {
@@ -210,7 +210,6 @@ a.proposalLink:active {
     text-align: left;
     color: var(--black);
     font-family: 'Lexend Deca', sans-serif;
-    /* background-color: lightsalmon; */
 }
 
 .userInputDiscussion{
@@ -245,6 +244,7 @@ a.proposalLink:active {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    position: relative;
 }
 
 .progressFrame {

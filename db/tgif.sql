@@ -93,6 +93,7 @@ VALUES
     ('Voting Member', 'Bailey Segall', 'bailey.segall@berkeley.edu', 'MAN'),
     ('Voting Member', 'Jorge Morales II', 'jorge.morales.21.11.01@gmail.com', 'CFO'),
 
+    ('Non-Voting Member', 'Jorge Morales III', 'erica.martinez1976@gmail.com', 'Jorge''s Mom'),
     ('Non-Voting Member', 'Sharon Daraphonhdeth', 'sharon@berkeley.edu', 'SERC Director'),
     ('Non-Voting Member', 'Harrisen Min', 'harrisen.min@berkeley.edu', 'Committee on Student Fees Representative'),
     ('Non-Voting Member', 'Kira Stoll', 'kira.stoll@berkeley.edu', 'Office of Sustainability Director'),

@@ -48,7 +48,7 @@ function Dashboard(props) {
 
   }, [props.userID, needReRender]);
 
-   function firstProposal(proposal_lst) {
+  function firstProposal(proposal_lst) {
     try {
       const title = proposal_lst[0].title;
       const description = proposal_lst[0].description_text;
@@ -163,7 +163,7 @@ function Dashboard(props) {
                         changeWantedPropID={(x) => {setWantedPropID(x)}}
                         changeTextBoxValue={() => {setTextboxValue("")}}
                         changeVoteButton={(x) => {setVoteButtons(x)}}
-                        title={proposal.title} 
+                        title={proposal.title}
                         description={proposal.description_text}
                         vote={proposal.voted ? proposal.voted : ""} 
                         id={proposal.id}

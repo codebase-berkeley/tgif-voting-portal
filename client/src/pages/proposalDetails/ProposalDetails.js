@@ -89,9 +89,6 @@ function ProposalDetails(props) {
                 />
               </div>
             </div>
-            <div className='yourVoteLabel'>
-              Your Vote: {vote}
-            </div>
           </div>
         </div>
       );
@@ -273,7 +270,6 @@ function ProposalDetails(props) {
           <div className="proposalAmount"> Proposal Amount: {`$${proposalAmount}`}</div>
           {ProposalConditionalRender()}
         </div>
-        
       </div>
 
       <div className="discussion">
