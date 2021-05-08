@@ -8,8 +8,7 @@ import axios from "axios";
 import ProposalButton from '../proposalDetails/ProposalButton';
 
 import enterEditingIcon from '../../assets/edit.svg';
-import exitEditingIcon from '../../assets/checkmark.svg';
-
+import exitEditingIcon from '../../assets/doneEditing.svg';
 
 function ProposalManagement(props) {
   let PRIVILEGES = props.privileges;
@@ -73,10 +72,11 @@ function ProposalManagement(props) {
   }
 
     const submitProposal = async () => {
-      if (/[!@#$%^&*(),?":{}|<>]/g.test(textboxValueMoney) || /^[A-Z]/.test(textboxValueMoney) || /^[a-z]/.test(textboxValueMoney)) {
+      if (textboxValueMoney === '' || /[!@#$%^&*(),?":{}|<>]/g.test(textboxValueMoney)
+          || /^[A-Z]/.test(textboxValueMoney) || /^[a-z]/.test(textboxValueMoney)) {
         document.getElementById("moneyNewDescription").style.borderColor="#FF0000";
         document.getElementById("moneyNewDescription").style.backgroundColor="#ffcccb";
-      } else if (textboxValueTitle !== '' && /^[+-]?\d*(?:[.,]\d*)?$/.test(textboxValueMoney)){
+      } else if (textboxValueTitle !== '' && /^[+-]?\d*(?:[.,]\d*)?$/.test(textboxValueMoney)) {
         try {
           await axios({
             method: 'post',
@@ -162,51 +162,50 @@ function ProposalManagement(props) {
                 <div className="icons">
                   <div className={enterEditingIconClassName}>
                     <input className='enterDeletingIconContainer proposalsButton' type="image" src={enterEditingIcon} alt='Enter Deleting Mode'
-                    title='Edit Members' onClick={enterDeletingMode}/>
+                    title='Edit Proposals' onClick={enterDeletingMode}/>
                   </div>
                   <div className={exitEditingIconClassName}>
                     <input className='exitDeletingIconContainer proposalsButton' type="image" src={exitEditingIcon} alt='Exit Deleting Mode'
                     title='Finish Editing' onClick={exitDeletingMode}/>
                   </div>
                   <div className={deleteIconClassName}>   
-                            <input className='removeProposalsButton proposalsButton' type="image" src={TrashCan} alt='Delete Selected Proposals'
-                            title='Remove Selected Proposals' onClick={handleRemoveProposals}/>
+                    <input className='removeProposalsButton proposalsButton' type="image" src={TrashCan} alt='Delete Selected Proposals'
+                    title='Remove Selected Proposals' onClick={handleRemoveProposals}/>
                   </div>
                 </div>
                 <div className="proposal-list">
-                    {proposals.map((proposal) => (
-                        <Row 
-                          title={proposal.title} 
-                          description={proposal.description}
-                          mode={deletingMode}
-                          isManagement= {IS_MANAGEMENT}
-                          vote={proposal.voted ? proposal.voted : ""}
-                          proposalCheckboxOnClick = {() => {updateProposalDeleteIDs(proposal);}}
-                            isChecked={proposal.checked}
-                          />
-                    ))}
+                  {proposals.map((proposal) => (
+                                                <Row 
+                                                  title={proposal.title} 
+                                                  description={proposal.description}
+                                                  mode={deletingMode}
+                                                  isManagement= {IS_MANAGEMENT}
+                                                  vote={proposal.voted ? proposal.voted : ""}
+                                                  proposalCheckboxOnClick = {() => {updateProposalDeleteIDs(proposal);}}
+                                                    isChecked={proposal.checked}
+                                                />
+                                                ))}
                 </div>
               </div>
-            {/* </div> */}
         
-            <div className="proposalManagementRight">
+              <div className="proposalManagementRight">
                 <div className = "whiteBox">
-                    <div className = "proposalManagementHead">
-                        <h3>Create a Proposal</h3>
-                    </div>
-                    <div className = "PMtextboxes">
-                        <textarea value={textboxValueTitle} onChange={(event) => {setTextboxValueTitle(event.target.value)}} className= 'titleNewProposal' id='titleNewProposal' type='textarea' placeholder='Title'/>
-                    </div>
-                    <textarea value={textboxValueDescript} onChange={(event) => {setTextboxValueDescript(event.target.value)}} className= 'descriptionNewProposal' id='descriptionNewProposal' type='textarea' placeholder='Project description'/>
-                    <div className = "bottomThree">
-                        <textarea value={textboxValueLink} onChange={(event) => {setTextboxValueLink(event.target.value)}} className= 'linkNewDescription' id='linkNewDescription' type='textarea' placeholder='Link'/>
-                        <textarea value={textboxValueMoney} onChange={(event) => {setTextboxValueMoney(event.target.value)}} className= 'moneyNewDescription' id='moneyNewDescription' type='textarea' placeholder='$00.00'/>
-                        <ProposalButton buttonClassName='genericProposalButton' buttonText='Create' onClickFunc={submitProposal}/>
-                    </div>   
+                  <div className = "proposalManagementHead">
+                    <h3>Create a Proposal</h3>
+                  </div>
+                  <div className = "PMtextboxes">
+                    <textarea value={textboxValueTitle} onChange={(event) => {setTextboxValueTitle(event.target.value)}} className= 'titleNewProposal' id='titleNewProposal' type='textarea' placeholder='Title'/>
+                  </div>
+                  <textarea value={textboxValueDescript} onChange={(event) => {setTextboxValueDescript(event.target.value)}} className= 'descriptionNewProposal' id='descriptionNewProposal' type='textarea' placeholder='Project description'/>
+                  <div className = "bottomThree">
+                    <textarea value={textboxValueLink} onChange={(event) => {setTextboxValueLink(event.target.value)}} className= 'linkNewDescription' id='linkNewDescription' type='textarea' placeholder='Link'/>
+                    <textarea value={textboxValueMoney} onChange={(event) => {setTextboxValueMoney(event.target.value)}} className= 'moneyNewDescription' id='moneyNewDescription' type='textarea' placeholder='$00.00'/>
+                    <ProposalButton buttonClassName='genericProposalButton' buttonText='Create' onClickFunc={submitProposal}/>
+                  </div>   
                 </div>
-            </div>
+              </div>
         </div>
-        {removeModal}
+          {removeModal}
         </div>
       )
     } else {

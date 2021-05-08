@@ -43,50 +43,6 @@
     justify-content: center;
 }
 
-/* .proposal-description {
-    width: 70%;
-    height: 100%;
-    min-height: 550px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border: 2.5px solid #CECECE;
-    border-radius: 10px;
-    padding-top: 10px;
-    padding-bottom: 5px;
-} 
-
-.proposal-head-title{
-    height: 20%;
-    width: 100%;
-    min-height: 110px;
-    padding-left: 9%;
-    padding-right: 9%;
-    text-align: left;
-    font-size: 2rem;
-    font-family: 'IBM Plex Sans', sans-serif;
-    color: #96AD00;
-} 
-
-.proposal-head-description {
-    width: 100%;
-    height: 35%;
-    min-height: 200px;
-    text-align: left;
-    padding-top: 2.5%;
-    padding-bottom: 2.5%;
-    padding-left: 9%;
-    padding-right: 9%;
-    margin-bottom: 2%;
-    font-size: 1.25rem;
-    font-family: "Lexend Deca", sans-serif;
-    color: black;
-    overflow-y: auto;
-    overflow-x: hidden;
-} */
-
-
-
 .proposal-description {
     width: 70%;
     height: 100%;
@@ -170,6 +126,10 @@
     border-radius: 5px;
     margin: 0.5em 0.75em 0.5em 0.5em;
     padding: 0.5em;
+}
+
+button.post-comment:active, button.view-discussion:active {
+    background-color: lightgrey;
 }
 
 .view-discussion {

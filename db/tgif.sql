@@ -79,6 +79,10 @@ VALUES
     ('Voting Member', 'Kennedy Chung', 'kennedychung@berkeley.edu', 'The Big Cheese'),
     ('Admin', 'Kalea', 'kaleachu@berkeley.edu', 'The Big Cheese'),
 
+    ('Admin', 'Anh the Admin Pham', 'anhvpham@berkeley.edu', 'rubiks cube master 9000'),
+    ('Voting Member', 'Anh the Voter Pham', 'wistyanh12@gmail.com', 'voteeee babyyy'),
+    ('Non-Voting Member', 'Anh the Spectator Pham', 'anhvphxm@gmail.com', 'just reading and thinkingg'),
+
     ('Voting Member', 'Moe Sumino', 'moe_sumino@berkeley.edu', 'ASUC Representative'),
     ('Voting Member', 'Youjin Chung', 'youjin.chung@berkeley.edu', 'Faculty Representative'),
     ('Voting Member', 'Ben Perez', 'ben.perez1978@berkeley.edu', 'Administration Representative'),
@@ -86,8 +90,8 @@ VALUES
     ('Voting Member', 'Nanticha Lutt', 'nan_lutt@berkeley.edu', 'GA Representative'),
     ('Voting Member', 'Elias Garcia', 'elias_garcia@berkeley.edu', 'Environmental Justice - At Large Representative'),
     ('Voting Member', 'Sarah Bui', 'sarah.bui123@berkeley.edu', 'Undergraduate At-Large Representative'),
-    ('Voting Member', 'Anh Pham', 'anhvpham@berkeley.edu', 'rubiks cube master 9000'),
     ('Voting Member', 'Bailey Segall', 'bailey.segall@berkeley.edu', 'MAN'),
+    ('Voting Member', 'Jorge Morales II', 'jorge.morales.21.11.01@gmail.com', 'CFO'),
 
     ('Non-Voting Member', 'Sharon Daraphonhdeth', 'sharon@berkeley.edu', 'SERC Director'),
     ('Non-Voting Member', 'Harrisen Min', 'harrisen.min@berkeley.edu', 'Committee on Student Fees Representative'),

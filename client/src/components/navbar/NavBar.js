@@ -17,7 +17,7 @@ function Navbar(props) {
     <div className="top-navbar" id='nav'>
         <div className = "navbar-content">
             <div className="leftNavbar" >
-                <Link to="/dashboard"><TGIFIcon className="logo"/></Link>
+                <Link to="/dashboard"><TGIFIcon className="logo" title="Dashboard"/></Link>
             </div>
             <div className="rightNavbar">
                 {PRIVILEGES === 'Admin' ?

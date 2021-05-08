@@ -104,7 +104,7 @@ app.get('/getProfile', async (req, res) => {
   } catch (error) {
     console.log(error.stack);
   }
-})
+});
 
 app.post('/submitProposal', async (req, res) => {
   try {

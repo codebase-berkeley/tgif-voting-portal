@@ -27,8 +27,12 @@
     justify-content: center;
 }
 
-.proposal-box:hover{
+.proposal-box:hover {
     cursor: pointer;
+}
+
+.management-page-box:hover{
+    cursor: default;
 }
 
 .proposal-title {
