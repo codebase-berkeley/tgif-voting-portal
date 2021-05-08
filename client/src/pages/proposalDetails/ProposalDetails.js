@@ -88,6 +88,9 @@ function ProposalDetails(props) {
                                       setVote('No');}}
                 />
               </div>
+              <div className='yourVoteLabel'>
+                Your Vote: {vote}
+              </div>
             </div>
           </div>
         </div>
@@ -261,7 +264,7 @@ function ProposalDetails(props) {
           </div>
           <div className="proposalSponsor">Sponsor: {proposalSponsor}</div>
           <div className={(PRIVILEGES === 'Non-Voting Member') ? ' proposalDescription nonVotingProposalDescription' : "proposalDescription"}>{proposalDescription}</div>
-          <div>
+          <div className='proposalLinkContainer'>
             <a className="proposalLink" href={linkHref(proposalLink)} target='_blank' rel='noreferrer'>
               Link to Full Proposal&nbsp;
               <img className='externalLinkIcon' src={externalLinkIcon} alt="external link" href={linkHref(proposalLink)}/>
