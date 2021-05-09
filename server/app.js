@@ -118,7 +118,7 @@ app.post('/submitProposal', async (req, res) => {
     );
     res.send('Success');
   } catch (error) {
-    console.log(error.stack); 
+    console.log(error.stack);
   }
 });
 
@@ -131,7 +131,6 @@ app.post('/post_comment', async (req, res) => {
     await db.query(
       'INSERT INTO comments (time_posted, user_id, comment_text, proposal_id) VALUES ($1, $2, $3, $4);', [timePosted, userId, commentText, proposalId],
     );
-    console.log("comment posted!!");
     res.send('Success');
   } catch (error) {
     console.log(error.stack);

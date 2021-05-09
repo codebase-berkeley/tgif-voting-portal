@@ -107,7 +107,6 @@ function Dashboard(props) {
         }
       })
       setNeedReRender(!needReRender);
-      console.log(proposals);
     } catch(error) {
         console.log("There was an error in submitting your vote.");
         console.log(error.stack);

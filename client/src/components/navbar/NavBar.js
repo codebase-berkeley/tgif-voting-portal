@@ -8,7 +8,6 @@ function Navbar(props) {
   async function logout() {
     try {
       const res = await axios.get('http://localhost:8000/logout');
-      console.log("Succesfully logged out from FRONTEND")
     } catch (error) {
       console.log(error);
     }
