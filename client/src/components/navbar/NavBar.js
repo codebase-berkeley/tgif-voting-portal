@@ -8,7 +8,6 @@ function Navbar(props) {
   async function logout() {
     try {
       const res = await axios.get('http://localhost:8000/logout');
-      console.log("Succesfully logged out from FRONTEND")
     } catch (error) {
       console.log(error);
     }
@@ -17,7 +16,7 @@ function Navbar(props) {
     <div className="top-navbar" id='nav'>
         <div className = "navbar-content">
             <div className="leftNavbar" >
-                <Link to="/dashboard"><TGIFIcon className="logo"/></Link>
+                <Link to="/dashboard"><TGIFIcon className="logo" title="Dashboard"/></Link>
             </div>
             <div className="rightNavbar">
                 {PRIVILEGES === 'Admin' ?

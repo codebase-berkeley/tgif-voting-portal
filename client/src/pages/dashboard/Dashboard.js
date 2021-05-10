@@ -28,7 +28,6 @@ function Dashboard(props) {
 
   async function fetchProposals() {
 		const response = await axios.get('http://localhost:8000/get_proposals_and_user_votes', {params : {user_id: USER_ID}});
-    //TODO change this endpoint to be a new endpoint that joins proposals with votes (filtered to just the users votes)
     let proposal_lst = response.data;
     /* Initialize false <checked> attributes for each proposal; used for checkbox tracking
     while in deleting mode */
@@ -49,7 +48,7 @@ function Dashboard(props) {
 
   }, [props.userID, needReRender]);
 
-   function firstProposal(proposal_lst) {
+  function firstProposal(proposal_lst) {
     try {
       const title = proposal_lst[0].title;
       const description = proposal_lst[0].description_text;
@@ -108,7 +107,6 @@ function Dashboard(props) {
         }
       })
       setNeedReRender(!needReRender);
-      console.log(proposals);
     } catch(error) {
         console.log("There was an error in submitting your vote.");
         console.log(error.stack);
@@ -164,7 +162,7 @@ function Dashboard(props) {
                         changeWantedPropID={(x) => {setWantedPropID(x)}}
                         changeTextBoxValue={() => {setTextboxValue("")}}
                         changeVoteButton={(x) => {setVoteButtons(x)}}
-                        title={proposal.title} 
+                        title={proposal.title}
                         description={proposal.description_text}
                         vote={proposal.voted ? proposal.voted : ""} 
                         id={proposal.id}

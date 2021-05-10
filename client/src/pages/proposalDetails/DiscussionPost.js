@@ -17,7 +17,6 @@ function ConditionalUserNameRender(isAdmin, userName, isHighlighted) {
 }
 
 function ConditionalUserDisplay(isHighlighted) {
-  //console.log(userID);
   if (isHighlighted) {
     return "text-highlighted";
   }

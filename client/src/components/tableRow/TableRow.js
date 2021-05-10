@@ -5,7 +5,7 @@ import React from "react";
 
 function TableRow( { handleSubmitFunc, addingMode, editingMode, isChecked, checkboxOnClick, name, email, role, privileges, votes } ) {
   let confirmAddMemberButton = <td> 
-                          <ProposalButton className='confirmAddMemberButton membersButton' hoverText='Confirm Member'
+                          <ProposalButton className='confirmAddMemberButton membersButton' hoverText='Confirm New Member'
                           buttonText='Confirm' buttonClassName='confirmMemberButton' onClickFunc={handleSubmitFunc}/>
                           </td>
 

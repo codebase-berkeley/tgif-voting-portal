@@ -2,6 +2,7 @@ import './ProposalDetails.css';
 import ProgressBar from 'react-bootstrap/ProgressBar';
 import DiscussionPost from './DiscussionPost.js';
 import ProposalButton from './ProposalButton.js';
+import externalLinkIcon from '../../assets/external-link.svg';
 import React, { useState, useEffect } from 'react';
 import {useParams} from 'react-router-dom';
 import axios from "axios";
@@ -54,7 +55,7 @@ function ProposalDetails(props) {
           <ProgressBar className='progressBarYesNoUnvoted'>
             <ProgressBar className='progressBarPercentYes' variant='success' now={percentYes * 100} label={`${percentYes} YES`} key={1}/>
             <ProgressBar className='progressBarPercentNo' variant='danger' now={percentNo * 100} label={`${percentNo} NO`} key={2}/>
-            <ProgressBar className='progressBarPercentUnvoted' variant='customProgressBarUnvoted' now={percentUnvoted * 100} label={`${percentUnvoted} UNVOTED`} key={3}/>
+            <ProgressBar className='progressBarPercentUnvoted' variant='customProgressBarUnvoted' now={percentUnvoted * 100} label={`${percentUnvoted} UNDECIDED`} key={3}/>
           </ProgressBar>
           <div className='amountVotedLabel'>
             {`${votesTotal}/${totalMembers} Voted`}
@@ -87,9 +88,9 @@ function ProposalDetails(props) {
                                       setVote('No');}}
                 />
               </div>
-            </div>
-            <div className='yourVoteLabel'>
-              Your Vote: {vote}
+              <div className='yourVoteLabel'>
+                Your Vote: {vote}
+              </div>
             </div>
           </div>
         </div>
@@ -188,7 +189,6 @@ function ProposalDetails(props) {
   const handleSubmitComment = async () => {
     if (textboxValue !== '') {
       try {
-        console.log("at least she's trying");
         await axios({
           method: 'post',
           url: 'http://localhost:8000/post_comment',
@@ -201,7 +201,6 @@ function ProposalDetails(props) {
       } catch(error) {
           console.log(error);
       }
-      console.log("submitted comment in propsDetails!!");
       setTextboxValue('');
       fetchCommentData();
     }
@@ -251,7 +250,9 @@ function ProposalDetails(props) {
   
     return () => clearInterval(intervalId);
    
-  }, [])
+  }, [PRIVILEGES])
+
+  const linkHref = (propLink) => (propLink.startsWith("http") ? propLink : "http://" + propLink)
 
   return (
     <div className="proposalDetailsPage">
@@ -263,11 +264,15 @@ function ProposalDetails(props) {
           </div>
           <div className="proposalSponsor">Sponsor: {proposalSponsor}</div>
           <div className={(PRIVILEGES === 'Non-Voting Member') ? ' proposalDescription nonVotingProposalDescription' : "proposalDescription"}>{proposalDescription}</div>
-          <a className="proposalLink" href={proposalLink} target='_blank' rel='noreferrer'>Link to Full Proposal 🔗</a>
+          <div className='proposalLinkContainer'>
+            <a className="proposalLink" href={linkHref(proposalLink)} target='_blank' rel='noreferrer'>
+              Link to Full Proposal&nbsp;
+              <img className='externalLinkIcon' src={externalLinkIcon} alt="external link" href={linkHref(proposalLink)}/>
+            </a>
+          </div>
           <div className="proposalAmount"> Proposal Amount: {`$${proposalAmount}`}</div>
           {ProposalConditionalRender()}
         </div>
-        
       </div>
 
       <div className="discussion">
@@ -276,10 +281,9 @@ function ProposalDetails(props) {
           <hr className="proposalDetailsUnderline"></hr>
         </div>
         <div className='discussionCommentsView'>
-        {comments.map((comment) => (
-          // tgif.sql for comments on IS_ADMIN in comments db
+          {comments.map((comment) => (
           <DiscussionPost isAdmin={PRIVILEGES==='Admin'} userName={ANON} isHighlighted={comment.user_id === USER_ID} id={comment.user_id} text={comment.comment_text} time={timestampToReadableDate(comment.time_posted)}/>
-        ))}
+         ))}
         </div>
         <div className='discussionPostCommentFrame'>
           <div className='postCommentTopContainer postCommentContainer'>
@@ -287,7 +291,7 @@ function ProposalDetails(props) {
               <div className='commentBoxHeader'>
                 Leave a comment
               </div>
-              <textarea value={textboxValue} onChange={(event) => {setTextboxValue(event.target.value)}} className= 'userInputDiscussion' id='userInputDiscussion' type='textarea' placeholder='comment'/>
+              <textarea value={textboxValue} onChange={(event) => {setTextboxValue(event.target.value)}} className= 'userInputDiscussion' id='userInputDiscussion' type='textarea' placeholder='I think...'/>
             </div>
           </div>
           <div className='postCommentBottomContainer postCommentContainer'>

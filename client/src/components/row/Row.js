@@ -3,37 +3,23 @@ import noIcon from '../../assets/Delete.svg';
 import yesIcon from '../../assets/Checked.svg';
 import React from "react";
 
-function Row(props) { 
-    if (props.mode && props.isManagement) {
-        return rowDeletionMode(props);
-    } else if (!props.isManagement) {
-        return rowDashboardMode(props);
-    } else {
-        return rowDefaultMode(props);
-    }
-}
-
-function rowDeletionMode(props) {
+/* Used in Proposal Management page when not in editing mode. */
+function rowDefaultMode(props) {
     return (
         <div
-            className="proposal-box"
+            className="proposal-box management-page-box"
             id={props.title}
         >
-            <div className="whole-row">
-                <div className="leftRow">
-                    <input className='proposalsCheckbox' type="checkbox" onClick={props.proposalCheckboxOnClick}/>
-                </div>
-                <div className="rightRow">
-                    <div className="proposal-title">{props.title}</div>
-                </div>
-            </div>
-        </div>
+            <div className="proposal-title">{props.title}</div>
+        </div>       
     );
 }
 
+/* Used in Dashboard page. Accounts for all 3 cases: Voted No (X icon), Voted Yes (checkmark icon),
+and have not voted on this proposal (no icon). */
 function rowDashboardMode(props) {
-    const boolean = props.voteStatus;
-    if (boolean) {
+    const proposalVote = props.voteStatus;
+    if (proposalVote) {
         return (
             <div
                 className="proposal-box"
@@ -51,7 +37,7 @@ function rowDashboardMode(props) {
             </div>
             
         );
-    } else if (boolean == null) {
+    } else if (proposalVote == null) {
         return (
             <div
                 className="proposal-box"
@@ -88,17 +74,33 @@ function rowDashboardMode(props) {
     }
 }
 
-function rowDefaultMode(props) {
+/* Used in Proposal Management page when in editing mode. */
+function rowDeletionMode(props) {
     return (
         <div
-            className="proposal-box"
+            className="proposal-box management-page-box"
             id={props.title}
         >
-            <div className="proposal-title">{props.title}</div>
+            <div className="whole-row">
+                <div className="leftRow">
+                    <input className='proposalsCheckbox' type="checkbox" onClick={props.proposalCheckboxOnClick}/>
+                </div>
+                <div className="rightRow">
+                    <div className="proposal-title">{props.title}</div>
+                </div>
+            </div>
         </div>
-        
     );
 }
 
+function Row(props) { 
+    if (props.mode && props.isManagement) {
+        return rowDeletionMode(props);
+    } else if (!props.isManagement) {
+        return rowDashboardMode(props);
+    } else {
+        return rowDefaultMode(props);
+    }
+}
 
 export default Row;

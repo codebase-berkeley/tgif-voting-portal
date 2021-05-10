@@ -4,7 +4,7 @@ import TableRow from '../../components/tableRow/TableRow.js';
 import addMemberIcon from '../../assets/add.svg';
 import removeMemberIcon from '../../assets/trashCan.svg';
 import enterEditingIcon from '../../assets/edit.svg';
-import exitEditingIcon from '../../assets/checkmark.svg';
+import exitEditingIcon from '../../assets/doneEditing.svg';
 import PopUpModal from '../../components/popupModal/PopUpModal.js'
 import './Members.css';
 
@@ -244,17 +244,25 @@ function Members(props) {
 										email={member.email}
 										role={member.tgif_role}
 										privileges={member.privileges}
-										votes={(member.count == null ? 0 : member.count) + "/" + numOfProposals}
+										votes={(() => {
+                                    if (member.privileges === 'Voting Member') {
+                                      return (member.count == null ? 0 : member.count) + "/" + numOfProposals;
+                                    } else {
+                                      return "-";
+                                    }
+                                  }
+                            )()
+                          }
                     editingMode = {editingMode}
                     checkboxOnClick = {() => {
-                                              const copyArray = [...members];
-                                              copyArray.forEach((copyMember) => {
-                                                if (copyMember.id === member.id) {
-                                                  copyMember.checked = !copyMember.checked;
-                                                }
-                                              });
-                                              setMembers(copyArray);
-                                              updateSelectAllCheckbox();
+                                                const copyArray = [...members];
+                                                copyArray.forEach((copyMember) => {
+                                                  if (copyMember.id === member.id) {
+                                                    copyMember.checked = !copyMember.checked;
+                                                  }
+                                                });
+                                                setMembers(copyArray);
+                                                updateSelectAllCheckbox();
                                               }}
                     isChecked={member.checked}
 									/>)

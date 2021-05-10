@@ -1,6 +1,6 @@
 .proposalDetailsPage {
     --descriptionAndProgressBarsWidth: 87%;
-    background: var(--lightGrey);
+    background: white;
     height: 89vh;
     display: flex;
     flex-direction:row;
@@ -10,10 +10,10 @@
 
 textarea {
     resize: none;
-  }
+}
 
 .proposalLeft{
-    background: white; 
+    background: white;
     width: 35%;
     height: 95%;
     bottom: 10px;
@@ -24,6 +24,9 @@ textarea {
     align-items: center;
     justify-content: flex-start;
     padding: 0px 40px 0px 40px;
+    border: 2.5px solid #CECECE;
+    border-radius: 10px;
+    overflow: auto;
 }
 
 .proposalSummary {
@@ -61,6 +64,12 @@ a.proposalLink:active {
     color: gray;
 }
 
+.externalLinkIcon {
+    height: auto;
+    width: 18px;
+    margin-bottom: 5px;
+}
+
 .proposalAmount {
     font-family: 'Lexend Deca', sans-serif;
     color: var(--black);
@@ -91,7 +100,6 @@ a.proposalLink:active {
     width: 100%;
     display: flex;
     flex-direction: column;
-    position: relative;
 }
 
 .VoteButtonsWrapperDetails {
@@ -142,31 +150,36 @@ a.proposalLink:active {
     color: var(--black);
     display: flex;
     flex-direction: column;
+    border: 2.5px solid #CECECE;
+    border-radius: 10px;
+    overflow: auto;
 }
 
 .discussionTitle {
-    height: 13%;
+    height: 15%;
     width: 100%;
     font: 2em 'IBM Plex Sans', sans-serif;
     color: var(--black);
-    margin: 20px 0px 20px 0px;
+    padding: 10px 0px 20px 0px;
 }
 
 .discussionCommentsView {
-    background-color: rgb(252, 252, 252); 
-    height: 75%;
+    background-color: rgba(252, 252, 252, 0.591);
+    height: 67%;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
     padding-top: 0px;
     padding-left: 15px;
     padding-right: 15px;
+    border-top: 1px lightgray solid;
+    border-bottom: 1px lightgray solid;
 }
 
 .discussionPostCommentFrame {
     display: flex;
     flex-direction: column;
-    height: 25%;
+    height: 18%;
     padding-left: 15px;
     padding-right: 15px;
 }
@@ -176,13 +189,50 @@ a.proposalLink:active {
 }
 
 .postCommentTopContainer {
-    height: 65%;
+    height: 75%;
 }
 
-.postCommentBottomContainer { 
+.UserInput {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.commentBoxHeader {
+    padding-top: 2px;
+    padding-left: 4px;
+    width: 100%;
+    font-size: 0.8em;
+    text-align: left;
+    color: var(--black);
+    font-family: 'Lexend Deca', sans-serif;
+}
+
+.userInputDiscussion{
+    background: var(--lightGrey);
+    border: 1px solid var(--grey);
+    border-radius: 4px;
+    color: var(--black);
+    font: 1em 'Lexend Deca', sans-serif;
+    width: 100%;
+    height: 55px;
+}
+
+.postCommentBottomContainer {
     position: relative;
-    height: 35%;
-    margin-top: 5px;
+    height: 25%;
+}
+
+.postCommentButtonContainer {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+}
+
+.genericProposalButtonDets:active {
+    background-color: var(--buttonGreenOpaque);
 }
 
 .proposalConditional {
@@ -192,6 +242,7 @@ a.proposalLink:active {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    position: relative;
 }
 
 .progressFrame {
@@ -232,46 +283,12 @@ a.proposalLink:active {
     margin-bottom: 5px;
 }
 
-.UserInput {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-.commentBoxHeader {
-    margin-top:15px;
-    padding-left: 4px;
-    width: 100%;
-    font-size: 0.8em;
-    text-align: left;
-    color: var(--black);
-    font-family: 'Lexend Deca', sans-serif;
-}
-
-.userInputDiscussion{
-    background: var(--lightGrey);
-    border: 1px solid var(--grey);
-    border-radius: 4px;
-    color: var(--black);
-    font: 1em 'Lexend Deca', sans-serif;
-    width: 100%;
-    height: 50px;
-}
-
-.postCommentButtonContainer {
-    position: absolute;
-    right: 0px;
-    top: 0px;
-}
-
 .yourVoteLabel {
     font-family: 'Lexend Deca', sans-serif;
     font-size: 1em;
     position: absolute;
-    right: -0px;
-    bottom: 1px;
+    right: -25px;
+    bottom: -30px;
 }
 
 .genericProposalButtonDets {
@@ -280,10 +297,6 @@ a.proposalLink:active {
     color: white;
     font-family: 'Lexend Deca', sans-serif;
     border-width: 0px;
-}
-
-.genericProposalButtonDets:active {
-    background-color: var(--buttonGreenOpaque);
 }
 
 .adminButton {

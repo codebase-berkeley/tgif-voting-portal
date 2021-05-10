@@ -20,7 +20,7 @@ function App() {
   const [privileges, setPrivileges] = useState(null);
 
   async function getAuthenticatedUserProfile() {
-    // check auth status
+    /* check auth status */
     try {
       let response = await axios.get('http://localhost:8000/auth/isauth', {withCredentials: true});
       let authStatus = response.data;
@@ -31,7 +31,7 @@ function App() {
       }
       setDoneLoading(true);
   
-      // get user profile
+      /* get user profile */
       response = await axios.get('http://localhost:8000/getProfile', {withCredentials: true});
   
       setUserID(response.data.id);
