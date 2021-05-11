@@ -1,11 +1,4 @@
-DROP DATABASE
-IF EXISTS tgif;
-
-CREATE DATABASE tgif;
-
-CREATE USER root
-WITH ENCRYPTED PASSWORD 'password';
-\c tgif;
+-- name of postgres app: tgif
 
 DROP TABLE IF EXISTS users, proposals, comments, votes;
 
