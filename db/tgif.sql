@@ -7,11 +7,12 @@ CREATE USER root
 WITH ENCRYPTED PASSWORD 'password';
 \c tgif;
 
+DROP TABLE IF EXISTS users, proposals, comments, votes;
+
 CREATE TABLE users
 (
     id SERIAL PRIMARY KEY,
     privileges VARCHAR, --'Admin', 'Voting Member', 'Non-Voting Member'
-    --    hashed_password VARCHAR,
     username VARCHAR,
     email VARCHAR,
     tgif_role VARCHAR
@@ -50,23 +51,8 @@ GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO root;
 
 GRANT ALL PRIVILEGES ON DATABASE tgif TO root;
 
-CREATE TABLE currentPropID (
-    propID SERIAL PRIMARY KEY
-);
-
-
 
 -- INSERT TEST DATA HERE
-
--- INSERT INTO table_name(optional columns)
--- VALUES
--- (first row here with commas seperating each column value of this row), 
--- (second row here),
--- ...
--- (last row here);
-
-
--- Example:
 
 INSERT INTO users(privileges, username, email, tgif_role)
 VALUES
@@ -78,6 +64,8 @@ VALUES
     ('Admin', 'Paola Noun', 'paolanoun@berkeley.edu', 'Boss'),
     ('Admin', 'Jorge Morales', 'jorge.morales@berkeley.edu', 'CEO'),
     ('Admin', 'Kalea', 'kaleachu@berkeley.edu', 'The Big Cheese'),
+    ('Admin', 'Warren', 'warrenwwang@berkeley.edu', 'The Big Cheese'),
+    ('Voting Member', 'Warren', 'warren.w.wang@gmail.com', 'The Big Cheese'),
 
     ('Voting Member', 'Anh the Voter Pham', 'wistyanh12@gmail.com', 'voteeee babyyy'),
     ('Voting Member', 'Moe Sumino', 'moe_sumino@berkeley.edu', 'ASUC Representative'),

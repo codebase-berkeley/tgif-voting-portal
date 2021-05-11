@@ -5,6 +5,7 @@ const session = require('express-session');
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const db = require('./db-connection');
 const { Query } = require('pg');
+const path = require('path');
 require('dotenv').config();
 
 const corsOptions = {
@@ -26,7 +27,6 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
-const port = 8000;
 
 const GOOGLE_CLIENT_ID = process.env.GOOGLECLIENT;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLESECRET;
@@ -36,7 +36,7 @@ passport.use(
     {
       clientID: GOOGLE_CLIENT_ID,
       clientSecret: GOOGLE_CLIENT_SECRET,
-      callbackURL: 'http://localhost:8000/auth/google/callback',
+      callbackURL: '/auth/google/callback',
     },
     async (accessToken, refreshToken, profile, done) => {
       const query = await db.query(
@@ -69,6 +69,8 @@ function verifyAuthenticated(req, res, next) {
     next();
   } else if (req.path.startsWith('/auth')) {
     next();
+  } else if (!req.path.startsWith('/api')) {
+    next()
   } else {
     res.status(403).send();
   }
@@ -77,10 +79,10 @@ function verifyAuthenticated(req, res, next) {
 app.use(verifyAuthenticated);
 
 app.get('/auth/google/callback',
-  passport.authenticate('google', { failureRedirect: '/auth/google/fail' }), (req, res) => res.redirect('http://localhost:3000/dashboard'));
+  passport.authenticate('google', { failureRedirect: '/auth/google/fail' }), (req, res) => res.redirect('/dashboard'));
 
 app.get('/auth/google/fail',
-  (req, res) => res.redirect('http://localhost:3000/login-fail'));
+  (req, res) => res.redirect('/login-fail'));
 
 app.get('/auth/google',
   passport.authenticate('google', { scope: ['profile', 'email'] }));
@@ -93,7 +95,7 @@ app.get('/auth/isauth', (req, res) => {
   }
 });
 
-app.get('/getProfile', async (req, res) => {
+app.get('/api/getProfile', async (req, res) => {
   try {
     if (req.isAuthenticated()) {
       res.send(req.user);
@@ -106,7 +108,7 @@ app.get('/getProfile', async (req, res) => {
   }
 });
 
-app.post('/submitProposal', async (req, res) => {
+app.post('/api/submitProposal', async (req, res) => {
   try {
     const { title } = req.body;
     const { organization } = req.body;
@@ -122,7 +124,7 @@ app.post('/submitProposal', async (req, res) => {
   }
 });
 
-app.post('/post_comment', async (req, res) => {
+app.post('/api/post_comment', async (req, res) => {
   try {
     const timePosted = new Date();
     const userId = req.body.user_id;
@@ -137,7 +139,7 @@ app.post('/post_comment', async (req, res) => {
   }
 });
 
-app.post('/addUser', async (req, res) => {
+app.post('/api/addUser', async (req, res) => {
   try {
     const { privileges } = req.body;
     const { username } = req.body;
@@ -152,7 +154,7 @@ app.post('/addUser', async (req, res) => {
   }
 });
 
-app.delete('/deleteUsers', async (req, res) => {
+app.delete('/api/deleteUsers', async (req, res) => {
   try {
     const idsToDelete = req.body.listOfIds;
     const queryList = idsToDelete.toString();
@@ -175,7 +177,7 @@ app.delete('/deleteUsers', async (req, res) => {
   }
 });
 
-app.get('/getMembers', async (req, res) => {
+app.get('/api/getMembers', async (req, res) => {
   try {
     const query = await db.query(
       'SELECT * FROM users;',
@@ -186,7 +188,7 @@ app.get('/getMembers', async (req, res) => {
   }
 });
 
-app.get('/getUserVotes', async (req, res) => {
+app.get('/api/getUserVotes', async (req, res) => {
   try {
     const query = await db.query(
       'SELECT user_id, COUNT(*) FROM votes GROUP BY user_id;',
@@ -197,7 +199,7 @@ app.get('/getUserVotes', async (req, res) => {
   }
 });
 
-app.get('/get_one_vote', async (req, res) => {
+app.get('/api/get_one_vote', async (req, res) => {
   try {
     const userID = req.query.user_id;
     const proposalId = req.query.proposal_id;
@@ -210,7 +212,7 @@ app.get('/get_one_vote', async (req, res) => {
   }
 });
 
-app.get('/get_proposals_and_user_votes', async (req, res) => {
+app.get('/api/get_proposals_and_user_votes', async (req, res) => {
   const userID = req.query.user_id;
   try {
     const query = await db.query(
@@ -226,7 +228,7 @@ app.get('/get_proposals_and_user_votes', async (req, res) => {
   }
 });
 
-app.get('/get_comments', async (req, res) => {
+app.get('/api/get_comments', async (req, res) => {
   try {
     const proposalId = req.query.proposal_id;
     const query = await db.query(
@@ -238,7 +240,7 @@ app.get('/get_comments', async (req, res) => {
   }
 });
 
-app.get('/getProposals', async (req, res) => {
+app.get('/api/getProposals', async (req, res) => {
   try {
     const query = await db.query(
       'SELECT * FROM proposals;',
@@ -249,7 +251,7 @@ app.get('/getProposals', async (req, res) => {
   }
 });
 
-app.delete('/delete_proposal', async (req, res) => {
+app.delete('/api/delete_proposal', async (req, res) => {
   try {
     const propsList = req.body.listOfIDs;
     await db.query(
@@ -267,7 +269,7 @@ app.delete('/delete_proposal', async (req, res) => {
   }
 });
 
-app.post('/submitVote', async (req, res) => {
+app.post('/api/submitVote', async (req, res) => {
   try {
     const deleteEntry = await db.query(
       'DELETE FROM votes WHERE user_id=$1 AND proposal_id=$2',
@@ -284,7 +286,7 @@ app.post('/submitVote', async (req, res) => {
   }
 });
 
-app.get('/getProposalCount', async (req, res) => {
+app.get('/api/getProposalCount', async (req, res) => {
   try {
     const proposalCount = await db.query(
       'SELECT COUNT(*) FROM proposals',
@@ -295,7 +297,7 @@ app.get('/getProposalCount', async (req, res) => {
   }
 });
 
-app.get('/getAllVotes', async (req, res) => {
+app.get('/api/getAllVotes', async (req, res) => {
   try {
     const amountYesQuery = await db.query(
       'SELECT COUNT(*) FROM votes WHERE proposal_id=$1 AND vote=TRUE;',
@@ -324,7 +326,7 @@ app.get('/getAllVotes', async (req, res) => {
   }
 });
 
-app.get('/get_proposal_details', async (req, res) => {
+app.get('/api/get_proposal_details', async (req, res) => {
   try {
     const proposalId = req.query.proposal_id;
     const query = await db.query(
@@ -336,7 +338,7 @@ app.get('/get_proposal_details', async (req, res) => {
   }
 });
 
-app.get('/logout', async (req, res) => {
+app.get('/api/logout', async (req, res) => {
   try {
     req.logout();
     res.send();
@@ -344,7 +346,21 @@ app.get('/logout', async (req, res) => {
     console.log(error.stack);
   }
 });
+const port = process.env.PORT || 8000;
+
+// serve the react app if the path doesn't match an api endpoint
+app.use(express.static(path.join(__dirname, '../client/build')));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/build/index.html'));
+});
 
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
+  console.log(`Example app listening at ${port}`);
+});
+
+process.on('SIGINT', function() {
+  console.log( "\nGracefully shutting down from SIGINT (Ctrl-C)" );
+  // some other closing procedures go here
+  process.exit(1);
 });

@@ -27,7 +27,7 @@ function Dashboard(props) {
 
 
   async function fetchProposals() {
-		const response = await axios.get('http://localhost:8000/get_proposals_and_user_votes', {params : {user_id: USER_ID}});
+		const response = await axios.get('/api/get_proposals_and_user_votes', {params : {user_id: USER_ID}});
     let proposal_lst = response.data;
     /* Initialize false <checked> attributes for each proposal; used for checkbox tracking
     while in deleting mode */
@@ -79,7 +79,7 @@ function Dashboard(props) {
       try {
         await axios({
           method: 'post',
-          url: 'http://localhost:8000/post_comment',
+          url: '/api/post_comment',
           data: {
             user_id: USER_ID,
             proposal_id: wantedPropID,
@@ -95,7 +95,7 @@ function Dashboard(props) {
 
   async function submitVote(voteDecision) {
     try {
-      await axios.post('http://localhost:8000/submitVote', {
+      await axios.post('/api/submitVote', {
         vote: voteDecision,
         user_id: USER_ID,
         proposal_id: wantedPropID

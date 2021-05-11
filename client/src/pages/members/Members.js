@@ -37,9 +37,9 @@ function Members(props) {
   const [exitEditingIconClassName, setExitEditingIconClassName] = useState(exitEditingIconDefault + ' hide');
 
   async function fetchMembers() {
-		const response = await axios.get('http://localhost:8000/getMembers');
-		const userCounts = await axios.get('http://localhost:8000/getUserVotes');
-		const totalProposals = await axios.get('http://localhost:8000/getProposalCount');
+		const response = await axios.get('/api/getMembers');
+		const userCounts = await axios.get('/api/getUserVotes');
+		const totalProposals = await axios.get('/api/getProposalCount');
 		let users = response.data;
     /* Add a <count> attribute to each user that reflects the # of
     proposals they have voted on */
@@ -100,7 +100,7 @@ function Members(props) {
       try {
         await axios({
           method: 'post',
-          url: 'http://localhost:8000/addUser',
+          url: '/api/addUser',
           data: {
             privileges: privilegesDropdown.value,
             username: nameTextbox.value,
@@ -133,7 +133,7 @@ function Members(props) {
         try {
           await axios({
             method: 'delete',
-            url: 'http://localhost:8000/deleteUsers',
+            url: '/api/deleteUsers',
             data: {
               listOfIds: userIdsToDelete
             }

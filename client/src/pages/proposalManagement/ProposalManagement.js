@@ -15,7 +15,7 @@ function ProposalManagement(props) {
 
   const [proposals, setProposals] = useState([]);
   async function fetchProposals() {
-		const response = await axios.get('http://localhost:8000/getProposals');
+		const response = await axios.get('/api/getProposals');
     let proposal_lst = response.data;
     /* Initialize false <checked> attributes for each proposal; used for checkbox tracking
     while in deleting mode */
@@ -80,7 +80,7 @@ function ProposalManagement(props) {
         try {
           await axios({
             method: 'post',
-            url: 'http://localhost:8000/submitProposal',
+            url: '/api/submitProposal',
             data: {
               title: textboxValueTitle,
               amount_requested: (isNaN(parseFloat(textboxValueMoney)) ? 0 : parseFloat(textboxValueMoney)),
@@ -117,7 +117,7 @@ function ProposalManagement(props) {
         try {
           await axios({
             method: 'delete',
-            url: 'http://localhost:8000/delete_proposal',
+            url: '/api/delete_proposal',
             data: {
               listOfIDs: propsIdsToDelete
             }

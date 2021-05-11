@@ -22,7 +22,7 @@ function App() {
   async function getAuthenticatedUserProfile() {
     /* check auth status */
     try {
-      let response = await axios.get('http://localhost:8000/auth/isauth', {withCredentials: true});
+      let response = await axios.get('/auth/isauth', {withCredentials: true});
       let authStatus = response.data;
       if (!authStatus) {
         setIsAuth(false);
@@ -32,7 +32,7 @@ function App() {
       setDoneLoading(true);
   
       /* get user profile */
-      response = await axios.get('http://localhost:8000/getProfile', {withCredentials: true});
+      response = await axios.get('/api/getProfile', {withCredentials: true});
   
       setUserID(response.data.id);
       setPrivileges(response.data.privileges);

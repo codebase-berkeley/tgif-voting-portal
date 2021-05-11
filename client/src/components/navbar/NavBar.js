@@ -7,7 +7,7 @@ function Navbar(props) {
   const PRIVILEGES = props.privileges;
   async function logout() {
     try {
-      const res = await axios.get('http://localhost:8000/logout');
+      const res = await axios.get('/api/logout');
     } catch (error) {
       console.log(error);
     }
