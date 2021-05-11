@@ -12,7 +12,7 @@
     "server": "cd server && yarn server",
     "predb": "psql -f db/tgif.sql -U postgres",
     "db": "psql tgif",
-    "start": "cd server && nodemon app.js",
+    "start": "cd server && yarn start",
     "heroku-postbuild": "yarn install && cd client && yarn install && yarn build"
   },
   "dependencies": {
