@@ -13,7 +13,7 @@
     "predb": "psql -f db/tgif.sql -U postgres",
     "db": "psql tgif",
     "start": "cd server && yarn start",
-    "heroku-postbuild": "yarn install && cd client && yarn install && yarn build"
+    "heroku-postbuild": "yarn install && cd client && yarn install && yarn build && cd ../server && yarn install"
   },
   "dependencies": {
     "concurrently": "^6.0.0"
