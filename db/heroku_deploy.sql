@@ -37,13 +37,6 @@ CREATE TABLE votes
     proposal_id SERIAL REFERENCES proposals(id)
 );
 
-GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO root;
-
-GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO root;
-
-GRANT ALL PRIVILEGES ON DATABASE tgif TO root;
-
-
 -- INSERT TEST DATA HERE
 
 INSERT INTO users(privileges, username, email, tgif_role)
@@ -60,7 +53,7 @@ VALUES
     ('Admin', 'Ryan', 'ryanzhao@berkeley.edu', 'Codebase'),
     ('Voting Member', 'Warren', 'warren.w.wang@gmail.com', 'Codebase'),
     ('Voting Member', 'Kennedy Chung', 'kennedychung@berkeley.edu', 'Codebase'),
-    ('Voting Member', 'Bailey Segall', 'bailey.segall@berkeley.edu', 'Codebase'),
+    ('Voting Member', 'Bailey Segall', 'bailey.segall@berkeley.edu', 'Codebase');
     
 INSERT INTO proposals(title, organization, amount_requested, link, description_text)
 VALUES
