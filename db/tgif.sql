@@ -67,7 +67,7 @@ VALUES
     ('Admin', 'Ryan', 'ryanzhao@berkeley.edu', 'Codebase'),
     ('Voting Member', 'Warren', 'warren.w.wang@gmail.com', 'Codebase'),
     ('Voting Member', 'Kennedy Chung', 'kennedychung@berkeley.edu', 'Codebase'),
-    ('Voting Member', 'Bailey Segall', 'bailey.segall@berkeley.edu', 'Codebase'),
+    ('Voting Member', 'Bailey Segall', 'bailey.segall@berkeley.edu', 'Codebase');
     
 INSERT INTO proposals(title, organization, amount_requested, link, description_text)
 VALUES
