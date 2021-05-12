@@ -28,6 +28,8 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+console.log("ENV", process.env)
+
 const GOOGLE_CLIENT_ID = process.env.GOOGLECLIENT;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLESECRET;
 
