@@ -52,8 +52,10 @@ function Dashboard(props) {
     try {
       const title = proposal_lst[0].title;
       const description = proposal_lst[0].description_text;
+      const propId = proposal_lst[0].id;
       setProposalTitle(title);
-      setProposalDescription(description); 
+      setProposalDescription(description);
+      setWantedPropID(propId);
     }
     catch (error) {
       console.log(error);

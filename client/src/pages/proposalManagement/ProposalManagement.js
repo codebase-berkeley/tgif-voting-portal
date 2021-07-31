@@ -125,6 +125,7 @@ function ProposalManagement(props) {
         } catch(error) {
             console.log(error);
         }
+        setPropsIdsToDelete([]);    // clear checkmarks
         fetchProposals();
       }
     }

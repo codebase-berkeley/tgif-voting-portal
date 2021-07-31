@@ -7,7 +7,7 @@ Spring 2021 TGIF Mentored Project
   - if there are new plugins, re-run `yarn install` in the folders
 
 Easiest way to start locally
-- run  `yarn dev` in the root folder. This will concurrently start the client (react app), express server, and rebuild/start the database (drop the database and recreate it). Ouput of the three applications will be merged and printed in the same terminal tab.
+- run  `yarn dev` in the root folder. This will concurrently start the client (react app), express server, and rebuild/start the database (drop the database and recreate it). Ouput of the three applications will be merged and printed in the same terminal tab. Afterwards, go to `localhost:8000` to view the application. However, whenever you make changes, you must rerun `yarn build` in the client folder. (\[2021-07-31\]this hassle is temorary and due to deployment changes. we will fix eventually)
 
 - [Optional] to interact with our db and run sql commands in terminal on the fly, open a new terminal window and run `psql tgif` (doesn't have to be run in any specific folder)
 
