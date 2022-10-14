@@ -22,6 +22,7 @@ CREATE TABLE proposals
 (
     id SERIAL PRIMARY KEY,
     title VARCHAR,
+    sponsor VARCHAR,
     organization VARCHAR,
     amount_requested FLOAT,
     link VARCHAR,
@@ -69,20 +70,20 @@ VALUES
     ('Voting Member', 'Kennedy Chung', 'kennedychung@berkeley.edu', 'Codebase'),
     ('Voting Member', 'Bailey Segall', 'bailey.segall@berkeley.edu', 'Codebase');
     
-INSERT INTO proposals(title, organization, amount_requested, link, description_text)
+INSERT INTO proposals(title, sponsor, organization, amount_requested, link, description_text)
 VALUES
-    ('The Team Writers Program at the Leaflet', 'The Student Environmental Resource Center (SERC)', 10102.32, 'https://drive.google.com/file/d/1PSPFeoJNlyQwGlQD3pCbI5q9HQh8TQc9/view',
+    ('The Team Writers Program at the Leaflet', 'Sponsor1', 'The Student Environmental Resource Center (SERC)', 10102.32, 'https://drive.google.com/file/d/1PSPFeoJNlyQwGlQD3pCbI5q9HQh8TQc9/view',
         'As the only undergraduate student-run environmental publication in the University of California system, The Leaflet has broadened its mission to cover a wider array of environmental 
         subjects that pertain to both local, regional, and global communities. This funding will allow The Leaflet to financially support its writers and, as a result, benefit both the publication and the 
         Berkeley community. By hiring committed writers through a funded Staff Writer Program, the Leaflet will be able to increase the quality and number of written pieces, increase the publication’s operational 
         capacity, and provide a space for professional development. This grant would also allow students from low-income or non-traditional backgrounds to gain experience writing for a campus publication, strengthen 
         their understanding of environmental communications, and allow for a more diverse group of writers who may not have the capacity or the financial background to write for the publication as a part-time volunteer.'),
-    ('Zero Waste Fellow', 'Kira Stoll, Office of Sustainability', 11725.92, 'https://drive.google.com/file/d/17GNLxN5t29AizKR__X93Cs_EvEIhgU3t/view',
+    ('Zero Waste Fellow', 'Sponsor1', 'Kira Stoll, Office of Sustainability', 11725.92, 'https://drive.google.com/file/d/17GNLxN5t29AizKR__X93Cs_EvEIhgU3t/view',
         'At UC Berkeley, over a dozen organizations (both departmental and student-led) work on waste-related issues. Until 2019, collaboration and communication among them was minimal 
         and ineffective. The Zero Waste Coalition was established in Fall 2019 to allow for successful collaboration among organizations and to mobilize educational campaigns reaching over 5,000 students. Strong leadership within 
         the zero waste community is vital to its continued progress, and the creation of the Zero Waste Fellow position (similar to Carbon Neutrality or Engagement Fellows) will allow for institutionalized leadership that will 
         continue to build upon and expand zero waste work. This position will effectively institutionalize the Zero Waste Coalition, Zero Waste October, Compost Week, and Move Out programming.'),
-    ('Resilient Sustainability Community Fellows', 'SERC, RSSP, OS', 46893, 'https://drive.google.com/file/d/1s2wyV1nAgPlBsFFQLbkUnnLXuO1vBwMi/view',
+    ('Resilient Sustainability Community Fellows', 'Sponsor1', 'SERC, RSSP, OS', 46893, 'https://drive.google.com/file/d/1s2wyV1nAgPlBsFFQLbkUnnLXuO1vBwMi/view',
         'This Spring, the COVID- 19 global pandemic has radically shifted seniors’ last semesters at UC Berkeley and will most likely affect the career opportunities and job availability after 
         graduation in the sustainability community. This project hopes to provide up to seven (7) post-baccalaureate fellowships; with priority given to graduating seniors, but all students who may 
         have been impacted by COVID-19 will be eligible. These fellowships will offer graduating seniors the ability to continue their environmental work on campus for three additional months and to advance a variety 

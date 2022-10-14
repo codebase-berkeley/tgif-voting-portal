@@ -41,11 +41,16 @@ function Members(props) {
 		const userCounts = await axios.get('/api/getUserVotes');
 		const totalProposals = await axios.get('/api/getProposalCount');
 		let users = response.data;
+
     /* Add a <count> attribute to each user that reflects the # of
     proposals they have voted on */
-		userCounts.data.forEach(user => {
-			users[user.user_id - 1].count = user.count;
+
+		userCounts.data.forEach(u => {
+      users.forEach(user => {
+        if (user.id == u.user_id) { user.count = u.count;}
+      })
 		});
+
     /* Initialize false <checked> attributes for each user; used for checkbox tracking
     while in editing mode */
     users.forEach(user => {

@@ -30,6 +30,7 @@ function ProposalManagement(props) {
   }, []);
 
   const[textboxValueTitle, setTextboxValueTitle] = React.useState('');
+  const[textboxValueSponsor, setTextboxValueSponsor] = React.useState('');
   const[textboxValueDescript, setTextboxValueDescript] = React.useState('');
   const[textboxValueLink, setTextboxValueLink] = React.useState('');
   const[textboxValueMoney, setTextboxValueMoney] = React.useState('');
@@ -83,6 +84,7 @@ function ProposalManagement(props) {
             url: '/api/submitProposal',
             data: {
               title: textboxValueTitle,
+              organization: textboxValueSponsor,
               amount_requested: (isNaN(parseFloat(textboxValueMoney)) ? 0 : parseFloat(textboxValueMoney)),
               link: textboxValueLink,
               description_text: textboxValueDescript
@@ -94,6 +96,7 @@ function ProposalManagement(props) {
         console.log(error.stack); 
       }
       setTextboxValueTitle('');
+      setTextboxValueSponsor('');
       setTextboxValueDescript('');
       setTextboxValueLink('');
       setTextboxValueMoney(''); 
@@ -196,6 +199,9 @@ function ProposalManagement(props) {
                   </div>
                   <div className = "PMtextboxes">
                     <textarea value={textboxValueTitle} onChange={(event) => {setTextboxValueTitle(event.target.value)}} className= 'titleNewProposal' id='titleNewProposal' type='textarea' placeholder='Title'/>
+                  </div>
+                  <div className = "PMsponsor">
+                    <textarea value={textboxValueSponsor} onChange={(event) => {setTextboxValueSponsor(event.target.value)}} className= 'sponsorNewProposal' id='sponsorNewProposal' type='textarea' placeholder='Sponsor'/>
                   </div>
                   <textarea value={textboxValueDescript} onChange={(event) => {setTextboxValueDescript(event.target.value)}} className= 'descriptionNewProposal' id='descriptionNewProposal' type='textarea' placeholder='Project description'/>
                   <div className = "bottomThree">
