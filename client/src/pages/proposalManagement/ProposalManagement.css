@@ -68,11 +68,23 @@
 .PMtextboxes{
     width: 100%;
     height: 7%;
+    margin-bottom: 2%;
+}
+
+.PMsponsor{
+    width: 100%;
+    /* background-color: red; */
+    height: 7%;
 }
 
 .titleNewProposal{
     width : 100%;
-    height:100%;
+    height: 100%;
+}
+
+.sponsorNewProposal{
+    width : 100%;
+    height: 100%;
 }
 
 .descriptionNewProposal{
@@ -132,6 +144,11 @@ textarea {
 }
 
 .PMtextboxes:focus {
+    outline: none;
+    resize: none;
+}
+
+.PMsponsor:focus {
     outline: none;
     resize: none;
 }
